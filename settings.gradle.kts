@@ -10,6 +10,11 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
+        // Kotzilla
+        maven {
+            name = "kotzilla"
+            url = uri("https://repository.kotzilla.io/repository/kotzilla-platform/")
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -23,6 +28,11 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
             }
+        }
+        // Kotzilla
+        maven {
+            name = "kotzilla"
+            url = uri("https://repository.kotzilla.io/repository/kotzilla-platform/")
         }
         mavenCentral()
     }

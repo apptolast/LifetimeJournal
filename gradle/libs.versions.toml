@@ -9,18 +9,29 @@ androidx-constraintlayout = "2.2.1"
 androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
+androidx-lifecycle-compose = "2.8.7"
 androidx-material = "1.12.0"
+androidx-navigation = "2.9.0-alpha16"
 androidx-test-junit = "1.2.1"
+buildConfig = "5.6.2"
 compose-multiplatform = "1.7.3"
 coreSplashscreen = "1.0.1"
+javapoet = "1.13.0"
 junit = "4.13.2"
+koinVersion = "4.0.4"
+koinAnnotations = "2.0.0"
+koinCompiler = "2.0.0"
 kotlin = "2.1.20"
+kotzilla = "1.0.1"
 ktlintJlleitschuh = "12.2.0"
+ksp = "2.1.20-2.0.0"
 ktor = "3.1.1"
 ktor-server-tests-version = "2.3.13"
 logback = "1.5.18"
+materialIconsExtended = "1.7.8"
 
 [libraries]
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -31,13 +42,30 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-compose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinVersion" }
+koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel" }
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinCompiler" }
+koin-test = { group = "io.insert-koin", name = "koin-test" }
+
+kotzilla-plugin = { group = "io.kotzilla", name = "kotzilla-plugin", version.ref = "kotzilla" }
+kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk", version.ref = "kotzilla" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor-server-tests-version" }
+symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -48,3 +76,6 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ktlint-jlleitschuh = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintJlleitschuh" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
+gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
