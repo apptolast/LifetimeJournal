@@ -2,17 +2,19 @@ package com.apptolast.lifetimejournal.core.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-object LoginDestination
+interface Destination
 
 @Serializable
-object SettingDestination
+object LoginDestination : Destination
 
 @Serializable
-object CreateBookDestination
+object SettingDestination : Destination
 
 @Serializable
-object Home
+object CreateBookDestination : Destination
+
+@Serializable
+object HomeDestination : Destination
 
 // @Serializable
 // data class DetailDestination {
