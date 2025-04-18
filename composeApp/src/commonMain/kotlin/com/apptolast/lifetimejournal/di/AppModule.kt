@@ -1,8 +1,10 @@
 package com.apptolast.lifetimejournal.di
 
 import com.apptolast.lifetimejournal.BuildConfig
+import com.apptolast.lifetimejournal.features.login.presentation.LoginViewModel
 import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
@@ -13,14 +15,14 @@ val appModule = module {
 }
 
 val viewModelsModule = module {
-//    viewModelOf(::HomeListViewModel)
+    viewModelOf(::LoginViewModel)
 }
 
 // expect val nativeModule: Module
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     appDeclaration()
-    modules(appModule, viewModelsModule)
+    modules(appModule, sharedModule, viewModelsModule)
 
     // Kotzilla
     analytics {

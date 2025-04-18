@@ -76,10 +76,6 @@ kotlin {
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
 
-
-            implementation(libs.firebase.gitlive.auth)
-
-
             implementation(projects.shared)
         }
     }
@@ -94,7 +90,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0"
     }
     packaging {
         resources {
@@ -105,6 +101,10 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+        getByName("debug") {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".dev"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -113,9 +113,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.firebase.common.ktx)
-    implementation(libs.firebase.gitlive.common)
-    implementation(libs.firebase.gitlive.auth)
+//    implementation(libs.firebase.common.ktx)
 
     debugImplementation(compose.uiTooling)
     add("kspCommonMainMetadata", libs.koin.ksp.compiler)

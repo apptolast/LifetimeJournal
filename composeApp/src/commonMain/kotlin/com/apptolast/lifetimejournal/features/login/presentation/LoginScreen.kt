@@ -31,26 +31,70 @@ fun LoginScreenRoot(
 @Composable
 fun LoginScreen(state: LoginState, navigateTo: (Destination) -> Unit = {}) {
     LoginContent(
+        authState = state.isAuthenticated,
         modifier = Modifier,
         navigateTo = navigateTo,
     )
 }
 
 @Composable
-fun LoginContent(modifier: Modifier = Modifier, navigateTo: (Destination) -> Unit = {}) {
+fun LoginContent(
+    authState: Boolean,
+    modifier: Modifier = Modifier,
+    navigateTo: (Destination) -> Unit = {},
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Login")
+        Text("Login $authState")
         Button(
             onClick = { navigateTo(HomeDestination) },
         ) {
-            Text("Go to Home")
+            Text("Login")
         }
     }
 }
+
+//@Composable
+//fun SignInWithGoogleButton(
+//    text: String = "Sign in with Google",
+//    loadingText: String = "Signing in...",
+//    icon: Painter = painterResource(id = R.drawable.ic_google_logo), // Replace with your actual Google logo resource
+//    isLoading: Boolean = false,
+//    onClick: () -> Unit
+//) {
+//    Surface(
+//        modifier = Modifier
+//            .clickable(
+//                enabled = !isLoading,
+//                onClick = onClick
+//            ),
+//        shape = RoundedCornerShape(12.dp),
+//        border = BorderStroke(width = 1.dp, color = Color.LightGray),
+//        color = MaterialTheme.colorScheme.surface
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .padding(
+//                    start = 12.dp,
+//                    end = 16.dp,
+//                    top = 12.dp,
+//                    bottom = 12.dp
+//                ),
+//            verticalAlignment = Alignment.CenterVertically,
+//        ) {
+//            Image(
+//                painter = icon,
+//                contentDescription = "Google Button",
+//                modifier = Modifier.size(24.dp)
+//            )
+//            Spacer(modifier = Modifier.width(8.dp))
+//            Text(text = if (isLoading) loadingText else text)
+//        }
+//    }
+//}
 
 // @Preview
 // @Composable
@@ -64,3 +108,9 @@ fun LoginContent(modifier: Modifier = Modifier, navigateTo: (Destination) -> Uni
 //    }
 // }
 //
+
+//@Preview(showBackground = true)
+//@Composable
+//fun SignInWithGoogleButtonPreview() {
+//    SignInWithGoogleButton(onClick = {})
+//}

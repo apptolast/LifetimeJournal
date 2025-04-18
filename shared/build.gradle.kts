@@ -22,7 +22,16 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // put your Multiplatform dependencies here
+            // Gitlive (Firebase)
+            implementation(libs.firebase.gitlive.auth)
+            implementation(libs.firebase.gitlive.common)
+            implementation(libs.firebase.gitlive.auth)
+
+            implementation(libs.androidx.coroutines.core)
+
+            // Koin
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
         }
     }
 }
