@@ -1,6 +1,6 @@
 package com.apptolast.lifetimejournal.di
 
-import com.apptolast.kmptest.BuildConfig
+import com.apptolast.lifetimejournal.BuildConfig
 import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -9,6 +9,7 @@ import org.koin.dsl.module
 val appModule = module {
 //    single(named("testApiKey")) { BuildConfig.TEST_API_KEY }
 //    factory { Greeting() }
+//    factory { Firebase.auth }
 }
 
 val viewModelsModule = module {

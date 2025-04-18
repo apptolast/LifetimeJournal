@@ -16,6 +16,9 @@ androidx-test-junit = "1.2.1"
 buildConfig = "5.6.2"
 compose-multiplatform = "1.7.3"
 coreSplashscreen = "1.0.1"
+firebaseBom = "33.12.0"
+firebaseGitlive = "2.1.0"
+google-services = "4.4.2"
 javapoet = "1.13.0"
 junit = "4.13.2"
 koinVersion = "4.0.4"
@@ -48,7 +51,15 @@ androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx" }
+firebase-gitlive-common = { group = "dev.gitlive", name = "firebase-common", version.ref = "firebaseGitlive" }
+firebase-gitlive-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "firebaseGitlive" }
+firebase-gitlive-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "firebaseGitlive" }
+
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
 
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinVersion" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
@@ -80,3 +91,5 @@ ktlint-jlleitschuh = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktli
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+

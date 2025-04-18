@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.gradleBuildConfig)
+    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -48,6 +49,9 @@ kotlin {
 
             // SplashScreen
             implementation(libs.core.splashscreen)
+
+            // Firebase
+            implementation(project.dependencies.platform(libs.firebase.bom))
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -71,6 +75,10 @@ kotlin {
 
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
+
+
+            implementation(libs.firebase.gitlive.auth)
+
 
             implementation(projects.shared)
         }
@@ -105,6 +113,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.gitlive.common)
+    implementation(libs.firebase.gitlive.auth)
+
     debugImplementation(compose.uiTooling)
     add("kspCommonMainMetadata", libs.koin.ksp.compiler)
     add("kspAndroid", libs.koin.ksp.compiler)
@@ -141,7 +153,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
 }
 
 buildConfig {
-    packageName("com.apptolast.kmptest")
+    packageName("com.apptolast.lifetimejournal")
 
     useJavaOutput()
     useKotlinOutput()
@@ -149,6 +161,8 @@ buildConfig {
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").reader())
     val kotzillaApiKey = properties.getProperty("KOTZILLA_API_KEY")
+    val webClientId = properties.getProperty("WEB_ID_CLIENT")
 
     buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
+    buildConfigField("WEB_ID_CLIENT", webClientId)
 }
