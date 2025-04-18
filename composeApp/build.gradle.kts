@@ -53,6 +53,7 @@ kotlin {
             // Firebase
             implementation(project.dependencies.platform(libs.firebase.bom))
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -121,6 +122,14 @@ dependencies {
     add("kspIosX64", libs.koin.ksp.compiler)
     add("kspIosArm64", libs.koin.ksp.compiler)
     add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
+}
+
+compose{
+    resources {
+        publicResClass = false
+        packageOfResClass = "com.apptolast.lifetimejournal.resources"
+        generateResClass = auto
+    }
 }
 
 ktlint {
