@@ -1,7 +1,6 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -12,8 +11,6 @@ plugins {
     alias(libs.plugins.ktlint.jlleitschuh)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotzilla)
-    alias(libs.plugins.gradleBuildConfig)
-    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -157,19 +154,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
-}
-
-buildConfig {
-    packageName("com.apptolast.lifetimejournal")
-
-    useJavaOutput()
-    useKotlinOutput()
-
-    val properties = Properties()
-    properties.load(project.rootProject.file("local.properties").reader())
-    val kotzillaApiKey = properties.getProperty("KOTZILLA_API_KEY")
-    val webClientId = properties.getProperty("WEB_ID_CLIENT")
-
-    buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
-    buildConfigField("WEB_ID_CLIENT", webClientId)
 }

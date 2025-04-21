@@ -1,9 +1,13 @@
+
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.gradleBuildConfig)
+    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -47,3 +51,22 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 }
+
+buildConfig {
+    packageName("com.apptolast.lifetimejournal")
+
+    useKotlinOutput()                               // forces the outputType to 'kotlin', generating an `object`
+//    useKotlinOutput {
+//        topLevelConstants = true
+//    }    // forces the outputType to 'kotlin', generating top-level declarations
+    useKotlinOutput { internalVisibility = false }  // makes `BuildConfig` class `public` (defaults to `internal`)
+
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").reader())
+    val kotzillaApiKey = properties.getProperty("KOTZILLA_API_KEY")
+    val webClientId = properties.getProperty("WEB_ID_CLIENT")
+
+    buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
+    buildConfigField("WEB_ID_CLIENT", webClientId)
+}
+

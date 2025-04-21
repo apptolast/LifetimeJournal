@@ -59,10 +59,7 @@ firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-k
 firebase-gitlive-common = { group = "dev.gitlive", name = "firebase-common", version.ref = "firebaseGitlive" }
 firebase-gitlive-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "firebaseGitlive" }
 firebase-gitlive-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "firebaseGitlive" }
-
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-
-
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinVersion" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }

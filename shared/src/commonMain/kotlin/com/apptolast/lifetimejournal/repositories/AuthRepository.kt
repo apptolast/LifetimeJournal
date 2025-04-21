@@ -4,7 +4,6 @@ import dev.gitlive.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 class AuthRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -14,7 +13,7 @@ class AuthRepositoryImpl(
     override val authState: StateFlow<Boolean> = _authState.asStateFlow()
 
     override fun loginWithGoogle() {
-        return _authState.update{true}
+        TODO()
     }
 }
 

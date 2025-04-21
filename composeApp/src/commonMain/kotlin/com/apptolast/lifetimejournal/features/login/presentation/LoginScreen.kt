@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
-import com.apptolast.lifetimejournal.core.navigation.HomeDestination
 import com.apptolast.lifetimejournal.features.login.data.LoginState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.google_icon
@@ -40,16 +39,21 @@ fun LoginScreenRoot(
 
     LoginScreen(
         state = state,
+        onClickGoogleButton = viewModel::signInWithGoogle,
         navigateTo = navigateTo,
     )
 }
 
 @Composable
-fun LoginScreen(state: LoginState, navigateTo: (Destination) -> Unit = {}) {
+fun LoginScreen(
+    state: LoginState,
+    onClickGoogleButton: () -> Unit = {},
+    navigateTo: (Destination) -> Unit = {},
+) {
     LoginContent(
         authState = state.isAuthenticated,
         modifier = Modifier,
-        navigateTo = navigateTo,
+        onClickGoogleButton = onClickGoogleButton,
     )
 }
 
@@ -57,7 +61,7 @@ fun LoginScreen(state: LoginState, navigateTo: (Destination) -> Unit = {}) {
 fun LoginContent(
     authState: Boolean,
     modifier: Modifier = Modifier,
-    navigateTo: (Destination) -> Unit = {},
+    onClickGoogleButton: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -66,7 +70,7 @@ fun LoginContent(
     ) {
         Text("Login $authState")
         SignInWithGoogleButton(
-            onClick = { navigateTo(HomeDestination) },
+            onClick = onClickGoogleButton,
         )
     }
 }
