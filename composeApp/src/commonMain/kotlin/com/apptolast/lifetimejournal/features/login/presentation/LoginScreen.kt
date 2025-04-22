@@ -39,7 +39,7 @@ fun LoginScreenRoot(
 
     LoginScreen(
         state = state,
-        onClickGoogleButton = viewModel::signInWithGoogle,
+        onClickGoogleButton = viewModel::loginWithGoogle,
         navigateTo = navigateTo,
     )
 }

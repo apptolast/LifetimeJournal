@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
@@ -17,10 +17,10 @@ buildConfig = "5.6.2"
 compose-multiplatform = "1.7.3"
 coreSplashscreen = "1.0.1"
 firebaseBom = "33.12.0"
-firebaseGitlive = "2.1.0"
-google-services = "4.4.2"
+#google-services = "4.4.2"
 javapoet = "1.13.0"
 junit = "4.13.2"
+kmauthGoogle = "0.0.3-alpha03"
 koinVersion = "4.0.4"
 koinAnnotations = "2.0.0"
 koinCompiler = "2.0.0"
@@ -29,16 +29,12 @@ kotlinxCoroutinesCore = "1.10.1"
 kotzilla = "1.0.1"
 ktlintJlleitschuh = "12.2.0"
 ksp = "2.1.20-2.0.0"
-ktor = "3.1.1"
+ktor = "3.1.2"
 ktor-server-tests-version = "2.3.13"
 logback = "1.5.18"
 materialIconsExtended = "1.7.8"
 
 [libraries]
-javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
@@ -54,11 +50,17 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+kmauth-google = { group="io.github.sunildhiman90", name = "kmauth-google", version.ref = "kmauthGoogle" }
+kmauth-google-compose = { group="io.github.sunildhiman90", name = "kmauth-google-compose", version.ref = "kmauthGoogle" }
+
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx" }
-firebase-gitlive-common = { group = "dev.gitlive", name = "firebase-common", version.ref = "firebaseGitlive" }
-firebase-gitlive-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "firebaseGitlive" }
-firebase-gitlive-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "firebaseGitlive" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinVersion" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
@@ -72,6 +74,7 @@ koin-test = { group = "io.insert-koin", name = "koin-test" }
 
 kotzilla-plugin = { group = "io.kotzilla", name = "kotzilla-plugin", version.ref = "kotzilla" }
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk", version.ref = "kotzilla" }
+
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor-server-tests-version" }
@@ -90,5 +93,5 @@ ktlint-jlleitschuh = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktli
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+#googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 

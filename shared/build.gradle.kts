@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.gradleBuildConfig)
-    alias(libs.plugins.googleServices)
+//    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -26,12 +26,14 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // Gitlive (Firebase)
-            implementation(libs.firebase.gitlive.auth)
-            implementation(libs.firebase.gitlive.common)
-            implementation(libs.firebase.gitlive.auth)
+//            // Gitlive (Firebase)
+//            implementation(libs.firebase.gitlive.auth)
+//            implementation(libs.firebase.gitlive.common)
+//            implementation(libs.firebase.gitlive.auth)
 
             implementation(libs.androidx.coroutines.core)
+
+            implementation(libs.kmauth.google)
 
             // Koin
             implementation(project.dependencies.platform(libs.koin.bom))
