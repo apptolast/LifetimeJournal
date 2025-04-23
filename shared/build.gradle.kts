@@ -57,11 +57,11 @@ android {
 buildConfig {
     packageName("com.apptolast.lifetimejournal")
 
-    useKotlinOutput()                               // forces the outputType to 'kotlin', generating an `object`
+    useKotlinOutput() // forces the outputType to 'kotlin', generating an `object`
 //    useKotlinOutput {
 //        topLevelConstants = true
 //    }    // forces the outputType to 'kotlin', generating top-level declarations
-    useKotlinOutput { internalVisibility = false }  // makes `BuildConfig` class `public` (defaults to `internal`)
+    useKotlinOutput { internalVisibility = false } // makes `BuildConfig` class `public` (defaults to `internal`)
 
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").reader())
@@ -71,4 +71,3 @@ buildConfig {
     buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
     buildConfigField("WEB_ID_CLIENT", webClientId)
 }
-

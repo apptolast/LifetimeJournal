@@ -12,7 +12,8 @@ import com.apptolast.lifetimejournal.features.login.presentation.LoginScreen
 fun LoginContentPreview() {
     MaterialTheme {
         LoginScreen(
-            state = LoginState().copy(
+            state =
+            LoginState().copy(
                 isLoading = false,
             ),
         )

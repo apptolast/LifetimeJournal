@@ -9,16 +9,18 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-val appModule = module {
+val appModule =
+    module {
 //    single(named("testApiKey")) { BuildConfig.TEST_API_KEY }
 //    factory { Greeting() }
 //    factory { Firebase.auth }
 //    factory { KMAuthGoogle.googleAuthManager }
-}
+    }
 
-val viewModelsModule = module {
-    viewModelOf(::LoginViewModel)
-}
+val viewModelsModule =
+    module {
+        viewModelOf(::LoginViewModel)
+    }
 
 // expect val nativeModule: Module
 

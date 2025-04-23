@@ -42,7 +42,8 @@ fun HomeContent(modifier: Modifier = Modifier) {
 fun HomeContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         HomeScreen(
-            state = HomeState().copy(
+            state =
+            HomeState().copy(
                 isLoading = false,
             ),
         )

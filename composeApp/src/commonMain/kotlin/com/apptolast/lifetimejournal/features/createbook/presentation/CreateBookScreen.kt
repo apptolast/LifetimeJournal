@@ -42,7 +42,8 @@ fun CreateBookContent(modifier: Modifier = Modifier) {
 fun CreateBookContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         CreateBookScreen(
-            state = CreateBookState().copy(
+            state =
+            CreateBookState().copy(
                 isLoading = false,
             ),
         )

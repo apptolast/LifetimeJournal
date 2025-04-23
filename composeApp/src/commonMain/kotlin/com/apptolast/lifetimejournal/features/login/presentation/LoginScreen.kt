@@ -87,7 +87,8 @@ fun SignInWithGoogleButton(
     onClick: () -> Unit,
 ) {
     Surface(
-        modifier = Modifier
+        modifier =
+        Modifier
             .clickable(
                 enabled = !isLoading,
                 onClick = onClick,
@@ -97,7 +98,8 @@ fun SignInWithGoogleButton(
         color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(
                     start = 12.dp,
                     end = 16.dp,

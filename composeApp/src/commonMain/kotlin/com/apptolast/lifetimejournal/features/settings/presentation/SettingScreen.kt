@@ -42,7 +42,8 @@ fun SettingContent(modifier: Modifier = Modifier) {
 fun SettingContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         SettingScreen(
-            state = SettingState().copy(
+            state =
+            SettingState().copy(
                 isLoading = false,
             ),
         )
