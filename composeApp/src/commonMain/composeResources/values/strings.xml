@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">Lifetime Journal</string>
+
+    <string name="login_google_button">Sign in with Google</string>
+    <string name="login_loading_text"> "Signing in..."</string>
+
+</resources>

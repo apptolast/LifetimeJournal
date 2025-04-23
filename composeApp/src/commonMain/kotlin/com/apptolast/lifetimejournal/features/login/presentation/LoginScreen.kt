@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,10 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
+import com.apptolast.lifetimejournal.core.navigation.HomeDestination
 import com.apptolast.lifetimejournal.features.login.data.LoginState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.google_icon
+import com.apptolast.lifetimejournal.resources.login_google_button
+import com.apptolast.lifetimejournal.resources.login_loading_text
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoginScreenRoot(
@@ -36,6 +41,12 @@ fun LoginScreenRoot(
     navigateTo: (Destination) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = state.isAuthenticated) {
+        if (state.isAuthenticated) {
+            navigateTo(HomeDestination)
+        }
+    }
 
     LoginScreen(
         state = state,
@@ -45,11 +56,7 @@ fun LoginScreenRoot(
 }
 
 @Composable
-fun LoginScreen(
-    state: LoginState,
-    onClickGoogleButton: () -> Unit = {},
-    navigateTo: (Destination) -> Unit = {},
-) {
+fun LoginScreen(state: LoginState, onClickGoogleButton: () -> Unit = {}, navigateTo: (Destination) -> Unit = {}) {
     LoginContent(
         authState = state.isAuthenticated,
         modifier = Modifier,
@@ -58,17 +65,13 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginContent(
-    authState: Boolean,
-    modifier: Modifier = Modifier,
-    onClickGoogleButton: () -> Unit = {},
-) {
+fun LoginContent(authState: Boolean, modifier: Modifier = Modifier, onClickGoogleButton: () -> Unit = {}) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Login $authState")
+        // Add
         SignInWithGoogleButton(
             onClick = onClickGoogleButton,
         )
@@ -77,8 +80,8 @@ fun LoginContent(
 
 @Composable
 fun SignInWithGoogleButton(
-    text: String = "Sign in with Google",
-    loadingText: String = "Signing in...",
+    text: String = stringResource(Res.string.login_google_button),
+    loadingText: String = stringResource(Res.string.login_loading_text),
     icon: Painter = painterResource(Res.drawable.google_icon), // Replace with your actual Google logo resource
     isLoading: Boolean = false,
     onClick: () -> Unit,
@@ -127,8 +130,8 @@ fun SignInWithGoogleButton(
 // }
 //
 
-//@Preview(showBackground = true)
-//@Composable
-//fun SignInWithGoogleButtonPreview() {
+// @Preview(showBackground = true)
+// @Composable
+// fun SignInWithGoogleButtonPreview() {
 //    SignInWithGoogleButton(onClick = {})
-//}
+// }

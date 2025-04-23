@@ -15,7 +15,7 @@ class MyApplication : Application() {
         initKoin {
             KMAuthInitializer.initWithContext(
                 webClientId = BuildConfig.WEB_ID_CLIENT,
-                kmAuthPlatformContext = KMAuthPlatformContext(this@MyApplication)
+                kmAuthPlatformContext = KMAuthPlatformContext(this@MyApplication),
             )
 
             androidLogger()

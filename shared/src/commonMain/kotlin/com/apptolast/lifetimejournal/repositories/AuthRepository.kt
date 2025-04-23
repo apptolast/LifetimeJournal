@@ -16,7 +16,7 @@ class AuthRepositoryImpl(
     override suspend fun loginWithGoogle() {
         googleAuthManager.signIn { user, error ->
             if (error != null) {
-                println("Error in google Sign In: $error")
+                println("Error in google Sign In: ${error.message}")
             }
             if (user != null) {
                 println("Login Successful user: $user")

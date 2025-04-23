@@ -7,6 +7,7 @@ import com.apptolast.lifetimejournal.features.login.data.LoginState
 import com.apptolast.lifetimejournal.features.login.presentation.LoginScreen
 
 @Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, locale = "es")
 @Composable
 fun LoginContentPreview() {
     MaterialTheme {

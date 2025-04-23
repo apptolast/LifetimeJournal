@@ -1,0 +1,4 @@
+<resources>
+    <string name="login_google_button">Entra con Google</string>
+    <string name="login_loading_text"> "Entrando..."</string>
+</resources>
