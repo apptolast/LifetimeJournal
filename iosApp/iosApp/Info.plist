@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>GIDClientID</key>
-    <string>762663530063-hijj1hhkr796s3sr09m77t6am3f44rnl.apps.googleusercontent.com</string>
+	<key>GIDClientID</key>
+	<string>762663530063-hijj1hhkr796s3sr09m77t6am3f44rnl.apps.googleusercontent.com</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
