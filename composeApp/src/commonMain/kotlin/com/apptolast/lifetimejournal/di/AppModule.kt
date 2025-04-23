@@ -1,25 +1,32 @@
 package com.apptolast.lifetimejournal.di
 
-import com.apptolast.kmptest.BuildConfig
+import com.apptolast.lifetimejournal.BuildConfig
+import com.apptolast.lifetimejournal.features.login.presentation.LoginViewModel
+import com.sunildhiman90.kmauth.core.KMAuthInitializer
 import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-val appModule = module {
+val appModule =
+    module {
 //    single(named("testApiKey")) { BuildConfig.TEST_API_KEY }
 //    factory { Greeting() }
-}
+//    factory { Firebase.auth }
+//    factory { KMAuthGoogle.googleAuthManager }
+    }
 
-val viewModelsModule = module {
-//    viewModelOf(::HomeListViewModel)
-}
+val viewModelsModule =
+    module {
+        viewModelOf(::LoginViewModel)
+    }
 
 // expect val nativeModule: Module
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     appDeclaration()
-    modules(appModule, viewModelsModule)
+    modules(appModule, sharedModule, viewModelsModule)
 
     // Kotzilla
     analytics {
@@ -29,4 +36,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 }
 
 // called by iOS
-fun initKoinIos() = initKoin {}
+fun initKoinIos() = initKoin {
+    KMAuthInitializer.init(
+        webClientId = BuildConfig.WEB_ID_CLIENT,
+    )
+}

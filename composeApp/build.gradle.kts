@@ -1,7 +1,5 @@
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -12,7 +10,6 @@ plugins {
     alias(libs.plugins.ktlint.jlleitschuh)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotzilla)
-    alias(libs.plugins.gradleBuildConfig)
 }
 
 kotlin {
@@ -48,7 +45,14 @@ kotlin {
 
             // SplashScreen
             implementation(libs.core.splashscreen)
+
+            // KMAuth
+            implementation(libs.kmauth.google)
+
+            // Firebase
+//            implementation(project.dependencies.platform(libs.firebase.bom))
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -72,6 +76,12 @@ kotlin {
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
 
+            // KMAuth
+            // Pure KMP module without compose
+            implementation(libs.kmauth.google)
+            // KMP Compose implementation with in built GoogleSignInButton composable
+            implementation(libs.kmauth.google.compose)
+
             implementation(projects.shared)
         }
     }
@@ -79,14 +89,23 @@ kotlin {
 
 android {
     namespace = "com.apptolast.lifetimejournal"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = "com.apptolast.lifetimejournal"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0"
     }
     packaging {
         resources {
@@ -97,6 +116,10 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+        getByName("debug") {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".dev"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -105,12 +128,22 @@ android {
 }
 
 dependencies {
+//    implementation(libs.firebase.common.ktx)
+
     debugImplementation(compose.uiTooling)
     add("kspCommonMainMetadata", libs.koin.ksp.compiler)
     add("kspAndroid", libs.koin.ksp.compiler)
     add("kspIosX64", libs.koin.ksp.compiler)
     add("kspIosArm64", libs.koin.ksp.compiler)
     add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
+}
+
+compose {
+    resources {
+        publicResClass = false
+        packageOfResClass = "com.apptolast.lifetimejournal.resources"
+        generateResClass = auto
+    }
 }
 
 ktlint {
@@ -138,17 +171,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
-}
-
-buildConfig {
-    packageName("com.apptolast.kmptest")
-
-    useJavaOutput()
-    useKotlinOutput()
-
-    val properties = Properties()
-    properties.load(project.rootProject.file("local.properties").reader())
-    val kotzillaApiKey = properties.getProperty("KOTZILLA_API_KEY")
-
-    buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
 }

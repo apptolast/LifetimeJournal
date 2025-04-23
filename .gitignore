@@ -312,3 +312,6 @@ fabric.properties
 # Kotzilla
 /composeApp/kotzilla.json
 /composeApp/src/main/assets/kotzilla.key
+
+# Firebase on iOS
+iosApp/iosApp/GoogleService-Info.plist

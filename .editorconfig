@@ -26,6 +26,9 @@ ktlint_compose_multiple-emitters-check = disabled
 [*.{yml,yaml}]
 indent_size = 2
 
+[**/resources/*.{kt,kts}]
+ktlint_standard_class-naming = disabled
+ktlint_standard_function-naming = disabled
 
 # An individual rule can be enabled or disabled with a rule property.
 # The name of the rule property consists of the ktlint_ prefix followed by the rule set id followed by a _ and the rule id.

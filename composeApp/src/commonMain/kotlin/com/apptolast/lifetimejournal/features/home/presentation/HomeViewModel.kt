@@ -9,7 +9,6 @@ import org.koin.core.component.KoinComponent
 class HomeViewModel :
     ViewModel(),
     KoinComponent {
-
     private val _state = MutableStateFlow<HomeState>(HomeState())
     val state = _state.asStateFlow()
 }

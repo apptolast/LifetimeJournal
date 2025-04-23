@@ -9,7 +9,6 @@ import org.koin.core.component.KoinComponent
 class SettingViewModel :
     ViewModel(),
     KoinComponent {
-
     private val _state = MutableStateFlow<SettingState>(SettingState())
     val state = _state.asStateFlow()
 }
