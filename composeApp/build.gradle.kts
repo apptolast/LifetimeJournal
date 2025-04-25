@@ -1,3 +1,4 @@
+
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -48,9 +49,6 @@ kotlin {
 
             // KMAuth
             implementation(libs.kmauth.google)
-
-            // Firebase
-//            implementation(project.dependencies.platform(libs.firebase.bom))
         }
 
         commonMain.dependencies {
