@@ -1,4 +1,9 @@
 <resources>
     <string name="login_google_button">Entra con Google</string>
     <string name="login_loading_text"> "Entrando..."</string>
+
+    <!-- BottomNav Items-->
+    <string name="bottom_nav_home_label">Inicio</string>
+    <string name="bottom_nav_books_label">Libros</string>
+    <string name="bottom_nav_profile_label">Perfil</string>
 </resources>

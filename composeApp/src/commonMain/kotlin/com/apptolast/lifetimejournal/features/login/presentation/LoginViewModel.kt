@@ -22,7 +22,7 @@ class LoginViewModel :
     init {
         viewModelScope.launch {
             authRepository.authState.collect { authState ->
-                _state.update { it.copy(isLoading = false, isAuthenticated = authState) }
+                _state.update { it.copy(isLoading = false, isAuthenticated = authState != null) }
             }
         }
         loginWithGoogle()

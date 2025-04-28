@@ -28,7 +28,9 @@ fun Navigation() {
         }
 
         composable<HomeDestination> {
-            HomeScreenRoot()
+            HomeScreenRoot {
+                navController.navigate(it)
+            }
         }
 
         composable<SettingDestination> {

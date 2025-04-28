@@ -3,7 +3,7 @@ package com.apptolast.lifetimejournal.core.theme
 import androidx.compose.ui.graphics.Color
 
 // LIGHT
-val GreenPrimaryLight = Color(0xff006e26)
+val GreenPrimaryLight = Color(0xff3083FF)
 val OnGreenLight = Color(0xffffffff)
 val GreenContainerLight = Color(0xff6cff82)
 val OnGreenContainerLight = Color(0xff002106)
@@ -13,7 +13,7 @@ val OnGreenSecondaryLight = OnGreenLight
 val GreenSecondaryContainerLight = Color(0xffd4e8d0)
 val OnGreenSecondaryContainerLight = Color(0xff101f10)
 
-val GreenTertiaryLight = Color(0xff39656b)
+val GreenTertiaryLight = Color(0xff999A9B)
 val OnGreenTertiaryLight = OnGreenLight
 val GreenTertiaryContainerLight = Color(0xffbcebf2)
 val OnGreenTertiaryContainerLight = Color(0xff001f23)
