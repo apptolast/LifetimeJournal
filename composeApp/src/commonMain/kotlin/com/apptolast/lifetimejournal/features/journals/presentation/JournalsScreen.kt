@@ -1,5 +1,6 @@
-package com.apptolast.lifetimejournal.features.home.presentation
+package com.apptolast.lifetimejournal.features.journals.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,9 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,20 +36,24 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.compose.LocalPlatformContext
-import com.apptolast.lifetimejournal.core.navigation.CreateBookDestination
+import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
+import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.domain.Book
 import com.apptolast.lifetimejournal.features.components.BottomNavigationBar
-import com.apptolast.lifetimejournal.features.home.data.HomeState
+import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import com.sunildhiman90.kmauth.core.KMAuthUser
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun HomeScreenRoot(viewModel: HomeViewModel = viewModel { HomeViewModel() }, navigateTo: (Destination) -> Unit = {}) {
+fun JournalsScreenRoot(
+    viewModel: JournalsViewModel = viewModel { JournalsViewModel() },
+    navigateTo: (Destination) -> Unit = {},
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val user by viewModel.user.collectAsStateWithLifecycle()
 
-    HomeScreen(
+    JournalsScreen(
         state = state,
         user = user,
         navigateTo = navigateTo,
@@ -56,19 +61,14 @@ fun HomeScreenRoot(viewModel: HomeViewModel = viewModel { HomeViewModel() }, nav
 }
 
 @Composable
-fun HomeScreen(
-    state: HomeState,
-    user: KMAuthUser?,
-    modifier: Modifier = Modifier,
-    navigateTo: (Destination) -> Unit = {},
-) {
+fun JournalsScreen(state: JournalsState, user: KMAuthUser?, navigateTo: (Destination) -> Unit = {}) {
     Scaffold(
         bottomBar = {
             BottomNavigationBar(navigateTo = navigateTo)
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateTo(CreateBookDestination) },
+                onClick = { navigateTo(CreateJournalDestination) },
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary, // Use contentColor for icon/text color
@@ -82,7 +82,7 @@ fun HomeScreen(
             }
         },
     ) { paddingValues ->
-        HomeContent(
+        JournalsContent(
             user = user,
             modifier = Modifier.padding(paddingValues),
         )
@@ -90,7 +90,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeContent(user: KMAuthUser?, modifier: Modifier = Modifier) {
+fun JournalsContent(user: KMAuthUser?, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize().padding(18.dp)) {
         Header(user = user)
 
@@ -111,12 +111,10 @@ fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
             Text(
                 text = "Bienvenido/a",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Normal,
             )
             Text(
                 text = user?.name ?: "",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineSmall,
             )
         }
 
@@ -148,13 +146,11 @@ fun BookInfo(book: Book, modifier: Modifier = Modifier) {
         Text(
             text = book.title,
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 12.dp),
         )
         Text(
             text = book.description,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Normal,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
         )
@@ -164,22 +160,24 @@ fun BookInfo(book: Book, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
-fun HomeContentPreview(modifier: Modifier = Modifier) {
-    MaterialTheme {
-        val color = MaterialTheme.colorScheme.primary.toArgb()
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(color)
-        }
+fun JournalsContentPreview() {
+    LifetimeJournalTheme {
+        Column(modifier = Modifier.background(color = Color.White).padding(10.dp)) {
+            val color = MaterialTheme.colorScheme.primary.toArgb()
+            val previewHandler = AsyncImagePreviewHandler {
+                ColorImage(color)
+            }
 
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            HomeScreen(
-                state = HomeState().copy(isLoading = false),
-                user = KMAuthUser(id = "").copy(
-                    name = "John Doe",
-                    profilePicUrl =
+            CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+                JournalsScreen(
+                    state = JournalsState().copy(isLoading = false),
+                    user = KMAuthUser(id = "").copy(
+                        name = "John Doe",
+                        profilePicUrl =
                         "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
-                ),
-            )
+                    ),
+                )
+            }
         }
     }
 }

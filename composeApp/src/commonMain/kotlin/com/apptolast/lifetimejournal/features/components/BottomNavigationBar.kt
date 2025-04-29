@@ -24,16 +24,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.apptolast.lifetimejournal.core.navigation.CreateBookDestination
+import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.HomeDestination
 import com.apptolast.lifetimejournal.core.navigation.SettingDestination
+import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.bottom_nav_books_label
 import com.apptolast.lifetimejournal.resources.bottom_nav_home_label
 import com.apptolast.lifetimejournal.resources.bottom_nav_profile_label
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val label: StringResource) {
     object Home : BottomNavItem(
@@ -43,7 +45,7 @@ sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val la
     )
 
     object CreateBook : BottomNavItem(
-        route = CreateBookDestination,
+        route = CreateJournalDestination,
         icon = Icons.Default.CollectionsBookmark,
         label = Res.string.bottom_nav_books_label,
     )
@@ -62,7 +64,7 @@ val items = listOf(
 )
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination) -> Unit) {
+fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination) -> Unit = {}) {
     var itemSelected by remember { mutableStateOf<BottomNavItem>(BottomNavItem.Home) }
     Column(modifier = modifier.fillMaxWidth().wrapContentHeight()) {
         HorizontalDivider(
@@ -103,5 +105,13 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination)
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun BottomNavigationBarPreview() {
+    LifetimeJournalTheme {
+        BottomNavigationBar()
     }
 }

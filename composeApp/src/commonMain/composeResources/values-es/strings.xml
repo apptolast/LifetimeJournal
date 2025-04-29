@@ -2,8 +2,13 @@
     <string name="login_google_button">Entra con Google</string>
     <string name="login_loading_text"> "Entrando..."</string>
 
-    <!-- BottomNav Items-->
+    <!-- BottomNav Items -->
     <string name="bottom_nav_home_label">Inicio</string>
     <string name="bottom_nav_books_label">Libros</string>
     <string name="bottom_nav_profile_label">Perfil</string>
+
+    <!-- Create Journal -->
+    <string name="create_journal_title">Título</string>
+    <string name="create_journal_description">Descripción</string>
+    <string name="create_journal_button">Crear diario</string>
 </resources>

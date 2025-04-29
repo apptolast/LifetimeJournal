@@ -11,8 +11,8 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import com.apptolast.lifetimejournal.features.home.data.HomeState
-import com.apptolast.lifetimejournal.features.home.presentation.HomeScreen
+import com.apptolast.lifetimejournal.features.journals.data.JournalsState
+import com.apptolast.lifetimejournal.features.journals.presentation.JournalsScreen
 import com.sunildhiman90.kmauth.core.KMAuthUser
 
 @OptIn(ExperimentalCoilApi::class)
@@ -26,8 +26,8 @@ fun HomeContentPreview(modifier: Modifier = Modifier) {
         }
 
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            HomeScreen(
-                state = HomeState().copy(isLoading = false),
+            JournalsScreen(
+                state = JournalsState().copy(isLoading = false),
                 user = KMAuthUser(id = "").copy(
                     name = "John Doe",
                     profilePicUrl =
