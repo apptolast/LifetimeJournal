@@ -37,7 +37,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.androidx.material.icons.extended)
+//            implementation(libs.androidx.material.icons.extended)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
 
             // Koin
@@ -55,6 +55,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -70,6 +71,17 @@ kotlin {
             api(libs.koin.annotations)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+
+            // Coil
+//            implementation(libs.coil.compose)
+// //            implementation(libs.coil.network.okhttp)
+//            implementation(libs.coil.svg)
+
+//            implementation(libs.ktor.core)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.mp)
+            implementation(libs.coil.network.ktor)
 
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)

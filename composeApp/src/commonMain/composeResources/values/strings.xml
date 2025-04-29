@@ -4,4 +4,14 @@
     <string name="login_google_button">Sign in with Google</string>
     <string name="login_loading_text"> "Signing in..."</string>
 
+    <!-- BottomNav Items -->
+    <string name="bottom_nav_home_label">Home</string>
+    <string name="bottom_nav_books_label">Books</string>
+    <string name="bottom_nav_profile_label">Profile</string>
+
+    <!-- Create Journal -->
+    <string name="create_journal_title">Title</string>
+    <string name="create_journal_description">Description</string>
+    <string name="create_journal_button">Create Journal</string>
+
 </resources>

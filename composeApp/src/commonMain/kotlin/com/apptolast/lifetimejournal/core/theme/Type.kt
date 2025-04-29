@@ -1,32 +1,36 @@
 package com.apptolast.lifetimejournal.core.theme
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.apptolast.familyfilmapp.ui.theme.FamilyFilmAppTheme
+import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.resources.Res
-import com.apptolast.lifetimejournal.resources.inter_bold
-import com.apptolast.lifetimejournal.resources.inter_medium
-import com.apptolast.lifetimejournal.resources.inter_regular
+import com.apptolast.lifetimejournal.resources.poppins_bold
+import com.apptolast.lifetimejournal.resources.poppins_medium
+import com.apptolast.lifetimejournal.resources.poppins_regular
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun InterFontFamily() = FontFamily(
-    Font(Res.font.inter_regular, weight = FontWeight.Light),
-    Font(Res.font.inter_bold, weight = FontWeight.Normal),
-    Font(Res.font.inter_medium, weight = FontWeight.Medium),
+fun PoppinsFontFamily() = FontFamily(
+    Font(Res.font.poppins_regular, weight = FontWeight.Light),
+    Font(Res.font.poppins_bold, weight = FontWeight.Normal),
+    Font(Res.font.poppins_medium, weight = FontWeight.Medium),
 )
 
 @Composable
-fun InterTypography() = Typography().run {
-    val fontFamily = InterFontFamily()
+fun PoppinsTypography() = Typography().run {
+    val fontFamily = PoppinsFontFamily()
     this.copy(
         displayLarge = displayLarge.copy(fontFamily = fontFamily),
         displayMedium = displayMedium.copy(fontFamily = fontFamily),
@@ -49,8 +53,8 @@ fun InterTypography() = Typography().run {
 @Preview()
 @Composable
 private fun TypographyPreview() {
-    FamilyFilmAppTheme {
-        Column {
+    LifetimeJournalTheme {
+        Column(modifier = Modifier.background(color = Color.White).padding(4.dp)) {
             Text(text = "displayLarge", style = MaterialTheme.typography.displayLarge)
             Text(text = "displayLarge", style = MaterialTheme.typography.displayLarge)
             Text(text = "displayMedium", style = MaterialTheme.typography.displayMedium)

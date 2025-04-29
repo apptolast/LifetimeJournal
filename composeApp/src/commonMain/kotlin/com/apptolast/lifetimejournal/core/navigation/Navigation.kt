@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.apptolast.lifetimejournal.features.createbook.presentation.CreateBookScreenRoot
-import com.apptolast.lifetimejournal.features.home.presentation.HomeScreenRoot
+import com.apptolast.lifetimejournal.features.createjournal.presentation.CreateJournalScreenRoot
+import com.apptolast.lifetimejournal.features.journals.presentation.JournalsScreenRoot
 import com.apptolast.lifetimejournal.features.login.presentation.LoginScreenRoot
 import com.apptolast.lifetimejournal.features.settings.presentation.SettingScreenRoot
 
@@ -28,15 +28,19 @@ fun Navigation() {
         }
 
         composable<HomeDestination> {
-            HomeScreenRoot()
+            JournalsScreenRoot {
+                navController.navigate(it)
+            }
         }
 
         composable<SettingDestination> {
             SettingScreenRoot()
         }
 
-        composable<CreateBookDestination> {
-            CreateBookScreenRoot()
+        composable<CreateJournalDestination> {
+            CreateJournalScreenRoot(
+                onBack = { navController.popBackStack() },
+            )
         }
     }
 }

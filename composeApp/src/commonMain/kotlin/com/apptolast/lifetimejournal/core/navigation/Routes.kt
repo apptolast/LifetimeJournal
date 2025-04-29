@@ -11,7 +11,7 @@ object LoginDestination : Destination
 object SettingDestination : Destination
 
 @Serializable
-object CreateBookDestination : Destination
+object CreateJournalDestination : Destination
 
 @Serializable
 object HomeDestination : Destination

@@ -17,6 +17,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 class MainActivity : ComponentActivity() {
+
     val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
             val authState by viewModel.authState.collectAsStateWithLifecycle()
             splashScreen.setKeepOnScreenCondition {
                 println("setKeepOnScreenCondition - checking state: $authState")
-                authState
+                authState != null
             }
 
             EnableTransparentStatusBar()

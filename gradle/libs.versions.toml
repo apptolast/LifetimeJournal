@@ -14,9 +14,12 @@ androidx-material = "1.12.0"
 androidx-navigation = "2.9.0-alpha16"
 androidx-test-junit = "1.2.1"
 buildConfig = "5.6.2"
+coilCompose = "3.1.0"
+coilComposeX = "3.0.0-alpha08"
+
 compose-multiplatform = "1.7.3"
 coreSplashscreen = "1.0.1"
-firebaseBom = "33.12.0"
+firebaseBom = "33.13.0"
 #google-services = "4.4.2"
 javapoet = "1.13.0"
 junit = "4.13.2"
@@ -48,13 +51,28 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
+
+#coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
+#coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilCompose" }
+#coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coilCompose" }
+
+
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coilCompose" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilComposeX" }
+coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coilCompose" }
+
+
+
+
+
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
-kmauth-google = { group="io.github.sunildhiman90", name = "kmauth-google", version.ref = "kmauthGoogle" }
-kmauth-google-compose = { group="io.github.sunildhiman90", name = "kmauth-google-compose", version.ref = "kmauthGoogle" }
+kmauth-google = { group = "io.github.sunildhiman90", name = "kmauth-google", version.ref = "kmauthGoogle" }
+kmauth-google-compose = { group = "io.github.sunildhiman90", name = "kmauth-google-compose", version.ref = "kmauthGoogle" }
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
