@@ -160,7 +160,7 @@ fun BookInfo(book: Book, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
-fun JournalsContentPreview() {
+private fun JournalsContentPreview() {
     LifetimeJournalTheme {
         Column(modifier = Modifier.background(color = Color.White).padding(10.dp)) {
             val color = MaterialTheme.colorScheme.primary.toArgb()

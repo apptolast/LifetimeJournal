@@ -11,4 +11,7 @@
     <string name="create_journal_title">Título</string>
     <string name="create_journal_description">Descripción</string>
     <string name="create_journal_button">Crear diario</string>
+
+    <!-- Create Journal -->
+    <string name="entries_add_entry_button">Añadir Entrada</string>
 </resources>

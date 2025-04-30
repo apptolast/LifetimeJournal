@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apptolast.lifetimejournal.features.createjournal.presentation.CreateJournalScreenRoot
+import com.apptolast.lifetimejournal.features.entries.presentation.EntriesScreenRoot
 import com.apptolast.lifetimejournal.features.journals.presentation.JournalsScreenRoot
 import com.apptolast.lifetimejournal.features.login.presentation.LoginScreenRoot
 import com.apptolast.lifetimejournal.features.settings.presentation.SettingScreenRoot
@@ -39,6 +40,18 @@ fun Navigation() {
 
         composable<CreateJournalDestination> {
             CreateJournalScreenRoot(
+                navigateTo = { destination ->
+                    navController.navigate(destination)
+                },
+                onBack = { navController.popBackStack() },
+            )
+        }
+
+        composable<EntriesDestination> {
+            EntriesScreenRoot(
+                navigateTo = { destination ->
+                    navController.navigate(destination)
+                },
                 onBack = { navController.popBackStack() },
             )
         }

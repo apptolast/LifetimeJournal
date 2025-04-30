@@ -14,6 +14,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.apptolast.lifetimejournal.core.navigation.Destination
+import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.createjournal.data.CreateJournalState
-import com.apptolast.lifetimejournal.features.createjournal.data.UiEvent
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.create_journal_button
 import com.apptolast.lifetimejournal.resources.create_journal_description
@@ -38,9 +40,25 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun CreateJournalScreenRoot(
     viewModel: CreateJournalViewModel = viewModel { CreateJournalViewModel() },
+    navigateTo: (Destination) -> Unit = {},
     onBack: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    // Collect events using LaunchedEffect
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                UiEvent.OnCreateJournal -> {
+                    navigateTo(EntriesDestination)
+                }
+
+                else -> {
+                    /* no-op */
+                }
+            }
+        }
+    }
 
     CreateJournalScreen(
         state = state,
@@ -131,7 +149,7 @@ fun CreateJournalContent(
         }
 
         Button(
-            onClick = {},
+            onClick = { onEvent(UiEvent.OnCreateJournal) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(
@@ -150,7 +168,7 @@ fun CreateJournalContent(
 
 @Preview
 @Composable
-fun CreateJournalContentPreview(modifier: Modifier = Modifier) {
+private fun CreateJournalContentPreview(modifier: Modifier = Modifier) {
     LifetimeJournalTheme {
         Column(modifier = Modifier.background(color = Color.White).padding(10.dp)) {
             CreateJournalScreen(

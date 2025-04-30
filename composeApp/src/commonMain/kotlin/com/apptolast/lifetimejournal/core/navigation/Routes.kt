@@ -16,6 +16,9 @@ object CreateJournalDestination : Destination
 @Serializable
 object HomeDestination : Destination
 
+@Serializable
+object EntriesDestination : Destination
+
 // @Serializable
 // data class DetailDestination {
 //    val movie: Movie
