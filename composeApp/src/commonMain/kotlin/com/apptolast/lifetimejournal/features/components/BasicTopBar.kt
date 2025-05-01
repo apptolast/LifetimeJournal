@@ -1,29 +1,41 @@
 package com.apptolast.lifetimejournal.features.components
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Message
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasicTopBar(title: String, onBack: (() -> Unit)? = null, actions: @Composable RowScope.() -> Unit = {}) {
-    CenterAlignedTopAppBar(
+fun BasicTopBar(
+    title: String,
+    centerTitle: Boolean = true,
+    containerColor: Color = Color.Unspecified,
+    contentColor: Color = Color.Unspecified,
+    onBack: (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    TopAppBar(
         title = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = if (centerTitle) TextAlign.Center else TextAlign.Start,
             )
         },
         navigationIcon = {
@@ -37,9 +49,12 @@ fun BasicTopBar(title: String, onBack: (() -> Unit)? = null, actions: @Composabl
             }
         },
         actions = actions,
-//        colors = TopAppBarDefaults.topAppBarColors(
-//            containerColor = TopBarDefaults.topAppBarContainerColor,
-//        ),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = containerColor,
+            titleContentColor = contentColor,
+            navigationIconContentColor = contentColor,
+            actionIconContentColor = contentColor,
+        ),
     )
 }
 

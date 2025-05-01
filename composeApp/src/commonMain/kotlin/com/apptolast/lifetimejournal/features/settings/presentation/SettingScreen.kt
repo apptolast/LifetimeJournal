@@ -39,7 +39,7 @@ fun SettingContent(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun SettingContentPreview(modifier: Modifier = Modifier) {
+private fun SettingContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         SettingScreen(
             state =

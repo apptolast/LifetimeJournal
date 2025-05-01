@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -73,15 +72,13 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
 
             // Coil
-//            implementation(libs.coil.compose)
-// //            implementation(libs.coil.network.okhttp)
-//            implementation(libs.coil.svg)
-
-//            implementation(libs.ktor.core)
             implementation(libs.coil.compose.core)
             implementation(libs.coil.compose)
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
+
+            // Calendar
+            implementation("com.kizitonwose.calendar:compose-multiplatform:2.6.2")
 
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)

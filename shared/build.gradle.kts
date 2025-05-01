@@ -32,8 +32,8 @@ kotlin {
 //            implementation(libs.firebase.gitlive.auth)
 
             implementation(libs.androidx.coroutines.core)
-
             implementation(libs.kmauth.google)
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
 
             // Koin
             implementation(project.dependencies.platform(libs.koin.bom))

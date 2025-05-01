@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.poppins_bold
-import com.apptolast.lifetimejournal.resources.poppins_medium
 import com.apptolast.lifetimejournal.resources.poppins_regular
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.Font
@@ -25,7 +24,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun PoppinsFontFamily() = FontFamily(
     Font(Res.font.poppins_regular, weight = FontWeight.Light),
     Font(Res.font.poppins_bold, weight = FontWeight.Normal),
-    Font(Res.font.poppins_medium, weight = FontWeight.Medium),
+//    Font(Res.font.poppins_medium, weight = FontWeight.Medium),
 )
 
 @Composable
