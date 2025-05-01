@@ -188,7 +188,6 @@ fun EntriesContent(
         val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
         val title = "${visibleWeek.days.first().date.month.name} ${visibleWeek.days.first().date.year}"
         onEvent(UiEvent.CalendarTitle(title))
-        println("Visible Week page title: $title")
 
         WeekCalendar(
             modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
@@ -331,16 +330,19 @@ private fun EntriesContentPreview() {
                 selectedDate = LocalDate(2023, 1, 1),
                 entries = mutableListOf(
                     JournalEntry(
+                        id = "id1",
                         title = "title 1",
                         description = "des 1",
                         date = LocalDate(2023, 1, 1),
                     ),
                     JournalEntry(
+                        id = "id2",
                         title = "title 2",
                         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                         date = LocalDate(2023, 6, 12),
                     ),
                     JournalEntry(
+                        id = "id3",
                         title = "title 3",
                         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                         date = LocalDate(2023, 6, 12),

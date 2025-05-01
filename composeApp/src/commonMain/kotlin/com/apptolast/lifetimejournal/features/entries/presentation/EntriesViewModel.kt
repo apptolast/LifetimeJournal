@@ -23,6 +23,7 @@ class EntriesViewModel :
                     currentState.copy(
                         entries = (
                             currentState.entries + JournalEntry(
+                                id = "",
                                 title = event.title,
                                 description = event.description,
                                 date = event.date,

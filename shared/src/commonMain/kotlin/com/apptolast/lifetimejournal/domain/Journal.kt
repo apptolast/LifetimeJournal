@@ -1,10 +1,9 @@
 package com.apptolast.lifetimejournal.domain
 
-import kotlinx.datetime.LocalDate
-
-data class JournalEntry(
+data class Journal(
     val id: String,
     val title: String,
     val description: String,
-    val date: LocalDate,
+    val cover: String,
+    val entries: List<JournalEntry>,
 )

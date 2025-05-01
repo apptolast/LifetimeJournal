@@ -40,9 +40,7 @@ fun Navigation() {
 
         composable<CreateJournalDestination> {
             CreateJournalScreenRoot(
-                navigateTo = { destination ->
-                    navController.navigate(destination)
-                },
+                navigateTo = navController::navigate,
                 onBack = { navController.popBackStack() },
             )
         }

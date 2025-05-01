@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +40,7 @@ import coil3.compose.LocalPlatformContext
 import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
-import com.apptolast.lifetimejournal.domain.Book
+import com.apptolast.lifetimejournal.domain.Journal
 import com.apptolast.lifetimejournal.features.components.BottomNavigationBar
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import com.sunildhiman90.kmauth.core.KMAuthUser
@@ -52,6 +53,12 @@ fun JournalsScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val user by viewModel.user.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.journals) {
+        if (state.journals.isEmpty()) {
+            navigateTo(CreateJournalDestination)
+        }
+    }
 
     JournalsScreen(
         state = state,
@@ -95,7 +102,7 @@ fun JournalsContent(user: KMAuthUser?, modifier: Modifier = Modifier) {
         Header(user = user)
 
         // Books list, possible horizontal scroll to change between them @krastev
-        BookInfo(book = bookMock, modifier = Modifier.weight(1f))
+        BookInfo(journal = journalMock, modifier = Modifier.weight(1f))
     }
 }
 
@@ -128,14 +135,14 @@ fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BookInfo(book: Book, modifier: Modifier = Modifier) {
+fun BookInfo(journal: Journal, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         AsyncImage(
-            model = book.cover,
+            model = journal.cover,
             contentDescription = null,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -144,12 +151,12 @@ fun BookInfo(book: Book, modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop,
         )
         Text(
-            text = book.title,
+            text = journal.title,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(vertical = 12.dp),
         )
         Text(
-            text = book.description,
+            text = journal.description,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
@@ -182,7 +189,8 @@ private fun JournalsContentPreview() {
     }
 }
 
-val bookMock = Book(
+val journalMock = Journal(
+    id = "",
     title = "The Alchemist",
     description = "A novel by Brazilian author Paulo Coelho is a classic of modern literature.",
     cover = "https://fastly.picsum.photos/id/237/200/280.jpg?hmac=w-Mx-kWY0n3hE8oWamWigvnDWnsyAUzM6haQAlzNqZE",

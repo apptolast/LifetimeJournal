@@ -24,9 +24,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import coil3.compose.AsyncImage
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
+import com.apptolast.lifetimejournal.core.navigation.HomeDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.createjournal.data.CreateJournalState
@@ -40,7 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun CreateJournalScreenRoot(
     viewModel: CreateJournalViewModel = viewModel { CreateJournalViewModel() },
-    navigateTo: (Destination) -> Unit = {},
+    navigateTo: (Destination, NavOptions) -> Unit = { _, _ -> },
     onBack: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -50,7 +53,14 @@ fun CreateJournalScreenRoot(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 UiEvent.OnCreateJournal -> {
-                    navigateTo(EntriesDestination)
+                    navigateTo(
+                        EntriesDestination,
+                        navOptions {
+                            popUpTo(HomeDestination) {
+                                inclusive = false
+                            }
+                        },
+                    )
                 }
 
                 else -> {
