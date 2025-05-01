@@ -186,4 +186,5 @@ val bookMock = Book(
     title = "The Alchemist",
     description = "A novel by Brazilian author Paulo Coelho is a classic of modern literature.",
     cover = "https://fastly.picsum.photos/id/237/200/280.jpg?hmac=w-Mx-kWY0n3hE8oWamWigvnDWnsyAUzM6haQAlzNqZE",
+    entries = mutableListOf(),
 )

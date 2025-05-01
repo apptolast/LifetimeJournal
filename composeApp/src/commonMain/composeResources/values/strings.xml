@@ -14,6 +14,9 @@
     <string name="create_journal_description">Description</string>
     <string name="create_journal_button">Create Journal</string>
 
-    <!-- Create Journal -->
-    <string name="entries_add_entry_button">Add Entry</string>
+    <!-- Entries Journal -->
+    <string name="entries_add_entry_fab_button">Add Entry</string>
+    <string name="entries_add_entry_title_text_field">Title</string>
+    <string name="entries_add_entry_description_text_field">Description</string>
+    <string name="entries_add_entry_create_entry_button">Create Entry</string>
 </resources>

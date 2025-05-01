@@ -23,8 +23,8 @@ class EntriesViewModel :
                     currentState.copy(
                         entries = (
                             currentState.entries + JournalEntry(
-                                title = "title",
-                                description = "description",
+                                title = event.title,
+                                description = event.description,
                                 date = event.date,
                             )
                             ) as MutableList<JournalEntry>,
@@ -47,7 +47,7 @@ class EntriesViewModel :
 // UI Events
 // /////////////////////////////////////////////////////////////////////////
 sealed interface UiEvent {
-    data class AddEntry(val date: LocalDate) : UiEvent
+    data class AddEntry(val title: String, val description: String, val date: LocalDate) : UiEvent
     data class SelectDate(val date: LocalDate) : UiEvent
     data class CalendarTitle(val value: String) : UiEvent
 }
