@@ -29,7 +29,7 @@ import androidx.navigation.navOptions
 import coil3.compose.AsyncImage
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
-import com.apptolast.lifetimejournal.core.navigation.HomeDestination
+import com.apptolast.lifetimejournal.core.navigation.JournalDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.createjournal.data.CreateJournalState
@@ -52,11 +52,11 @@ fun CreateJournalScreenRoot(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                UiEvent.OnCreateJournal -> {
+                is UiEvent.NavigateToEntriesScreen -> {
                     navigateTo(
-                        EntriesDestination,
+                        EntriesDestination(event.journal.id),
                         navOptions {
-                            popUpTo(HomeDestination) {
+                            popUpTo(JournalDestination) {
                                 inclusive = false
                             }
                         },

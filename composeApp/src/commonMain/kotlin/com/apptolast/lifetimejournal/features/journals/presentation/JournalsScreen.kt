@@ -1,13 +1,18 @@
 package com.apptolast.lifetimejournal.features.journals.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,7 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -39,8 +44,9 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.compose.LocalPlatformContext
 import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
+import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
-import com.apptolast.lifetimejournal.domain.Journal
+import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.features.components.BottomNavigationBar
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import com.sunildhiman90.kmauth.core.KMAuthUser
@@ -53,22 +59,23 @@ fun JournalsScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val user by viewModel.user.collectAsStateWithLifecycle()
-
-    LaunchedEffect(state.journals) {
-        if (state.journals.isEmpty()) {
-            navigateTo(CreateJournalDestination)
-        }
-    }
+    val journals by viewModel.journals.collectAsStateWithLifecycle()
 
     JournalsScreen(
         state = state,
         user = user,
+        journals = journals,
         navigateTo = navigateTo,
     )
 }
 
 @Composable
-fun JournalsScreen(state: JournalsState, user: KMAuthUser?, navigateTo: (Destination) -> Unit = {}) {
+fun JournalsScreen(
+    state: JournalsState,
+    user: KMAuthUser?,
+    journals: List<Journal>,
+    navigateTo: (Destination) -> Unit = {},
+) {
     Scaffold(
         bottomBar = {
             BottomNavigationBar(navigateTo = navigateTo)
@@ -91,18 +98,31 @@ fun JournalsScreen(state: JournalsState, user: KMAuthUser?, navigateTo: (Destina
     ) { paddingValues ->
         JournalsContent(
             user = user,
+            journals = journals,
             modifier = Modifier.padding(paddingValues),
+            onJournalClick = { journal ->
+                navigateTo(EntriesDestination(journal.id))
+            },
         )
     }
 }
 
 @Composable
-fun JournalsContent(user: KMAuthUser?, modifier: Modifier = Modifier) {
+fun JournalsContent(
+    user: KMAuthUser?,
+    journals: List<Journal>,
+    modifier: Modifier = Modifier,
+    onJournalClick: (Journal) -> Unit = {},
+) {
     Column(modifier = modifier.fillMaxSize().padding(18.dp)) {
         Header(user = user)
 
         // Books list, possible horizontal scroll to change between them @krastev
-        BookInfo(journal = journalMock, modifier = Modifier.weight(1f))
+        BookInfo(
+            journals = journals,
+            modifier = Modifier.weight(1f),
+            onJournalClick = onJournalClick,
+        )
     }
 }
 
@@ -111,6 +131,7 @@ fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
     val context = LocalPlatformContext.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier.weight(1f),
@@ -135,32 +156,52 @@ fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BookInfo(journal: Journal, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+fun BookInfo(
+    journals: List<Journal>,
+    modifier: Modifier = Modifier,
+    onJournalClick: (Journal) -> Unit = {},
+) {
+    LazyRow(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        contentPadding = PaddingValues(8.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        AsyncImage(
-            model = journal.cover,
-            contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .size(width = 200.dp, height = 280.dp)
-                .clip(shape = RoundedCornerShape(MaterialTheme.shapes.medium.topEnd)),
-            contentScale = ContentScale.Crop,
-        )
-        Text(
-            text = journal.title,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(vertical = 12.dp),
-        )
-        Text(
-            text = journal.description,
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
-        )
+
+        items(journals) { journal ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .width(250.dp)
+                    .clickable { onJournalClick(journal) },
+            ) {
+                AsyncImage(
+                    model = journal.cover,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .size(width = 200.dp, height = 280.dp)
+                        .clip(shape = RoundedCornerShape(MaterialTheme.shapes.medium.topEnd)),
+                    contentScale = ContentScale.Crop,
+                )
+                Text(
+                    text = journal.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                )
+                Text(
+                    text = journal.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                    minLines = 5,
+                    maxLines = 5,
+                )
+            }
+        }
     }
 }
 
@@ -181,8 +222,9 @@ private fun JournalsContentPreview() {
                     user = KMAuthUser(id = "").copy(
                         name = "John Doe",
                         profilePicUrl =
-                        "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
+                            "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
                     ),
+                    journals = listOf(journalMock, journalMock),
                 )
             }
         }
@@ -190,7 +232,7 @@ private fun JournalsContentPreview() {
 }
 
 val journalMock = Journal(
-    id = "",
+    id = 0,
     title = "The Alchemist",
     description = "A novel by Brazilian author Paulo Coelho is a classic of modern literature.",
     cover = "https://fastly.picsum.photos/id/237/200/280.jpg?hmac=w-Mx-kWY0n3hE8oWamWigvnDWnsyAUzM6haQAlzNqZE",

@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -6,11 +5,17 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.gradleBuildConfig)
-//    alias(libs.plugins.googleServices)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
+//    sourceSets.commonMain {
+//        kotlin.srcDir("build/generated/ksp/metadata")
+//    }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -31,6 +36,12 @@ kotlin {
 //            implementation(libs.firebase.gitlive.common)
 //            implementation(libs.firebase.gitlive.auth)
 
+            // Room
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
+
+            implementation(libs.kotlinx.serialization.json)
+
             implementation(libs.androidx.coroutines.core)
             implementation(libs.kmauth.google)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
@@ -38,6 +49,8 @@ kotlin {
             // Koin
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
+
+
         }
     }
 }
@@ -52,6 +65,27 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+dependencies {
+    ksp(libs.koin.ksp.compiler)
+    ksp(libs.room.compiler)
+
+    // KSP support for Room Compiler
+//    add("kspCommonMainMetadata", libs.room.compiler)
+//    add("kspAndroid", libs.room.compiler)
+//    add("kspIosX64", libs.room.compiler)
+//    add("kspIosArm64", libs.room.compiler)
+//    add("kspIosSimulatorArm64", libs.room.compiler)
+//    add("kspJvm", libs.room.compiler)
+
+//    afterEvaluate {
+//        add("kspIosX64", libs.room.compiler)
+//        add("kspIosArm64", libs.room.compiler)
+//        add("kspIosSimulatorArm64", libs.room.compiler)
+//        add("kspJvm", libs.room.compiler)
+//    }
+
 }
 
 buildConfig {
@@ -71,3 +105,16 @@ buildConfig {
     buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
     buildConfigField("WEB_ID_CLIENT", webClientId)
 }
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+//ksp {
+//    arg("room.schemaLocation", "${projectDir}/schemas")
+//}
+
+//tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+//    if (name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}

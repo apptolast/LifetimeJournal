@@ -53,7 +53,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
-import com.apptolast.lifetimejournal.domain.JournalEntry
+import com.apptolast.lifetimejournal.data.datamodel.Journal
+import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
 import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.entries.data.EntriesState
 import com.apptolast.lifetimejournal.features.entries.presentation.components.AddEntryBottomSheetContent
@@ -73,11 +74,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EntriesScreenRoot(
+    journalId: Long?,
     viewModel: EntriesViewModel = viewModel { EntriesViewModel() },
     navigateTo: (Destination) -> Unit = {},
     onBack: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(true) {
+        viewModel.init(journalId)
+    }
 
     EntriesScreen(
         state = state,
@@ -137,7 +143,7 @@ fun EntriesScreen(
         modifier = modifier,
     ) { paddingValues ->
         EntriesContent(
-            entries = state.entries,
+            entries = state.journal?.entries ?: emptyList(),
             selectedDate = state.selectedDate,
             modifier = Modifier.padding(paddingValues),
             onEvent = onEvent,
@@ -186,7 +192,8 @@ fun EntriesContent(
         )
 
         val visibleWeek = rememberFirstVisibleWeekAfterScroll(state)
-        val title = "${visibleWeek.days.first().date.month.name} ${visibleWeek.days.first().date.year}"
+        val title =
+            "${visibleWeek.days.first().date.month.name} ${visibleWeek.days.first().date.year}"
         onEvent(UiEvent.CalendarTitle(title))
 
         WeekCalendar(
@@ -328,26 +335,31 @@ private fun EntriesContentPreview() {
                 isLoading = false,
                 calendarTitle = "January 2023",
                 selectedDate = LocalDate(2023, 1, 1),
-                entries = mutableListOf(
-                    JournalEntry(
-                        id = "id1",
-                        title = "title 1",
-                        description = "des 1",
-                        date = LocalDate(2023, 1, 1),
+                journal = Journal(
+                    title = "title",
+                    description = "description",
+                    cover = "",
+                    entries = mutableListOf(
+                        JournalEntry(
+                            id = 0,
+                            title = "title 1",
+                            description = "des 1",
+                            date = LocalDate(2023, 1, 1),
+                        ),
+                        JournalEntry(
+                            id = 0,
+                            title = "title 2",
+                            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            date = LocalDate(2023, 6, 12),
+                        ),
+                        JournalEntry(
+                            id = 0,
+                            title = "title 3",
+                            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            date = LocalDate(2023, 6, 12),
+                        ),
                     ),
-                    JournalEntry(
-                        id = "id2",
-                        title = "title 2",
-                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        date = LocalDate(2023, 6, 12),
-                    ),
-                    JournalEntry(
-                        id = "id3",
-                        title = "title 3",
-                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                        date = LocalDate(2023, 6, 12),
-                    ),
-                ),
+                )
             ),
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         )

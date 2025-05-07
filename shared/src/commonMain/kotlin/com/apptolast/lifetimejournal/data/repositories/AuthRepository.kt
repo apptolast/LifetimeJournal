@@ -1,4 +1,4 @@
-package com.apptolast.lifetimejournal.repositories
+package com.apptolast.lifetimejournal.data.repositories
 
 import com.sunildhiman90.kmauth.core.KMAuthUser
 import com.sunildhiman90.kmauth.google.GoogleAuthManager

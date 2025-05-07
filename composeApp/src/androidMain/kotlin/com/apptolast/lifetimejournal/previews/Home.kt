@@ -13,6 +13,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import com.apptolast.lifetimejournal.features.journals.presentation.JournalsScreen
+import com.apptolast.lifetimejournal.features.journals.presentation.journalMock
 import com.sunildhiman90.kmauth.core.KMAuthUser
 
 @OptIn(ExperimentalCoilApi::class)
@@ -22,7 +23,7 @@ import com.sunildhiman90.kmauth.core.KMAuthUser
 fun HomeContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Red.toArgb())
+            ColorImage(Color.Blue.toArgb())
         }
 
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
@@ -31,8 +32,9 @@ fun HomeContentPreview(modifier: Modifier = Modifier) {
                 user = KMAuthUser(id = "").copy(
                     name = "John Doe",
                     profilePicUrl =
-                    "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
+                        "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
                 ),
+                journals = listOf(journalMock, journalMock),
             )
         }
     }

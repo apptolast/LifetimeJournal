@@ -11,13 +11,13 @@ androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-lifecycle-compose = "2.8.7"
 androidx-material = "1.12.0"
-androidx-navigation = "2.9.0-alpha17"
+androidx-navigation = "2.9.0-beta01"
+androidx-room = "2.7.1"
 androidx-test-junit = "1.2.1"
 buildConfig = "5.6.3"
 coilCompose = "3.1.0"
 coilComposeX = "3.0.0-alpha08"
-
-compose-multiplatform = "1.7.3"
+compose-multiplatform = "1.8.0"
 coreSplashscreen = "1.0.1"
 firebaseBom = "33.13.0"
 #google-services = "4.4.2"
@@ -31,11 +31,14 @@ kotlin = "2.1.20"
 kotlinxCoroutinesCore = "1.10.2"
 kotzilla = "1.0.1"
 ktlintJlleitschuh = "12.2.0"
-ksp = "2.1.20-2.0.0"
-ktor = "3.1.2"
+#ksp = "2.1.20-1.0.32"
+ksp = "2.1.20-2.0.1"
+ktor = "3.1.3"
 ktor-server-tests-version = "2.3.13"
+kotlinxSerialization = "1.8.1"
 logback = "1.5.18"
 materialIconsExtended = "1.7.8"
+sqlite = "2.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
@@ -51,24 +54,11 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
-
-#coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
-#coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilCompose" }
-#coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coilCompose" }
-
-
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coilCompose" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilComposeX" }
 coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coilCompose" }
-
-
-
-
-
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
-
-javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 kmauth-google = { group = "io.github.sunildhiman90", name = "kmauth-google", version.ref = "kmauthGoogle" }
@@ -93,23 +83,30 @@ koin-test = { group = "io.insert-koin", name = "koin-test" }
 kotzilla-plugin = { group = "io.kotzilla", name = "kotzilla-plugin", version.ref = "kotzilla" }
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk", version.ref = "kotzilla" }
 
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor-server-tests-version" }
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+
+# Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ktlint-jlleitschuh = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintJlleitschuh" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
-gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "androidx-room" }
 #googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
-

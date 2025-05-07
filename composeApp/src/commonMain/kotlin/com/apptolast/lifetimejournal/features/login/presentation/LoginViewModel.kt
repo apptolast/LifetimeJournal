@@ -3,7 +3,7 @@ package com.apptolast.lifetimejournal.features.login.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apptolast.lifetimejournal.features.login.data.LoginState
-import com.apptolast.lifetimejournal.repositories.AuthRepository
+import com.apptolast.lifetimejournal.data.repositories.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
