@@ -12,10 +12,6 @@ plugins {
 }
 
 kotlin {
-//    sourceSets.commonMain {
-//        kotlin.srcDir("build/generated/ksp/metadata")
-//    }
-
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -70,22 +66,6 @@ android {
 dependencies {
     ksp(libs.koin.ksp.compiler)
     ksp(libs.room.compiler)
-
-    // KSP support for Room Compiler
-//    add("kspCommonMainMetadata", libs.room.compiler)
-//    add("kspAndroid", libs.room.compiler)
-//    add("kspIosX64", libs.room.compiler)
-//    add("kspIosArm64", libs.room.compiler)
-//    add("kspIosSimulatorArm64", libs.room.compiler)
-//    add("kspJvm", libs.room.compiler)
-
-//    afterEvaluate {
-//        add("kspIosX64", libs.room.compiler)
-//        add("kspIosArm64", libs.room.compiler)
-//        add("kspIosSimulatorArm64", libs.room.compiler)
-//        add("kspJvm", libs.room.compiler)
-//    }
-
 }
 
 buildConfig {
@@ -109,12 +89,3 @@ buildConfig {
 room {
     schemaDirectory("$projectDir/schemas")
 }
-//ksp {
-//    arg("room.schemaLocation", "${projectDir}/schemas")
-//}
-
-//tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}

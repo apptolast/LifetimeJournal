@@ -25,28 +25,14 @@ val sharedModule = module {
 
 expect val platformModule: Module
 
-//val provideDatabaseModule = module {
-//    single { getRoomDatabase(get()) }
-////    single { ::getRoomDatabase }
-//    single { getJournalDao(get()) }
-////    single { ::getJournalDao }
-//    single { getJournalEntryDao(get()) }
-////    single { ::getJournalEntryDao }
-//}
-//
-///**
-// * Módulo para la inyección de dependencias de la base de datos.
-// */
+/**
+ * Módulo para la inyección de dependencias de la base de datos.
+ */
 val databaseModule = module {
-
-    // Proporciona DAOs
-//    single { get<AppDatabase>().journalDao() }
-//    single { get<AppDatabase>().journalEntryDao() }
-
     single { getRoomDatabase(get()) }
     single { getJournalDao(get()) }
     single { getJournalEntryDao(get()) }
 }
 
-//expect val sharedNativeModule :Module
+
 

@@ -13,10 +13,6 @@ plugins {
 }
 
 kotlin {
-//    sourceSets.commonMain {
-//        kotlin.srcDir("build/generated/ksp/metadata")
-//    }
-
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -140,12 +136,6 @@ dependencies {
     debugImplementation(compose.uiTooling)
 
     ksp(libs.koin.ksp.compiler)
-
-//    add("kspCommonMainMetadata", libs.koin.ksp.compiler)
-//    add("kspAndroid", libs.koin.ksp.compiler)
-//    add("kspIosX64", libs.koin.ksp.compiler)
-//    add("kspIosArm64", libs.koin.ksp.compiler)
-//    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
 }
 
 compose {
@@ -176,9 +166,3 @@ ktlint {
         include("**/kotlin/**")
     }
 }
-
-//tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
