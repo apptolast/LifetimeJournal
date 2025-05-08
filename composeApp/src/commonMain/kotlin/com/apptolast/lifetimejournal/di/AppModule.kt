@@ -26,7 +26,6 @@ val viewModelsModule = module {
     viewModelOf(::CreateJournalViewModel)
 }
 
-
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     appDeclaration()
     modules(appModule, sharedModule, viewModelsModule, platformModule, databaseModule)

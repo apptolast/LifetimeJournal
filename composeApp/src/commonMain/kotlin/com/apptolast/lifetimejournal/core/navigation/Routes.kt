@@ -17,6 +17,4 @@ object JournalDestination : Destination
 object CreateJournalDestination : Destination
 
 @Serializable
-data class EntriesDestination(
-    val journalId: Long?,
-) : Destination
+data class EntriesDestination(val journalId: Long?) : Destination

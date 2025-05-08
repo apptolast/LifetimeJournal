@@ -13,7 +13,9 @@ import kotlinx.datetime.LocalDate
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class EntriesViewModel() : ViewModel(), KoinComponent {
+class EntriesViewModel :
+    ViewModel(),
+    KoinComponent {
 
     private val journalRepository: JournalRepository by inject()
 
@@ -27,7 +29,7 @@ class EntriesViewModel() : ViewModel(), KoinComponent {
             _state.update {
                 it.copy(
                     journal = journal,
-                    isLoading = false
+                    isLoading = false,
                 )
             }
         } ?: run {
@@ -44,7 +46,7 @@ class EntriesViewModel() : ViewModel(), KoinComponent {
                         val entry = JournalEntry(
                             title = event.title,
                             description = event.description,
-                            date = event.date
+                            date = event.date,
                         )
 
                         // Crear la entrada y obtener su ID
@@ -69,8 +71,6 @@ class EntriesViewModel() : ViewModel(), KoinComponent {
             }
         }
     }
-
-
 }
 
 // /////////////////////////////////////////////////////////////////////////

@@ -29,9 +29,9 @@ expect val platformModule: Module
  * Módulo para la inyección de dependencias de la base de datos.
  */
 val databaseModule = module {
-    single { getRoomDatabase(get()) }
-    single { getJournalDao(get()) }
-    single { getJournalEntryDao(get()) }
+    singleOf(::getRoomDatabase)
+    singleOf(::getJournalDao)
+    singleOf(::getJournalEntryDao)
 }
 
 

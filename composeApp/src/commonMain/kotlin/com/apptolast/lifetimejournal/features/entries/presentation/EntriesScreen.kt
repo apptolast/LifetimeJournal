@@ -359,7 +359,7 @@ private fun EntriesContentPreview() {
                             date = LocalDate(2023, 6, 12),
                         ),
                     ),
-                )
+                ),
             ),
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         )

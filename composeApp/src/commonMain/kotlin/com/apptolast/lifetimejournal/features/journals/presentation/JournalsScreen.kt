@@ -156,18 +156,13 @@ fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BookInfo(
-    journals: List<Journal>,
-    modifier: Modifier = Modifier,
-    onJournalClick: (Journal) -> Unit = {},
-) {
+fun BookInfo(journals: List<Journal>, modifier: Modifier = Modifier, onJournalClick: (Journal) -> Unit = {}) {
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         contentPadding = PaddingValues(8.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
-
         items(journals) { journal ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -222,7 +217,7 @@ private fun JournalsContentPreview() {
                     user = KMAuthUser(id = "").copy(
                         name = "John Doe",
                         profilePicUrl =
-                            "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
+                        "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
                     ),
                     journals = listOf(journalMock, journalMock),
                 )

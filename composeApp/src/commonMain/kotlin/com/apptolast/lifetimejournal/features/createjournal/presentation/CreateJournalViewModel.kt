@@ -49,7 +49,8 @@ class CreateJournalViewModel :
                 }
             }
 
-            else -> {/* no-op */
+            else -> {
+                /* no-op */
             }
         }
     }
