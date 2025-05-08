@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,7 +33,7 @@ fun BasicTopBar(
             Text(
                 text = title,
                 modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 textAlign = if (centerTitle) TextAlign.Center else TextAlign.Start,
             )
         },
@@ -66,12 +65,12 @@ private fun BasicTopBarPreview() {
             title = "Title",
             onBack = {},
             actions = {
-                IconButton(onClick = {}) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Message,
-                        contentDescription = null,
-                    )
-                }
+//                IconButton(onClick = {}) {
+//                    Icon(
+//                        imageVector = Icons.AutoMirrored.Filled.Message,
+//                        contentDescription = null,
+//                    )
+//                }
             },
         )
     }

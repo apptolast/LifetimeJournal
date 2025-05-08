@@ -315,3 +315,4 @@ fabric.properties
 
 # Firebase on iOS
 iosApp/iosApp/GoogleService-Info.plist
+/shared/schemas/

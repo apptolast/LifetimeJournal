@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -6,8 +5,10 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.gradleBuildConfig)
-//    alias(libs.plugins.googleServices)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -30,6 +31,12 @@ kotlin {
 //            implementation(libs.firebase.gitlive.auth)
 //            implementation(libs.firebase.gitlive.common)
 //            implementation(libs.firebase.gitlive.auth)
+
+            // Room
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
+
+            implementation(libs.kotlinx.serialization.json)
 
             implementation(libs.androidx.coroutines.core)
             implementation(libs.kmauth.google)
@@ -54,6 +61,11 @@ android {
     }
 }
 
+dependencies {
+    ksp(libs.koin.ksp.compiler)
+    ksp(libs.room.compiler)
+}
+
 buildConfig {
     packageName("com.apptolast.lifetimejournal")
 
@@ -70,4 +82,8 @@ buildConfig {
 
     buildConfigField("KOTZILLA_API_KEY", kotzillaApiKey)
     buildConfigField("WEB_ID_CLIENT", webClientId)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }

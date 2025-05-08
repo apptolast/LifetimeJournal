@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
-import com.apptolast.lifetimejournal.core.navigation.HomeDestination
+import com.apptolast.lifetimejournal.core.navigation.JournalDestination
 import com.apptolast.lifetimejournal.features.login.data.LoginState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.google_icon
@@ -44,7 +44,7 @@ fun LoginScreenRoot(
 
     LaunchedEffect(key1 = state.isAuthenticated) {
         if (state.isAuthenticated) {
-            navigateTo(HomeDestination)
+            navigateTo(JournalDestination)
         }
     }
 

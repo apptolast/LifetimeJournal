@@ -96,10 +96,7 @@ kotlin {
 
 android {
     namespace = "com.apptolast.lifetimejournal"
-    compileSdk =
-        libs.versions.android.compileSdk
-            .get()
-            .toInt()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.apptolast.lifetimejournal"
@@ -136,13 +133,9 @@ android {
 
 dependencies {
 //    implementation(libs.firebase.common.ktx)
-
     debugImplementation(compose.uiTooling)
-    add("kspCommonMainMetadata", libs.koin.ksp.compiler)
-    add("kspAndroid", libs.koin.ksp.compiler)
-    add("kspIosX64", libs.koin.ksp.compiler)
-    add("kspIosArm64", libs.koin.ksp.compiler)
-    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
+
+    ksp(libs.koin.ksp.compiler)
 }
 
 compose {
@@ -171,11 +164,5 @@ ktlint {
     filter {
         exclude("**/generated/**")
         include("**/kotlin/**")
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
     }
 }

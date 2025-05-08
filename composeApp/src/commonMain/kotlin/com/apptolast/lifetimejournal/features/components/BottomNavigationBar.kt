@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
-import com.apptolast.lifetimejournal.core.navigation.HomeDestination
+import com.apptolast.lifetimejournal.core.navigation.JournalDestination
 import com.apptolast.lifetimejournal.core.navigation.SettingDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.resources.Res
@@ -39,7 +39,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val label: StringResource) {
     object Home : BottomNavItem(
-        route = HomeDestination,
+        route = JournalDestination,
         icon = Icons.Default.Home,
         label = Res.string.bottom_nav_home_label,
     )

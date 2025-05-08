@@ -11,15 +11,10 @@ object LoginDestination : Destination
 object SettingDestination : Destination
 
 @Serializable
+object JournalDestination : Destination
+
+@Serializable
 object CreateJournalDestination : Destination
 
 @Serializable
-object HomeDestination : Destination
-
-@Serializable
-object EntriesDestination : Destination
-
-// @Serializable
-// data class DetailDestination {
-//    val movie: Movie
-// }
+data class EntriesDestination(val journalId: Long?) : Destination
