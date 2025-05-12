@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.JournalDestination
+import com.apptolast.lifetimejournal.data.datamodel.User
 import com.apptolast.lifetimejournal.features.login.data.LoginState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.google_icon
@@ -41,24 +42,31 @@ fun LoginScreenRoot(
     navigateTo: (Destination) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val user by viewModel.authRepository.authState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = state.isAuthenticated) {
-        if (state.isAuthenticated) {
+    LaunchedEffect(key1 = user) {
+        if (user?.isLoggedIn == true) {
             navigateTo(JournalDestination)
         }
     }
 
     LoginScreen(
         state = state,
+        user = user,
         onClickGoogleButton = viewModel::loginWithGoogle,
         navigateTo = navigateTo,
     )
 }
 
 @Composable
-fun LoginScreen(state: LoginState, onClickGoogleButton: () -> Unit = {}, navigateTo: (Destination) -> Unit = {}) {
+fun LoginScreen(
+    state: LoginState,
+    user: User?,
+    onClickGoogleButton: () -> Unit = {},
+    navigateTo: (Destination) -> Unit = {},
+) {
     LoginContent(
-        authState = state.isAuthenticated,
+        authState = user?.isLoggedIn == true,
         modifier = Modifier,
         onClickGoogleButton = onClickGoogleButton,
     )
@@ -88,24 +96,24 @@ fun SignInWithGoogleButton(
 ) {
     Surface(
         modifier =
-        Modifier
-            .clickable(
-                enabled = !isLoading,
-                onClick = onClick,
-            ),
+            Modifier
+                .clickable(
+                    enabled = !isLoading,
+                    onClick = onClick,
+                ),
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(width = 1.dp, color = Color.LightGray),
         color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
             modifier =
-            Modifier
-                .padding(
-                    start = 12.dp,
-                    end = 16.dp,
-                    top = 12.dp,
-                    bottom = 12.dp,
-                ),
+                Modifier
+                    .padding(
+                        start = 12.dp,
+                        end = 16.dp,
+                        top = 12.dp,
+                        bottom = 12.dp,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(

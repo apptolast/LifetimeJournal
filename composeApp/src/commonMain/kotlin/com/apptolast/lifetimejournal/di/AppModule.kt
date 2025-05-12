@@ -5,7 +5,6 @@ import com.apptolast.lifetimejournal.features.createjournal.presentation.CreateJ
 import com.apptolast.lifetimejournal.features.entries.presentation.EntriesViewModel
 import com.apptolast.lifetimejournal.features.journals.presentation.JournalsViewModel
 import com.apptolast.lifetimejournal.features.login.presentation.LoginViewModel
-import com.sunildhiman90.kmauth.core.KMAuthInitializer
 import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModelOf
@@ -39,7 +38,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 
 // called by iOS
 fun initKoinIos() = initKoin {
-    KMAuthInitializer.init(
-        webClientId = BuildConfig.WEB_ID_CLIENT,
-    )
+//    KMAuthInitializer.init(
+//        webClientId = BuildConfig.WEB_ID_CLIENT,
+//    )
 }

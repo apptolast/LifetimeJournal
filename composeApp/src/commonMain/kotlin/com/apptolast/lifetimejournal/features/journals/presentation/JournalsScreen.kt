@@ -47,9 +47,9 @@ import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
+import com.apptolast.lifetimejournal.data.datamodel.User
 import com.apptolast.lifetimejournal.features.components.BottomNavigationBar
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
-import com.sunildhiman90.kmauth.core.KMAuthUser
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -72,7 +72,7 @@ fun JournalsScreenRoot(
 @Composable
 fun JournalsScreen(
     state: JournalsState,
-    user: KMAuthUser?,
+    user: User?,
     journals: List<Journal>,
     navigateTo: (Destination) -> Unit = {},
 ) {
@@ -109,7 +109,7 @@ fun JournalsScreen(
 
 @Composable
 fun JournalsContent(
-    user: KMAuthUser?,
+    user: User?,
     journals: List<Journal>,
     modifier: Modifier = Modifier,
     onJournalClick: (Journal) -> Unit = {},
@@ -127,7 +127,7 @@ fun JournalsContent(
 }
 
 @Composable
-fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
+fun Header(user: User?, modifier: Modifier = Modifier) {
     val context = LocalPlatformContext.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -147,7 +147,7 @@ fun Header(user: KMAuthUser?, modifier: Modifier = Modifier) {
         }
 
         AsyncImage(
-            model = user?.profilePicUrl,
+            model = user?.photoUrl,
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 16.dp).clip(CircleShape).size(60.dp),
             contentScale = ContentScale.Crop,
@@ -214,11 +214,7 @@ private fun JournalsContentPreview() {
             CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
                 JournalsScreen(
                     state = JournalsState().copy(isLoading = false),
-                    user = KMAuthUser(id = "").copy(
-                        name = "John Doe",
-                        profilePicUrl =
-                        "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
-                    ),
+                    user = null,
                     journals = listOf(journalMock, journalMock),
                 )
             }
