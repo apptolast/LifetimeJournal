@@ -35,6 +35,7 @@ import com.apptolast.lifetimejournal.resources.login_google_button
 import com.apptolast.lifetimejournal.resources.login_loading_text
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LoginScreenRoot(
@@ -127,21 +128,20 @@ fun SignInWithGoogleButton(
     }
 }
 
-// @Preview
-// @Composable
-// fun LoginContentPreview(modifier: Modifier = Modifier) {
-//    MaterialTheme {
-//        LoginScreen(
-//            state = LoginState().copy(
-//                isLoading = false,
-//            ),
-//        )
-//    }
-// }
-//
+@Preview
+@Composable
+fun LoginContentPreview(modifier: Modifier = Modifier) {
+    MaterialTheme {
+        LoginScreen(
+            state = LoginState().copy(
+                isLoading = false,
+            ),
+            user = null,
+        )
+    }
+}
 
-// @Preview(showBackground = true)
-// @Composable
-// fun SignInWithGoogleButtonPreview() {
-//    SignInWithGoogleButton(onClick = {})
-// }
+@Composable
+fun SignInWithGoogleButtonPreview() {
+    SignInWithGoogleButton(onClick = {})
+}

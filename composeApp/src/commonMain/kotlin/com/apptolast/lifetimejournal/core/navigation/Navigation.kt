@@ -36,7 +36,11 @@ fun Navigation() {
         }
 
         composable<SettingDestination> {
-            SettingScreenRoot()
+            SettingScreenRoot(
+                navigateUp = {
+                    navController.navigateUp()
+                },
+            )
         }
 
         composable<CreateJournalDestination> {

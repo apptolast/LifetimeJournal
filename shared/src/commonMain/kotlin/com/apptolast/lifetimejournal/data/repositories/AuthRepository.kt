@@ -1,5 +1,6 @@
 package com.apptolast.lifetimejournal.data.repositories
 
+import com.apptolast.lifetimejournal.data.auth.GoogleAuthResult
 import com.apptolast.lifetimejournal.data.auth.GoogleSignInHelper
 import com.apptolast.lifetimejournal.data.datamodel.User
 import com.apptolast.lifetimejournal.data.datamodel.toDomain
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.update
 
 class AuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -25,22 +27,34 @@ class AuthRepositoryImpl(
             val tokenResult = googleSignInHelper.signIn().first()
 
             tokenResult.fold(
-                onSuccess = { idToken ->
-                    // Crear credenciales de Firebase con el token
-                    val credential = googleSignInHelper.getFirebaseCredential(idToken)
+                onSuccess = { googleAuthResult ->
 
-                    // Iniciar sesión con Firebase usando el credential
-                    val authResult = firebaseAuth.signInWithCredential(credential)
+                    when (googleAuthResult) {
+                        is GoogleAuthResult.Success -> {
+                            // Crear credenciales de Firebase con el token
+                            val credential = googleSignInHelper.getFirebaseCredential(
+                                idToken = googleAuthResult.idToken,
+                                accessToken = googleAuthResult.accessToken,
+                            )
 
-                    // Convertir FirebaseUser a nuestro modelo de dominio User
-                    val user = authResult.user?.toDomain()
+                            // Iniciar sesión con Firebase usando el credential
+                            val authResult = firebaseAuth.signInWithCredential(credential)
 
-                    if (user != null) {
-                        // Actualizar el estado de autenticación
-                        _authState.value = user
-                        emit(Result.success(user))
-                    } else {
-                        emit(Result.failure(Exception("Usuario no encontrado")))
+                            // Convertir FirebaseUser a nuestro modelo de dominio User
+                            val user = authResult.user?.toDomain()
+
+                            if (user != null) {
+                                // Actualizar el estado de autenticación
+                                _authState.value = user
+                                emit(Result.success(user))
+                            } else {
+                                emit(Result.failure(Exception("Usuario no encontrado")))
+                            }
+                        }
+
+                        is GoogleAuthResult.Failure -> {
+                            emit(Result.failure(Exception(googleAuthResult.error.message)))
+                        }
                     }
                 },
                 onFailure = { error ->
@@ -51,11 +65,20 @@ class AuthRepositoryImpl(
             emit(Result.failure(e))
         }
     }
+
+    override suspend fun signOut() {
+        firebaseAuth.signOut()
+        _authState.update {
+            it?.copy(isLoggedIn = false)
+        }
+    }
 }
 
 interface AuthRepository {
     val authState: StateFlow<User?>
 
     suspend fun loginWithGoogle(): Flow<Result<User>>
+
+    suspend fun signOut()
 }
 

@@ -1,39 +1,69 @@
 package com.apptolast.lifetimejournal.features.settings.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.features.settings.data.SettingState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SettingScreenRoot(viewModel: SettingViewModel = viewModel { SettingViewModel() }) {
+fun SettingScreenRoot(
+    viewModel: SettingViewModel = viewModel { SettingViewModel() },
+    navigateUp: () -> Unit = {},
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val user by viewModel.authRepository.authState.collectAsStateWithLifecycle()
 
-    SettingScreen(state)
+
+    LaunchedEffect(user) {
+        if (user?.isLoggedIn == false) {
+            navigateUp()
+        }
+    }
+
+    SettingScreen(
+        state = state,
+        signOut = viewModel::signOut,
+    )
 }
 
 @Composable
-fun SettingScreen(state: SettingState, modifier: Modifier = Modifier) {
-    SettingContent()
+fun SettingScreen(
+    state: SettingState,
+    modifier: Modifier = Modifier,
+    signOut: () -> Unit = {},
+) {
+    SettingContent(
+        modifier = modifier,
+        signOut = signOut,
+    )
 }
 
 @Composable
-fun SettingContent(modifier: Modifier = Modifier) {
+fun SettingContent(
+    modifier: Modifier = Modifier,
+    signOut: () -> Unit = {},
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Text")
+        Button(onClick = signOut) {
+            Text("Log Out")
+        }
     }
 }
 
@@ -43,9 +73,10 @@ private fun SettingContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         SettingScreen(
             state =
-            SettingState().copy(
-                isLoading = false,
-            ),
+                SettingState().copy(
+                    isLoading = false,
+                ),
+            modifier = modifier.background(color = Color.White),
         )
     }
 }
