@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.ktlint.jlleitschuh)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotzilla)
+    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -46,8 +47,12 @@ kotlin {
             // SplashScreen
             implementation(libs.core.splashscreen)
 
+            // Firebase
+            implementation(project.dependencies.platform(libs.firebase.bom))
+
             // KMAuth
-            implementation(libs.kmauth.google)
+//            implementation(libs.kmauth.google)
+//            implementation(libs.kmauth.google)
         }
 
         commonMain.dependencies {
@@ -85,9 +90,9 @@ kotlin {
 
             // KMAuth
             // Pure KMP module without compose
-            implementation(libs.kmauth.google)
+//            implementation(libs.kmauth.google)
             // KMP Compose implementation with in built GoogleSignInButton composable
-            implementation(libs.kmauth.google.compose)
+//            implementation(libs.kmauth.google.compose)
 
             implementation(projects.shared)
         }
@@ -132,10 +137,9 @@ android {
 }
 
 dependencies {
-//    implementation(libs.firebase.common.ktx)
-    debugImplementation(compose.uiTooling)
-
+    implementation(libs.firebase.common.ktx)
     ksp(libs.koin.ksp.compiler)
+    debugImplementation(compose.uiTooling)
 }
 
 compose {

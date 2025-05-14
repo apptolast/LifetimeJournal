@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.JournalDestination
+import com.apptolast.lifetimejournal.data.datamodel.User
 import com.apptolast.lifetimejournal.features.login.data.LoginState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.google_icon
@@ -34,6 +35,7 @@ import com.apptolast.lifetimejournal.resources.login_google_button
 import com.apptolast.lifetimejournal.resources.login_loading_text
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LoginScreenRoot(
@@ -41,24 +43,31 @@ fun LoginScreenRoot(
     navigateTo: (Destination) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val user by viewModel.authRepository.authState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = state.isAuthenticated) {
-        if (state.isAuthenticated) {
+    LaunchedEffect(key1 = user) {
+        if (user?.isLoggedIn == true) {
             navigateTo(JournalDestination)
         }
     }
 
     LoginScreen(
         state = state,
+        user = user,
         onClickGoogleButton = viewModel::loginWithGoogle,
         navigateTo = navigateTo,
     )
 }
 
 @Composable
-fun LoginScreen(state: LoginState, onClickGoogleButton: () -> Unit = {}, navigateTo: (Destination) -> Unit = {}) {
+fun LoginScreen(
+    state: LoginState,
+    user: User?,
+    onClickGoogleButton: () -> Unit = {},
+    navigateTo: (Destination) -> Unit = {},
+) {
     LoginContent(
-        authState = state.isAuthenticated,
+        authState = user?.isLoggedIn == true,
         modifier = Modifier,
         onClickGoogleButton = onClickGoogleButton,
     )
@@ -87,25 +96,21 @@ fun SignInWithGoogleButton(
     onClick: () -> Unit,
 ) {
     Surface(
-        modifier =
-        Modifier
-            .clickable(
-                enabled = !isLoading,
-                onClick = onClick,
-            ),
+        modifier = Modifier.clickable(
+            enabled = !isLoading,
+            onClick = onClick,
+        ),
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(width = 1.dp, color = Color.LightGray),
         color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
-            modifier =
-            Modifier
-                .padding(
-                    start = 12.dp,
-                    end = 16.dp,
-                    top = 12.dp,
-                    bottom = 12.dp,
-                ),
+            modifier = Modifier.padding(
+                start = 12.dp,
+                end = 16.dp,
+                top = 12.dp,
+                bottom = 12.dp,
+            ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
@@ -119,21 +124,20 @@ fun SignInWithGoogleButton(
     }
 }
 
-// @Preview
-// @Composable
-// fun LoginContentPreview(modifier: Modifier = Modifier) {
-//    MaterialTheme {
-//        LoginScreen(
-//            state = LoginState().copy(
-//                isLoading = false,
-//            ),
-//        )
-//    }
-// }
-//
+@Preview
+@Composable
+fun LoginContentPreview(modifier: Modifier = Modifier) {
+    MaterialTheme {
+        LoginScreen(
+            state = LoginState().copy(
+                isLoading = false,
+            ),
+            user = null,
+        )
+    }
+}
 
-// @Preview(showBackground = true)
-// @Composable
-// fun SignInWithGoogleButtonPreview() {
-//    SignInWithGoogleButton(onClick = {})
-// }
+@Composable
+fun SignInWithGoogleButtonPreview() {
+    SignInWithGoogleButton(onClick = {})
+}

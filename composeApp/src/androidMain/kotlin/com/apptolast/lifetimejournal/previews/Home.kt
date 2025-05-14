@@ -14,7 +14,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import com.apptolast.lifetimejournal.features.journals.presentation.JournalsScreen
 import com.apptolast.lifetimejournal.features.journals.presentation.journalMock
-import com.sunildhiman90.kmauth.core.KMAuthUser
 
 @OptIn(ExperimentalCoilApi::class)
 @Preview(showBackground = true)
@@ -29,11 +28,7 @@ fun HomeContentPreview(modifier: Modifier = Modifier) {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             JournalsScreen(
                 state = JournalsState().copy(isLoading = false),
-                user = KMAuthUser(id = "").copy(
-                    name = "John Doe",
-                    profilePicUrl =
-                    "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
-                ),
+                user = null,
                 journals = listOf(journalMock, journalMock),
             )
         }

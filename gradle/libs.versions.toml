@@ -9,7 +9,7 @@ androidx-constraintlayout = "2.2.1"
 androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
-androidx-lifecycle-compose = "2.8.7"
+androidx-lifecycle-compose = "2.9.0"
 androidx-material = "1.12.0"
 androidx-navigation = "2.9.0-beta01"
 androidx-room = "2.7.1"
@@ -20,7 +20,9 @@ coilComposeX = "3.0.0-alpha08"
 compose-multiplatform = "1.8.0"
 coreSplashscreen = "1.0.1"
 firebaseBom = "33.13.0"
-#google-services = "4.4.2"
+firebaseGitlive = "2.1.0"
+google-services = "4.4.2"
+googleIdIdentity = "1.1.1"
 javapoet = "1.13.0"
 junit = "4.13.2"
 kmauthGoogle = "0.0.4"
@@ -37,7 +39,7 @@ ktor-server-tests-version = "2.3.13"
 kotlinxSerialization = "1.8.1"
 logback = "1.5.18"
 materialIconsExtended = "1.7.8"
-sqlite = "2.5.0"
+sqlite = "2.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
@@ -59,9 +61,14 @@ coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref
 coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coilCompose" }
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+googleIdIdentity = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleIdIdentity" }
 
 kmauth-google = { group = "io.github.sunildhiman90", name = "kmauth-google", version.ref = "kmauthGoogle" }
-kmauth-google-compose = { group = "io.github.sunildhiman90", name = "kmauth-google-compose", version.ref = "kmauthGoogle" }
+#kmauth-google-compose = { group = "io.github.sunildhiman90", name = "kmauth-google-compose", version.ref = "kmauthGoogle" }
+
+firebase-gitlive-common = { group = "dev.gitlive", name = "firebase-common", version.ref = "firebaseGitlive" }
+firebase-gitlive-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "firebaseGitlive" }
+firebase-gitlive-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "firebaseGitlive" }
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -84,6 +91,9 @@ kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk", version.ref = "ko
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
+
+
+
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor-server-tests-version" }
@@ -100,12 +110,13 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 gradleBuildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 ktlint-jlleitschuh = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintJlleitschuh" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "androidx-room" }
-#googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
