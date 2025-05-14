@@ -1,7 +1,5 @@
 package com.apptolast.lifetimejournal.data.auth
 
-//import cocoapods.GoogleSignIn.signInWithConfigurationPresentingViewControllerCallback
-//import platform.UIKit.UISceneState
 import cocoapods.GoogleSignIn.GIDSignIn
 import dev.gitlive.firebase.auth.AuthCredential
 import dev.gitlive.firebase.auth.GoogleAuthProvider
@@ -36,8 +34,6 @@ actual class GoogleSignInHelper {
             nsError?.let { println("Error While signing: $nsError") }
 
             // Obtener el token ID del usuario
-
-
             val idToken = gidSignInResult?.user?.idToken?.tokenString
             val accessToken = gidSignInResult?.user?.accessToken?.tokenString
 
@@ -64,6 +60,4 @@ actual class GoogleSignInHelper {
     actual fun getFirebaseCredential(idToken: String, accessToken: String?): AuthCredential {
         return GoogleAuthProvider.credential(idToken, accessToken)
     }
-
 }
-

@@ -10,11 +10,6 @@ class MyApplication : Application() {
         super.onCreate()
 
         initKoin {
-//            KMAuthInitializer.initWithContext(
-//                webClientId = BuildConfig.WEB_ID_CLIENT,
-//                kmAuthPlatformContext = KMAuthPlatformContext(this@MyApplication),
-//            )
-
             androidLogger()
             androidContext(this@MyApplication)
         }

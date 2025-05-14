@@ -96,25 +96,21 @@ fun SignInWithGoogleButton(
     onClick: () -> Unit,
 ) {
     Surface(
-        modifier =
-            Modifier
-                .clickable(
-                    enabled = !isLoading,
-                    onClick = onClick,
-                ),
+        modifier = Modifier.clickable(
+            enabled = !isLoading,
+            onClick = onClick,
+        ),
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(width = 1.dp, color = Color.LightGray),
         color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
-            modifier =
-                Modifier
-                    .padding(
-                        start = 12.dp,
-                        end = 16.dp,
-                        top = 12.dp,
-                        bottom = 12.dp,
-                    ),
+            modifier = Modifier.padding(
+                start = 12.dp,
+                end = 16.dp,
+                top = 12.dp,
+                bottom = 12.dp,
+            ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(

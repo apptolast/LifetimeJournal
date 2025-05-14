@@ -19,13 +19,9 @@ import com.apptolast.lifetimejournal.features.settings.data.SettingState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SettingScreenRoot(
-    viewModel: SettingViewModel = viewModel { SettingViewModel() },
-    navigateUp: () -> Unit = {},
-) {
+fun SettingScreenRoot(viewModel: SettingViewModel = viewModel { SettingViewModel() }, navigateUp: () -> Unit = {}) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val user by viewModel.authRepository.authState.collectAsStateWithLifecycle()
-
 
     LaunchedEffect(user) {
         if (user?.isLoggedIn == false) {
@@ -40,11 +36,7 @@ fun SettingScreenRoot(
 }
 
 @Composable
-fun SettingScreen(
-    state: SettingState,
-    modifier: Modifier = Modifier,
-    signOut: () -> Unit = {},
-) {
+fun SettingScreen(state: SettingState, modifier: Modifier = Modifier, signOut: () -> Unit = {}) {
     SettingContent(
         modifier = modifier,
         signOut = signOut,
@@ -52,10 +44,7 @@ fun SettingScreen(
 }
 
 @Composable
-fun SettingContent(
-    modifier: Modifier = Modifier,
-    signOut: () -> Unit = {},
-) {
+fun SettingContent(modifier: Modifier = Modifier, signOut: () -> Unit = {}) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -73,9 +62,9 @@ private fun SettingContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         SettingScreen(
             state =
-                SettingState().copy(
-                    isLoading = false,
-                ),
+            SettingState().copy(
+                isLoading = false,
+            ),
             modifier = modifier.background(color = Color.White),
         )
     }

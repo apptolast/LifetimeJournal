@@ -37,7 +37,7 @@ class LoginViewModel :
                         _state.update {
                             it.copy(
                                 isLoading = false,
-                                error = null
+                                error = null,
                             )
                         }
                     },
@@ -45,17 +45,17 @@ class LoginViewModel :
                         _state.update {
                             it.copy(
                                 isLoading = false,
-                                error = error.message
+                                error = error.message,
                             )
                         }
-                    }
+                    },
                 )
             }
         } catch (e: Exception) {
             _state.update {
                 it.copy(
                     isLoading = false,
-                    error = e.message
+                    error = e.message,
                 )
             }
         }
