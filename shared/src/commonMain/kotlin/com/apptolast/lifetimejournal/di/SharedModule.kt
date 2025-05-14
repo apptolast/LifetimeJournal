@@ -35,6 +35,3 @@ val databaseModule = module {
     singleOf(::getJournalDao)
     singleOf(::getJournalEntryDao)
 }
-
-
-

@@ -14,6 +14,7 @@ import org.koin.core.component.inject
 class LoginViewModel :
     ViewModel(),
     KoinComponent {
+
     val authRepository: AuthRepository by inject()
 
     private val _state = MutableStateFlow(LoginState())

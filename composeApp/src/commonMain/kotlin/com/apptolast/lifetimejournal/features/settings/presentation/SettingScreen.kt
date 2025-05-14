@@ -15,17 +15,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavOptions
+import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.features.settings.data.SettingState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SettingScreenRoot(viewModel: SettingViewModel = viewModel { SettingViewModel() }, navigateUp: () -> Unit = {}) {
+fun SettingScreenRoot(
+    viewModel: SettingViewModel = viewModel { SettingViewModel() },
+    navigateTo: (Destination, NavOptions?) -> Unit = { _, _ -> },
+    navigateToLogin: () -> Unit = {},
+    onBack: () -> Unit = {},
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val user by viewModel.authRepository.authState.collectAsStateWithLifecycle()
 
     LaunchedEffect(user) {
         if (user?.isLoggedIn == false) {
-            navigateUp()
+            navigateToLogin()
         }
     }
 
@@ -62,9 +69,9 @@ private fun SettingContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         SettingScreen(
             state =
-            SettingState().copy(
-                isLoading = false,
-            ),
+                SettingState().copy(
+                    isLoading = false,
+                ),
             modifier = modifier.background(color = Color.White),
         )
     }
