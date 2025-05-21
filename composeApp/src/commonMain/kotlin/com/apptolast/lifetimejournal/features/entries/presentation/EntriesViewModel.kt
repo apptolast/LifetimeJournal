@@ -41,8 +41,8 @@ class EntriesViewModel :
         when (event) {
             is UiEvent.AddEntry -> {
                 viewModelScope.launch {
-                    val journalId = _state.value.journal?.id
-                    if (journalId != null) {
+//                    val journalId = _state.value.journal?.id // Seguro que tenemos el journal.id en este punto?
+//                    if (journalId != null) {
                         val entry = JournalEntry(
                             title = event.title,
                             description = event.description,
@@ -50,7 +50,7 @@ class EntriesViewModel :
                         )
 
                         // Crear la entrada y obtener su ID
-                        journalRepository.addEntryToJournal(journalId, entry)
+                        journalRepository.addEntryToJournal(/*journalId,*/ entry)
 
                         // Recargar el journal completo para obtener la lista actualizada de entradas
                         journalRepository.getJournal(journalId)?.let { updatedJournal ->
@@ -59,7 +59,7 @@ class EntriesViewModel :
                             }
                         }
                     }
-                }
+//                }
             }
 
             is UiEvent.SelectDate -> {

@@ -14,6 +14,8 @@ const val TABLE_JOURNAL = "journal"
 const val TABLE_JOURNAL_ENTRY = "journal_entry"
 
 const val COLUMN_NAME_ID = "id"
+//const val COLUMN_NAME_FIRESTORE_ID = "firestore_id"
 const val COLUMN_NAME_DATE = "date"
 const val COLUMN_NAME_JOURNAL_ID = "journal_id"
+const val COLUMN_NAME_JOURNAL_ENTRY_ID = "journal_entry_id"
 const val COLUMN_NAME_ENTRY_IDS = "entry_ids"

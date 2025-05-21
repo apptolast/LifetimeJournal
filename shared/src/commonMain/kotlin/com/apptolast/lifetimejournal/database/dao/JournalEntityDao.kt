@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.apptolast.lifetimejournal.COLUMN_NAME_DATE
-import com.apptolast.lifetimejournal.COLUMN_NAME_ID
+import com.apptolast.lifetimejournal.COLUMN_NAME_JOURNAL_ENTRY_ID
 import com.apptolast.lifetimejournal.COLUMN_NAME_JOURNAL_ID
 import com.apptolast.lifetimejournal.TABLE_JOURNAL_ENTRY
 import com.apptolast.lifetimejournal.database.entities.JournalEntryEntity
@@ -26,8 +26,11 @@ interface JournalEntryDao {
     @Delete
     suspend fun deleteEntry(entry: JournalEntryEntity)
 
-    @Query("SELECT * FROM $TABLE_JOURNAL_ENTRY WHERE $COLUMN_NAME_ID = :entryId")
-    suspend fun getEntryById(entryId: Int): JournalEntryEntity?
+    @Query("SELECT * FROM $TABLE_JOURNAL_ENTRY WHERE $COLUMN_NAME_JOURNAL_ENTRY_ID = :entryId")
+    suspend fun getEntryById(entryId: String?): JournalEntryEntity?
+
+    @Query("SELECT * FROM $TABLE_JOURNAL_ENTRY WHERE $COLUMN_NAME_JOURNAL_ENTRY_ID = :journalId")
+    suspend fun getEntryByJournalId(journalId: String): JournalEntryEntity?
 
     @Query("SELECT * FROM $TABLE_JOURNAL_ENTRY")
     fun getAllEntries(): Flow<List<JournalEntryEntity>>
@@ -44,6 +47,13 @@ interface JournalEntryDao {
     @Query("DELETE FROM $TABLE_JOURNAL_ENTRY WHERE $COLUMN_NAME_JOURNAL_ID = :journalId")
     suspend fun deleteEntriesByJournalId(journalId: Int)
 
+    @Query("DELETE FROM $TABLE_JOURNAL_ENTRY WHERE $COLUMN_NAME_JOURNAL_ID = :journalId")
+    suspend fun deleteEntriesByJournalFirestoreId(journalId: String)
+
     @Query("DELETE FROM $TABLE_JOURNAL_ENTRY")
     suspend fun deleteAllEntries()
+
+    @Query("DELETE FROM $TABLE_JOURNAL_ENTRY WHERE $COLUMN_NAME_JOURNAL_ID = :journalId")
+    suspend fun deleteEntryByFirestoreId(journalId: String)
+
 }

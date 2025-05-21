@@ -12,18 +12,18 @@ interface JournalRepository {
     suspend fun getJournal(id: Long?): Journal?
     fun getAllJournals(): Flow<List<Journal>>
     suspend fun updateJournal(journal: Journal)
-    suspend fun deleteJournal(id: Long?)
+    suspend fun deleteJournal(id: String?)
 
     // Journal Entry operations
-    suspend fun createEntry(journalId: Long?, entry: JournalEntry): Long?
-    suspend fun getEntry(id: Long?): JournalEntry?
+    suspend fun createEntry(journalId: String?, entry: JournalEntry): String?
+    suspend fun getEntry(id: String?): JournalEntry?
     fun getEntriesByJournalId(journalId: Long?): Flow<List<JournalEntry>>
     fun getEntriesByDate(date: LocalDate): Flow<List<JournalEntry>>
     fun getEntriesByJournalIdAndDate(journalId: Long?, date: LocalDate): Flow<List<JournalEntry>>
     suspend fun updateEntry(entry: JournalEntry)
-    suspend fun deleteEntry(id: Long?)
+    suspend fun deleteEntry(id: String?)
 
     // Combined operations
-    suspend fun addEntryToJournal(journalId: Long?, entry: JournalEntry): Long?
-    suspend fun removeEntryFromJournal(journalId: Long?, entryId: Long?)
+    suspend fun addEntryToJournal(journalId: String?, entry: JournalEntry): String?
+    suspend fun removeEntryFromJournal(entryId: String?)
 }

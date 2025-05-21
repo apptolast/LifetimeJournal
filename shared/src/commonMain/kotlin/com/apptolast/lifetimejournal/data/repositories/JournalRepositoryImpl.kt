@@ -4,9 +4,8 @@ import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
 import com.apptolast.lifetimejournal.database.dao.JournalDao
 import com.apptolast.lifetimejournal.database.dao.JournalEntryDao
-import com.apptolast.lifetimejournal.database.entities.JournalEntryEntity
-import com.apptolast.lifetimejournal.database.mappers.toDomain
-import com.apptolast.lifetimejournal.database.mappers.toEntity
+import com.apptolast.lifetimejournal.database.entities.toDomain
+import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -15,30 +14,34 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 
+/**
+ * Implementation of JournalRepository that uses Room as a cache and Firestore as the source of truth.
+ * All operations are performed on Firestore first, and Room is updated via the synchronizer.
+ */
 class JournalRepositoryImpl(
     private val journalDao: JournalDao,
     private val entryDao: JournalEntryDao,
-) : JournalRepository/*, KoinComponent */ {
+    private val firestore: FirebaseFirestore,
+) : JournalRepository {
 
-//    private val journalDao: JournalDao by inject()
-//    private val entryDao: JournalEntryDao by inject()
+    private val firestoreRepository = FirestoreRepositoryImpl(firestore)
+    private val synchronizer = FirestoreRoomSynchronizer(firestoreRepository, journalDao, entryDao)
 
+    /**
+     * Initializes the repository by syncing all data from Firestore to Room
+     */
+    suspend fun initialize() {
+        synchronizer.syncAll()
+    }
 
     override suspend fun createJournal(journal: Journal): Long = withContext(Dispatchers.IO) {
-        val journalId = journalDao.insertJournal(journal.toEntity()).toInt()
-
-        // Insert associated entries if any
-        journal.entries.forEach { entry ->
-            val entryEntity = entry.toEntity(journalId)
-            entryDao.insertEntry(entryEntity)
-        }
-
-        return@withContext journalId.toLong()
+        val (roomId, _) = synchronizer.createJournal(journal)
+        return@withContext roomId
     }
 
     override suspend fun getJournal(id: Long?): Journal? = withContext(Dispatchers.IO) {
-        val journalId = id ?: return@withContext null
-        val journalWithEntries = journalDao.getJournalWithEntries(journalId.toInt())
+        val journalId = id?.toInt() ?: return@withContext null
+        val journalWithEntries = journalDao.getJournalWithEntries(journalId)
         return@withContext journalWithEntries?.toDomain()
     }
 
@@ -49,50 +52,20 @@ class JournalRepositoryImpl(
     }
 
     override suspend fun updateJournal(journal: Journal) = withContext(Dispatchers.IO) {
-        val journalId = journal.id ?: return@withContext
-
-        // Update the journal entity
-        journalDao.updateJournal(journal.toEntity())
-
-        // Handle entries updates by managing their connections to this journal
-//        val currentEntries = entryDao.getEntriesByJournalId(journalId.toInt()).map { entries ->
-//            entries.map { it.id }
-//        }.first()
-
-        val newEntryIds = journal.entries.mapNotNull { it.id?.toInt() }
-
-        // Update the entry IDs list in the journal
-        journalDao.updateJournalEntryIds(journalId.toInt(), newEntryIds)
+        synchronizer.updateJournal(journal)
     }
 
-    override suspend fun deleteJournal(id: Long?) = withContext(Dispatchers.IO) {
-        val journalId = id?.toInt() ?: return@withContext
-        val journal = journalDao.getJournalById(journalId) ?: return@withContext
-
-        // Delete associated entries first
-        entryDao.deleteEntriesByJournalId(journalId)
-
-        // Then delete the journal
-        journalDao.deleteJournal(journal)
+    override suspend fun deleteJournal(id: String?) = withContext(Dispatchers.IO) {
+        synchronizer.deleteJournal(id)
     }
 
-    override suspend fun createEntry(journalId: Long?, entry: JournalEntry): Long? = withContext(Dispatchers.IO) {
-        val journalIdInt = journalId?.toInt() ?: return@withContext null
-
-        // Create the entry
-        val entryEntity = entry.toEntity(journalIdInt)
-        val entryId = entryDao.insertEntry(entryEntity).toInt()
-
-        // Update the journal's entryIds list
-        val journal = journalDao.getJournalById(journalIdInt) ?: return@withContext null
-        val updatedEntryIds = journal.entryIds + entryId
-        journalDao.updateJournalEntryIds(journalIdInt, updatedEntryIds)
-
-        return@withContext entryId.toLong()
+    override suspend fun createEntry(journalId: String?, entry: JournalEntry): String? = withContext(Dispatchers.IO) {
+        val journalId = synchronizer.createEntry(journalId, entry)
+        return@withContext journalId
     }
 
-    override suspend fun getEntry(id: Long?): JournalEntry? = withContext(Dispatchers.IO) {
-        val entryId = id?.toInt() ?: return@withContext null
+    override suspend fun getEntry(entryId: String?): JournalEntry? = withContext(Dispatchers.IO) {
+//        val entryId = id?.toInt() ?: return@withContext null
         val entry = entryDao.getEntryById(entryId)
         return@withContext entry?.toDomain()
     }
@@ -118,44 +91,19 @@ class JournalRepositoryImpl(
     }
 
     override suspend fun updateEntry(entry: JournalEntry) = withContext(Dispatchers.IO) {
-        val entryId = entry.id?.toInt() ?: return@withContext
-        val existingEntry = entryDao.getEntryById(entryId) ?: return@withContext
-
-        val updatedEntity = JournalEntryEntity(
-            id = entryId,
-            title = entry.title,
-            description = entry.description,
-            date = entry.date,
-            journalId = existingEntry.journalId,
-        )
-
-        entryDao.updateEntry(updatedEntity)
+        synchronizer.updateEntry(entry)
     }
 
-    override suspend fun deleteEntry(id: Long?) = withContext(Dispatchers.IO) {
-        val entryId = id?.toInt() ?: return@withContext
-        val entry = entryDao.getEntryById(entryId) ?: return@withContext
-
-        // Also remove from the journal's entry list
-        val journal = journalDao.getJournalById(entry.journalId) ?: return@withContext
-        val updatedEntryIds = journal.entryIds - entryId
-        journalDao.updateJournalEntryIds(entry.journalId, updatedEntryIds)
-
-        // Delete the entry
-        entryDao.deleteEntry(entry)
+    override suspend fun deleteEntry(id: String?) = withContext(Dispatchers.IO) {
+        synchronizer.deleteEntry(id)
     }
 
-    override suspend fun addEntryToJournal(journalId: Long?, entry: JournalEntry): Long? {
+    override suspend fun addEntryToJournal(journalId: String?, entry: JournalEntry): String? {
         return createEntry(journalId, entry)
     }
 
-    override suspend fun removeEntryFromJournal(journalId: Long?, entryId: Long?) = withContext(Dispatchers.IO) {
-        val journalIdInt = journalId?.toInt() ?: return@withContext
-        val entryIdInt = entryId?.toInt() ?: return@withContext
-
-        // Get the journal and update its entry list
-        val journal = journalDao.getJournalById(journalIdInt) ?: return@withContext
-        val updatedEntryIds = journal.entryIds - entryIdInt
-        journalDao.updateJournalEntryIds(journalIdInt, updatedEntryIds)
+    override suspend fun removeEntryFromJournal( entryId: String?) = withContext(Dispatchers.IO) {
+        // This operation is handled implicitly by the deletion of the entry
+        deleteEntry(entryId)
     }
 }

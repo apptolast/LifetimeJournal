@@ -18,7 +18,7 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -34,8 +34,9 @@ kotlin {
         }
 
         commonMain.dependencies {
-//            // Gitlive (Firebase)
+            // Gitlive (Firebase)
             implementation(libs.firebase.gitlive.auth)
+            implementation(libs.firebase.gitlive.firestore)
             implementation(libs.firebase.gitlive.common)
 
             // Room

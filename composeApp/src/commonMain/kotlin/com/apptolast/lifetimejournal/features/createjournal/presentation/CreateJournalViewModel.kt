@@ -37,23 +37,45 @@ class CreateJournalViewModel :
             }
 
             is UiEvent.OnCreateJournal -> {
-                viewModelScope.launch {
-                    Journal(
-                        title = _state.value.title,
-                        description = _state.value.description,
-                        cover = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
-                    ).let { journal ->
-                        journalRepository.createJournal(journal)
-                        _uiEvent.send(UiEvent.NavigateToEntriesScreen(journal))
-                    }
-                }
+                createJournal()
             }
+
 
             else -> {
                 /* no-op */
             }
         }
     }
+
+    private fun createJournal() = viewModelScope.launch {
+        try {
+            _state.update { it.copy(isLoading = true) }
+
+            val journal = Journal(
+                title = _state.value.title,
+                description = _state.value.description,
+                cover = "https://loremflickr.com/230/300",
+                // We don't set firestoreId, the repository will handle this
+            )
+
+            // This operation now saves the journal to both Room and Firestore
+            val journalId = journalRepository.createJournal(journal)
+
+            // Get the fully created journal with its IDs
+            val createdJournal = journalRepository.getJournal(journalId)
+
+            if (createdJournal != null) {
+                _uiEvent.send(UiEvent.NavigateToEntriesScreen(createdJournal))
+            } else {
+                println("Failed to retrieve the created journal")
+            }
+        } catch (e: Exception) {
+            println("Error creating journal: ${e.message}")
+        } finally {
+            _state.update { it.copy(isLoading = false) }
+        }
+    }
+
 }
 
 // /////////////////////////////////////////////////////////////////////////
