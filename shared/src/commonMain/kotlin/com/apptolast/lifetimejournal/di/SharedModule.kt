@@ -2,11 +2,9 @@ package com.apptolast.lifetimejournal.di
 
 import com.apptolast.lifetimejournal.data.repositories.AuthRepository
 import com.apptolast.lifetimejournal.data.repositories.AuthRepositoryImpl
-import com.apptolast.lifetimejournal.data.repositories.FirestoreRepository
+import com.apptolast.lifetimejournal.data.repositories.FirebaseService
 import com.apptolast.lifetimejournal.data.repositories.FirestoreRepositoryImpl
-import com.apptolast.lifetimejournal.data.repositories.FirestoreRoomSynchronizer
 import com.apptolast.lifetimejournal.data.repositories.JournalRepository
-import com.apptolast.lifetimejournal.data.repositories.JournalRepositoryImpl
 import com.apptolast.lifetimejournal.database.getJournalDao
 import com.apptolast.lifetimejournal.database.getJournalEntryDao
 import com.apptolast.lifetimejournal.database.getRoomDatabase
@@ -22,9 +20,8 @@ val sharedModule = module {
     factory { Firebase.auth }
     factory { Firebase.firestore }
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
-    singleOf(::JournalRepositoryImpl) { bind<JournalRepository>() }
-    singleOf(::FirestoreRepositoryImpl) { bind<FirestoreRepository>() }
-    singleOf(::FirestoreRoomSynchronizer)
+    singleOf(::FirestoreRepositoryImpl) { bind<FirebaseService>() }
+    singleOf(::JournalRepository)
 }
 
 expect val platformModule: Module

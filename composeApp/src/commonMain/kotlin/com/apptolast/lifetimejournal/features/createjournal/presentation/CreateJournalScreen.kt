@@ -32,7 +32,6 @@ import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
 import com.apptolast.lifetimejournal.core.navigation.JournalDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.features.components.BasicTopBar
-import com.apptolast.lifetimejournal.features.createjournal.data.CreateJournalState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.create_journal_button
 import com.apptolast.lifetimejournal.resources.create_journal_description
@@ -52,7 +51,7 @@ fun CreateJournalScreenRoot(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.NavigateToEntriesScreen -> {
+                is CreateJournalUiEvent.NavigateToEntriesScreen -> {
                     navigateTo(
                         EntriesDestination(event.journal.id),
                         navOptions {
@@ -81,7 +80,7 @@ fun CreateJournalScreenRoot(
 fun CreateJournalScreen(
     state: CreateJournalState,
     modifier: Modifier = Modifier,
-    onEvent: (UiEvent) -> Unit = {},
+    onEvent: (CreateJournalUiEvent) -> Unit = {},
     onBack: (() -> Unit)? = null,
 ) {
     Scaffold(
@@ -106,7 +105,7 @@ fun CreateJournalContent(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    onEvent: (UiEvent) -> Unit,
+    onEvent: (CreateJournalUiEvent) -> Unit,
 ) {
     Column(
         modifier = modifier.fillMaxWidth().padding(18.dp),
@@ -130,7 +129,7 @@ fun CreateJournalContent(
             OutlinedTextField(
                 value = title,
                 onValueChange = {
-                    onEvent(UiEvent.OnTitleChange(it))
+                    onEvent(CreateJournalUiEvent.OnTitleChange(it))
                 },
                 label = {
                     Text(
@@ -145,7 +144,7 @@ fun CreateJournalContent(
             OutlinedTextField(
                 value = description,
                 onValueChange = {
-                    onEvent(UiEvent.OnDescriptionChange(it))
+                    onEvent(CreateJournalUiEvent.OnDescriptionChange(it))
                 },
                 label = {
                     Text(
@@ -159,7 +158,7 @@ fun CreateJournalContent(
         }
 
         Button(
-            onClick = { onEvent(UiEvent.OnCreateJournal) },
+            onClick = { onEvent(CreateJournalUiEvent.OnCreateJournal) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(

@@ -69,9 +69,9 @@ private fun SettingContentPreview(modifier: Modifier = Modifier) {
     MaterialTheme {
         SettingScreen(
             state =
-                SettingState().copy(
-                    isLoading = false,
-                ),
+            SettingState().copy(
+                isLoading = false,
+            ),
             modifier = modifier.background(color = Color.White),
         )
     }

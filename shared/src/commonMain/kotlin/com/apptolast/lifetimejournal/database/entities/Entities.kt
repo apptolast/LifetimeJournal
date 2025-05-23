@@ -1,56 +1,48 @@
 package com.apptolast.lifetimejournal.database.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import com.apptolast.lifetimejournal.COLUMN_NAME_JOURNAL_ENTRY_ID
-import com.apptolast.lifetimejournal.COLUMN_NAME_JOURNAL_ID
+import com.apptolast.lifetimejournal.COLUMN_ID
+import com.apptolast.lifetimejournal.COLUMN_JOURNAL_ID
 import com.apptolast.lifetimejournal.TABLE_JOURNAL
 import com.apptolast.lifetimejournal.TABLE_JOURNAL_ENTRY
 import kotlinx.datetime.LocalDate
 
-/**
- * Journal Entity for Room
- */
 @Entity(tableName = TABLE_JOURNAL)
 data class JournalEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = COLUMN_NAME_JOURNAL_ID) val journalId: String? = null,
+    @PrimaryKey val id: String,
     val title: String,
     val description: String,
-    val cover: String,
-    // Store entry IDs as a separate field (managed by Converters)
-    @ColumnInfo(name = "entry_ids") val entryIds: List<Int> = emptyList(),
+    val cover: String
 )
 
-/**
- * Journal Entry Entity for Room
- */
-@Entity(tableName = TABLE_JOURNAL_ENTRY)
+@Entity(
+    tableName = TABLE_JOURNAL_ENTRY,
+    foreignKeys = [ForeignKey(
+        entity = JournalEntity::class,
+        parentColumns = [COLUMN_ID],
+        childColumns = [COLUMN_JOURNAL_ID],
+        onDelete = ForeignKey.CASCADE // Si borras un diario, se borran sus entradas
+    )],
+    indices = [Index(value = [COLUMN_JOURNAL_ID])]
+)
 data class JournalEntryEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    // Foreign key to link entries to journals
-    @ColumnInfo(name = COLUMN_NAME_JOURNAL_ID) val journalId: String? = null,
-    @ColumnInfo(name = COLUMN_NAME_JOURNAL_ENTRY_ID) val journalEntryId: String? = null,
-//    @ColumnInfo(name = COLUMN_NAME_JOURNAL_ID) val journalIdReference: String? = null,
+    @PrimaryKey val id: String,
+    val journalId: String,
     val title: String,
     val description: String,
-    val date: LocalDate,
+    val date: LocalDate // Room usará el TypeConverter
 )
 
-
-/**
- * Relationship class to handle the one-to-many relationship
- * between Journal and its Entries
- */
-data class JournalWithEntriesEntity(
+data class JournalWithEntries(
     @Embedded val journal: JournalEntity,
-
     @Relation(
-        parentColumn = COLUMN_NAME_JOURNAL_ID,
-        entityColumn = COLUMN_NAME_JOURNAL_ENTRY_ID,
+        parentColumn = COLUMN_ID,
+        entityColumn = COLUMN_JOURNAL_ID
     )
-    val entries: List<JournalEntryEntity> = emptyList(),
+    val entries: List<JournalEntryEntity>
 )

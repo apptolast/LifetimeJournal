@@ -4,10 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Journal(
-    val id: Long? = null,
-    val journalId: String? = null,
+    val id: String, // ID único
     val title: String,
     val description: String,
     val cover: String,
-    val entries: MutableList<JournalEntry> = mutableListOf(),
+    val entries: List<JournalEntry> = emptyList()
 )

@@ -10,12 +10,14 @@ const val SERVER_PORT = 8080
 ///////////////////////////////////////////////////////////////////////////
 const val DATABASE_NAME = "lifetime_journal.db"
 
+// Tables
 const val TABLE_JOURNAL = "journal"
 const val TABLE_JOURNAL_ENTRY = "journal_entry"
 
-const val COLUMN_NAME_ID = "id"
-//const val COLUMN_NAME_FIRESTORE_ID = "firestore_id"
-const val COLUMN_NAME_DATE = "date"
-const val COLUMN_NAME_JOURNAL_ID = "journal_id"
-const val COLUMN_NAME_JOURNAL_ENTRY_ID = "journal_entry_id"
-const val COLUMN_NAME_ENTRY_IDS = "entry_ids"
+// Columns
+const val COLUMN_ID = "id"
+const val COLUMN_TITLE = "title"
+const val COLUMN_DESCRIPTION = "description"
+const val COLUMN_DATE = "date"
+const val COLUMN_JOURNAL_ID = "journalId"
+const val COLUMN_LAST_SYNC_TIMESTAMP = "last_sync_timestamp"
