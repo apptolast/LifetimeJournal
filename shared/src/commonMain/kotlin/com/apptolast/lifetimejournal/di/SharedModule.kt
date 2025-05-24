@@ -2,13 +2,15 @@ package com.apptolast.lifetimejournal.di
 
 import com.apptolast.lifetimejournal.data.repositories.AuthRepository
 import com.apptolast.lifetimejournal.data.repositories.AuthRepositoryImpl
+import com.apptolast.lifetimejournal.data.repositories.FirebaseService
+import com.apptolast.lifetimejournal.data.repositories.FirestoreRepositoryImpl
 import com.apptolast.lifetimejournal.data.repositories.JournalRepository
-import com.apptolast.lifetimejournal.data.repositories.JournalRepositoryImpl
 import com.apptolast.lifetimejournal.database.getJournalDao
 import com.apptolast.lifetimejournal.database.getJournalEntryDao
 import com.apptolast.lifetimejournal.database.getRoomDatabase
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
+import dev.gitlive.firebase.firestore.firestore
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -16,13 +18,10 @@ import org.koin.dsl.module
 
 val sharedModule = module {
     factory { Firebase.auth }
-//    factory{  GetSignInWithGoogleOption.Builder(BuildConfig.WEB_ID_CLIENT).build()}
-//    factory { KMAuthGoogle.googleAuthManager }
-//    singleOf(::GoogleSignInHelper)
+    factory { Firebase.firestore }
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
-    singleOf(::JournalRepositoryImpl) { bind<JournalRepository>() }
-
-//    single<JournalRepository> { JournalRepositoryImpl(get(), get()) }
+    singleOf(::FirestoreRepositoryImpl) { bind<FirebaseService>() }
+    singleOf(::JournalRepository)
 }
 
 expect val platformModule: Module
@@ -35,6 +34,3 @@ val databaseModule = module {
     singleOf(::getJournalDao)
     singleOf(::getJournalEntryDao)
 }
-
-
-

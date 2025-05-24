@@ -6,8 +6,9 @@ import kotlinx.datetime.LocalDate
 
 data class EntriesState(
     val isLoading: Boolean = false,
-    val calendarTitle: String = "${LocalDate.now().month.name} ${LocalDate.now().year}",
-    val selectedDate: LocalDate = LocalDate.now(),
     val journal: Journal? = null,
-//    val entries: MutableList<JournalEntry> = mutableListOf(),
+    val journalId: String? = null,
+    val selectedDate: LocalDate = LocalDate.now(),
+    val calendarTitle: String = "",
+    val error: String? = null,
 )

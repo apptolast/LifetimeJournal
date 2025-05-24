@@ -74,7 +74,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EntriesScreenRoot(
-    journalId: Long?,
+    journalId: String?,
     viewModel: EntriesViewModel = viewModel { EntriesViewModel() },
     navigateTo: (Destination) -> Unit = {},
     onBack: () -> Unit = {},
@@ -336,24 +336,28 @@ private fun EntriesContentPreview() {
                 calendarTitle = "January 2023",
                 selectedDate = LocalDate(2023, 1, 1),
                 journal = Journal(
+                    id = "",
                     title = "title",
                     description = "description",
                     cover = "",
                     entries = mutableListOf(
                         JournalEntry(
-                            id = 0,
+                            id = "",
+                            journalId = "",
                             title = "title 1",
                             description = "des 1",
                             date = LocalDate(2023, 1, 1),
                         ),
                         JournalEntry(
-                            id = 0,
+                            id = "",
+                            journalId = "",
                             title = "title 2",
                             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             date = LocalDate(2023, 6, 12),
                         ),
                         JournalEntry(
-                            id = 0,
+                            id = "",
+                            journalId = "",
                             title = "title 3",
                             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             date = LocalDate(2023, 6, 12),

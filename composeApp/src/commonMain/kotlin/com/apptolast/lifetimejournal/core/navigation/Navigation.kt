@@ -37,9 +37,14 @@ fun Navigation() {
 
         composable<SettingDestination> {
             SettingScreenRoot(
-                navigateUp = {
-                    navController.navigateUp()
+                navigateTo = navController::navigate,
+                navigateToLogin = {
+                    navController.navigate(LoginDestination) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 },
+                onBack = navController::popBackStack,
             )
         }
 

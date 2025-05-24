@@ -1,7 +1,9 @@
 package com.apptolast.lifetimejournal.data.datamodel
 
 import dev.gitlive.firebase.auth.FirebaseUser
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class User(
     val id: String,
     val name: String,
@@ -21,7 +23,6 @@ fun FirebaseUser?.toDomain() = User(
     isEmailVerified = this?.isEmailVerified ?: false,
     isLoggedIn = this != null,
 )
-
 
 /**
  * Extensión para convertir FirebaseUser a nuestro modelo de dominio User

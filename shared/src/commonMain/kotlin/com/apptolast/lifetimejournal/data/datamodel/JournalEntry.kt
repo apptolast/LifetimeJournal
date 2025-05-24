@@ -5,8 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JournalEntry(
-    val id: Long? = null,
+    val id: String , // ID único
+    val journalId: String, // Clave foránea
     val title: String,
     val description: String,
-    val date: LocalDate,
+    val date: LocalDate
 )

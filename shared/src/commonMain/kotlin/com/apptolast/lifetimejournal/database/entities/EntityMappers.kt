@@ -1,62 +1,51 @@
-package com.apptolast.lifetimejournal.database.mappers
+package com.apptolast.lifetimejournal.database.entities
 
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
-import com.apptolast.lifetimejournal.database.entities.JournalEntity
-import com.apptolast.lifetimejournal.database.entities.JournalEntryEntity
-import com.apptolast.lifetimejournal.database.entities.JournalWithEntriesEntity
-
-/**
- * Extension functions to map between domain models and database entities
- */
-
-// Journal Entry Mappers
-fun JournalEntry.toEntity(journalId: Int): JournalEntryEntity {
-    return JournalEntryEntity(
-        id = this.id?.toInt() ?: 0,
-        title = this.title,
-        description = this.description,
-        date = this.date,
-        journalId = journalId,
-    )
-}
-
-fun JournalEntryEntity.toDomain(): JournalEntry {
-    return JournalEntry(
-        id = this.id.toLong(),
-        title = this.title,
-        description = this.description,
-        date = this.date,
-    )
-}
+import com.apptolast.lifetimejournal.data.repositories.FirebaseJournal
+import com.apptolast.lifetimejournal.data.repositories.FirebaseJournalEntry
+import kotlinx.datetime.LocalDate
 
 // Journal Mappers
-fun Journal.toEntity(): JournalEntity {
-    return JournalEntity(
-//        id = this.id?.toInt() ?: -1,
-        title = this.title,
-        description = this.description,
-        cover = this.cover,
-        entryIds = this.entries.mapNotNull { it.id?.toInt() },
+fun JournalEntity.toJournal(): Journal {
+    return Journal(id, title, description, cover, emptyList()) // Las entradas se cargan por separado
+}
+
+fun Journal.toJournalEntity(): JournalEntity {
+    return JournalEntity(id, title, description, cover)
+}
+
+fun JournalWithEntries.toJournal(): Journal {
+    return Journal(
+        id = journal.id,
+        title = journal.title,
+        description = journal.description,
+        cover = journal.cover,
+        entries = entries.map { it.toJournalEntry() }
     )
 }
 
-fun JournalWithEntriesEntity.toDomain(): Journal {
-    return Journal(
-        id = this.journal.id.toLong(),
-        title = this.journal.title,
-        description = this.journal.description,
-        cover = this.journal.cover,
-        entries = this.entries.map { it.toDomain() }.toMutableList(),
-    )
+fun FirebaseJournal.toJournal(): Journal {
+    return Journal(id, title, description, cover, emptyList())
 }
 
-fun JournalEntity.toDomain(entries: List<JournalEntry> = emptyList()): Journal {
-    return Journal(
-        id = this.id.toLong(),
-        title = this.title,
-        description = this.description,
-        cover = this.cover,
-        entries = entries.toMutableList(),
-    )
+fun Journal.toFirebaseJournal(): FirebaseJournal {
+    return FirebaseJournal(id, title, description, cover)
+}
+
+// JournalEntry Mappers
+fun JournalEntryEntity.toJournalEntry(): JournalEntry {
+    return JournalEntry(id, journalId, title, description, date)
+}
+
+fun JournalEntry.toJournalEntryEntity(): JournalEntryEntity {
+    return JournalEntryEntity(id, journalId, title, description, date)
+}
+
+fun FirebaseJournalEntry.toJournalEntry(): JournalEntry {
+    return JournalEntry(id, journalId, title, description, LocalDate.parse(date))
+}
+
+fun JournalEntry.toFirebaseJournalEntry(): FirebaseJournalEntry {
+    return FirebaseJournalEntry(id, journalId, title, description, date.toString())
 }
