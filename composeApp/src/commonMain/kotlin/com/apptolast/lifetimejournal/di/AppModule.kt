@@ -14,8 +14,6 @@ import org.koin.dsl.module
 val appModule = module {
 //    single(named("testApiKey")) { BuildConfig.TEST_API_KEY }
 //    factory { Greeting() }
-//    factory { Firebase.auth }
-//    factory { KMAuthGoogle.googleAuthManager }
 }
 
 val viewModelsModule = module {
@@ -37,8 +35,4 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 }
 
 // called by iOS
-fun initKoinIos() = initKoin {
-//    KMAuthInitializer.init(
-//        webClientId = BuildConfig.WEB_ID_CLIENT,
-//    )
-}
+fun initKoinIos() = initKoin {}

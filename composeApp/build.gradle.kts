@@ -50,7 +50,6 @@ kotlin {
 
             // Firebase
             implementation(project.dependencies.platform(libs.firebase.bom))
-
         }
 
         commonMain.dependencies {
