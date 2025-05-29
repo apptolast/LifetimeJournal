@@ -1,3 +1,4 @@
+
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -50,9 +51,6 @@ kotlin {
             // Firebase
             implementation(project.dependencies.platform(libs.firebase.bom))
 
-            // KMAuth
-//            implementation(libs.kmauth.google)
-//            implementation(libs.kmauth.google)
         }
 
         commonMain.dependencies {
@@ -87,12 +85,6 @@ kotlin {
 
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
-
-            // KMAuth
-            // Pure KMP module without compose
-//            implementation(libs.kmauth.google)
-            // KMP Compose implementation with in built GoogleSignInButton composable
-//            implementation(libs.kmauth.google.compose)
 
             implementation(projects.shared)
         }
