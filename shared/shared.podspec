@@ -1,20 +1,24 @@
 Pod::Spec.new do |spec|
-    spec.name                     = 'MyCocoaPod'
+    spec.name                     = 'shared'
     spec.version                  = '1.0'
-    spec.homepage                 = ''
+    spec.homepage                 = 'Link to a Kotlin/Native module homepage'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = ''
-    spec.vendored_frameworks      = 'build/cocoapods/framework/MyFramework.framework'
+    spec.summary                  = 'Some description for a Kotlin/Native module'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
     spec.libraries                = 'c++'
+    spec.ios.deployment_target    = '16.0'
+    spec.dependency 'Firebase'
+    spec.dependency 'FirebaseAuth'
+    spec.dependency 'FirebaseCore'
+    spec.dependency 'FirebaseFirestore'
+    spec.dependency 'GoogleSignIn'
                 
-                
-                
-    if !Dir.exist?('build/cocoapods/framework/MyFramework.framework') || Dir.empty?('build/cocoapods/framework/MyFramework.framework')
+    if !Dir.exist?('build/cocoapods/framework/shared.framework') || Dir.empty?('build/cocoapods/framework/shared.framework')
         raise "
 
-        Kotlin framework 'MyFramework' doesn't exist yet, so a proper Xcode project can't be generated.
+        Kotlin framework 'shared' doesn't exist yet, so a proper Xcode project can't be generated.
         'pod install' should be executed after running ':generateDummyFramework' Gradle task:
 
             ./gradlew :shared:generateDummyFramework
@@ -28,12 +32,12 @@ Pod::Spec.new do |spec|
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':shared',
-        'PRODUCT_MODULE_NAME' => 'MyFramework',
+        'PRODUCT_MODULE_NAME' => 'shared',
     }
                 
     spec.script_phases = [
         {
-            :name => 'Build MyCocoaPod',
+            :name => 'Build shared',
             :execution_position => :before_compile,
             :shell_path => '/bin/sh',
             :script => <<-SCRIPT

@@ -106,7 +106,7 @@ class FirestoreRepositoryImpl(
         try {
             // Usa el ID del diario como ID del documento.
             // set() creará o sobrescribirá el documento.
-            journalsCollection.document(journal.id).set(journal, encodeDefaults = true)
+            journalsCollection.document(journal.id).set(journal) { encodeDefaults = true }
         } catch (e: Exception) {
             println("Error saving journal ${journal.id} to Firestore: $e")
             throw e // Relanza para que el repositorio lo maneje
@@ -117,7 +117,7 @@ class FirestoreRepositoryImpl(
         require(entry.journalId.isNotBlank()) { "Journal ID cannot be blank when saving an entry" }
         try {
             // Usa el ID de la entrada como ID del documento en la subcolección.
-            entriesCollection(entry.journalId).document(entry.id).set(entry, encodeDefaults = true)
+            entriesCollection(entry.journalId).document(entry.id).set(entry) { encodeDefaults = true }
         } catch (e: Exception) {
             println("Error saving entry ${entry.id} to Firestore: $e")
             throw e

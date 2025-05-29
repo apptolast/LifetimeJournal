@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
@@ -16,15 +18,28 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    targets.configureEach {
+        compilations.configureEach {
+            compileTaskProvider.get().compilerOptions {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+        }
+    }
 
     jvm()
 
@@ -48,8 +63,6 @@ kotlin {
             implementation(libs.androidx.coroutines.core)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
 
-            implementation(libs.kmauth.google)
-
             // Koin
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
@@ -57,34 +70,53 @@ kotlin {
     }
 
     cocoapods {
-        // Required properties
-        // Specify the required Pod version here
-        // Otherwise, the Gradle project version is used
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
         version = "1.0"
-//        HtmlStyle.summary = "Some description for a Kotlin/Native module"
-//        homepage = "Link to a Kotlin/Native module homepage"
+        ios.deploymentTarget = "16.0"
+        podfile = project.file("../iosApp/Podfile")
 
         // Optional properties
         // Configure the Pod name here instead of changing the Gradle project name
-        name = "MyCocoaPod"
+//        name = "shared"
 
         framework {
             // Required properties
             // Framework name configuration. Use this property instead of deprecated 'frameworkName'
-            baseName = "MyFramework"
+            baseName = "shared"
 
             // Optional properties
             // Specify the framework linking type. It's dynamic by default.
-            isStatic = false
+            isStatic = true
             // Dependency export
             // Uncomment and specify another project module if you have one:
             // export(project(":<your other KMP module>"))
-            transitiveExport = false // This is default.
+//            transitiveExport = false // This is default.
         }
 
         // Maps custom Xcode configuration to NativeBuildType
         xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
+
+        pod("GoogleSignIn") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+        pod("Firebase") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
+        }
+        pod("FirebaseCore") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
+        }
+        pod("FirebaseAuth") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
+        }
+        pod("FirebaseFirestore") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
+        }
     }
 }
 
@@ -128,4 +160,10 @@ buildConfig {
 
 room {
     schemaDirectory("$projectDir/schemas")
+    generateKotlin = true
+}
+
+ksp {
+    arg("KOIN_DEFAULT_MODULE", "true")
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
