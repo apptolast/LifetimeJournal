@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlinSerialization)
     application
 }
 
@@ -26,8 +27,14 @@ ktor {
 }
 
 dependencies {
-    implementation(projects.shared)
+    //implementation(projects.shared)
     implementation(libs.logback)
+    // Cliente Redis - Lettuce (recomendado)
+    implementation(libs.lettuce.core)
+    // Inyección de dependencias
+    implementation(libs.koin.ktor)
+    // Serialización
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     testImplementation(libs.ktor.server.tests)
