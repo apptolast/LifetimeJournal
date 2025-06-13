@@ -1,5 +1,6 @@
 package com.apptolast.lifetimejournal
 
+import com.apptolast.lifetimejournal.modules.configureDatabases
 import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -13,6 +14,7 @@ fun main() {
 }
 
 fun Application.module() {
+    //configureDatabases()
     routing {
         get("/") {
             call.respondText("Ktor hello world!")
