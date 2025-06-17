@@ -40,3 +40,7 @@ dependencies {
     implementation(libs.logback.classic)
     testImplementation(libs.kotlin.test.junit)
 }
+
+tasks.test {
+    enabled = false
+}

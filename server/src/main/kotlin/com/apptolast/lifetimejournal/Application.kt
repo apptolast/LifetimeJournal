@@ -14,7 +14,7 @@ fun main() {
 }
 
 fun Application.module() {
-    //configureDatabases()
+    configureDatabases()
     routing {
         get("/") {
             call.respondText("Ktor hello world!")
