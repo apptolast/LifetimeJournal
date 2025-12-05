@@ -32,13 +32,13 @@ class Converters {
 //    }
 
     @TypeConverter
-    fun fromTimestamp(value: Int?): LocalDate? {
-        return value?.let { LocalDate.fromEpochDays(it) }
+    fun fromTimestamp(value: Long?): LocalDate? {
+        return value?.let { LocalDate.fromEpochDays(it.toInt()) }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDate?): Int? {
-        return date?.toEpochDays()
+    fun dateToTimestamp(date: LocalDate?): Long? {
+        return date?.toEpochDays()?.toLong()
     }
 }
 

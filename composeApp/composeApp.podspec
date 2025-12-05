@@ -5,16 +5,16 @@ Pod::Spec.new do |spec|
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = ''
-    spec.vendored_frameworks      = 'build/cocoapods/framework/composeAppPod.framework'
+    spec.summary                  = 'Some description for a Kotlin/Native module'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/composeApp.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '16.0'
-    spec.dependency 'GoogleSignIn', '8.0.0'
                 
-    if !Dir.exist?('build/cocoapods/framework/composeAppPod.framework') || Dir.empty?('build/cocoapods/framework/composeAppPod.framework')
+                
+    if !Dir.exist?('build/cocoapods/framework/composeApp.framework') || Dir.empty?('build/cocoapods/framework/composeApp.framework')
         raise "
 
-        Kotlin framework 'composeAppPod' doesn't exist yet, so a proper Xcode project can't be generated.
+        Kotlin framework 'composeApp' doesn't exist yet, so a proper Xcode project can't be generated.
         'pod install' should be executed after running ':generateDummyFramework' Gradle task:
 
             ./gradlew :composeApp:generateDummyFramework
@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':composeApp',
-        'PRODUCT_MODULE_NAME' => 'composeAppPod',
+        'PRODUCT_MODULE_NAME' => 'composeApp',
     }
                 
     spec.script_phases = [

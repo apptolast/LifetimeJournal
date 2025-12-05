@@ -1,4 +1,6 @@
 # Uncomment the next line to define a global platform for your project
+source 'https://cdn.cocoapods.org'
+
 platform :ios, '16.0'
 
 target 'iosApp' do
@@ -7,4 +9,5 @@ target 'iosApp' do
 
   # Pods for iosApp
   pod 'shared', :path => '../shared'
+  pod 'GoogleSignIn'
 end

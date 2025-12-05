@@ -128,7 +128,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.common)
     ksp(libs.koin.ksp.compiler)
     debugImplementation(compose.uiTooling)
 }

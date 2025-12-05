@@ -1,5 +1,6 @@
 import SwiftUI
-import ComposeApp
+import shared
+import composeApp
 import Firebase
 
 @main

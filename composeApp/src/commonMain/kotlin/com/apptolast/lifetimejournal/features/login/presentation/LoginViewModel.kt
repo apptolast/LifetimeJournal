@@ -11,9 +11,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class LoginViewModel :
-    ViewModel(),
-    KoinComponent {
+class LoginViewModel : ViewModel(), KoinComponent {
 
     val authRepository: AuthRepository by inject()
 

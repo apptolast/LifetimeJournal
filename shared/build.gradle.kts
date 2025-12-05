@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.gradleBuildConfig)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
-    alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinCocoapods)
 }
 
@@ -41,8 +40,6 @@ kotlin {
         }
     }
 
-    jvm()
-
     sourceSets {
         androidMain.dependencies {
             implementation(libs.googleIdIdentity)
@@ -61,7 +58,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
 
             implementation(libs.androidx.coroutines.core)
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+            implementation(libs.kotlinx.datetime)
 
             // Koin
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -101,22 +98,6 @@ kotlin {
         pod("GoogleSignIn") {
             extraOpts += listOf("-compiler-option", "-fmodules")
         }
-        pod("Firebase") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-            linkOnly = true
-        }
-        pod("FirebaseCore") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-            linkOnly = true
-        }
-        pod("FirebaseAuth") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-            linkOnly = true
-        }
-        pod("FirebaseFirestore") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-            linkOnly = true
-        }
     }
 }
 
@@ -133,11 +114,10 @@ android {
 }
 
 dependencies {
-    ksp(libs.koin.ksp.compiler)
-    ksp(libs.room.compiler)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.common.ktx)
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
 }
 
 buildConfig {
