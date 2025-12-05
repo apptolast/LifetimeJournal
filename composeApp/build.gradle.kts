@@ -1,6 +1,7 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -12,6 +13,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 kotlin {
@@ -34,11 +36,25 @@ kotlin {
     }
 
     sourceSets {
+        cocoapods {
+            name = "composeApp"
+            summary = "Compose App module"
+            homepage = "Link to Compose App module homepage"
+            version = "1.0"
+            ios.deploymentTarget = "16.0"
+            podfile = project.file("../iosApp/Podfile")
 
+            framework {
+                baseName = "ComposeApp"
+                isStatic = true
+            }
+
+            xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
+            xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
+        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-//            implementation(libs.androidx.material.icons.extended)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
 
             // Koin

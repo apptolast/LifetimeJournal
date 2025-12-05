@@ -1,7 +1,7 @@
 import SwiftUI
 import shared
-import composeApp
-import Firebase
+import ComposeApp
+import FirebaseCore
 
 @main
 struct iOSApp: App {

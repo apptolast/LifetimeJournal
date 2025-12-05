@@ -98,6 +98,15 @@ kotlin {
         pod("GoogleSignIn") {
             extraOpts += listOf("-compiler-option", "-fmodules")
         }
+        pod("FirebaseCore") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+        pod("FirebaseAuth") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+        pod("FirebaseFirestore") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
     }
 }
 
