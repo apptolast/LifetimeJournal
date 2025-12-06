@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 kotlin {
@@ -22,23 +23,21 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+//    listOf(
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
-
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-//            implementation(libs.androidx.material.icons.extended)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
 
             // Koin
@@ -85,7 +84,21 @@ kotlin {
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
 
-            implementation(projects.shared)
+            api(projects.shared)
+        }
+    }
+
+    cocoapods {
+        name = "ComposeApp"
+        summary = "Compose App module"
+        homepage = "Link to Compose App module homepage"
+        version = "1.0"
+        ios.deploymentTarget = "18.0"
+
+        framework {
+            baseName = "ComposeApp"
+            isStatic = true
+            export(projects.shared)
         }
     }
 }
@@ -128,8 +141,11 @@ android {
 }
 
 dependencies {
-    implementation(libs.firebase.common.ktx)
-    ksp(libs.koin.ksp.compiler)
+    implementation(libs.firebase.common)
+    add("kspAndroid", libs.koin.ksp.compiler)
+    add("kspIosX64", libs.koin.ksp.compiler)
+    add("kspIosArm64", libs.koin.ksp.compiler)
+    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
     debugImplementation(compose.uiTooling)
 }
 

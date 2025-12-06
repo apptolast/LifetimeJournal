@@ -2,7 +2,6 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import java.util.Properties
 
 plugins {
@@ -12,7 +11,6 @@ plugins {
     alias(libs.plugins.gradleBuildConfig)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
-    alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinCocoapods)
 }
 
@@ -30,18 +28,16 @@ kotlin {
             }
         }
     }
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "shared"
-            isStatic = true
-        }
-    }
-
-    jvm()
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+//    listOf(
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "shared"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
         androidMain.dependencies {
@@ -61,7 +57,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
 
             implementation(libs.androidx.coroutines.core)
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+            implementation(libs.kotlinx.datetime)
 
             // Koin
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -73,37 +69,20 @@ kotlin {
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
         version = "1.0"
-        ios.deploymentTarget = "16.0"
-        podfile = project.file("../iosApp/Podfile")
+        ios.deploymentTarget = "18.0"
+//        podfile = project.file("../iosApp/Podfile")
 
         // Optional properties
         // Configure the Pod name here instead of changing the Gradle project name
 //        name = "shared"
 
         framework {
-            // Required properties
-            // Framework name configuration. Use this property instead of deprecated 'frameworkName'
             baseName = "shared"
-
-            // Optional properties
-            // Specify the framework linking type. It's dynamic by default.
             isStatic = true
-            // Dependency export
-            // Uncomment and specify another project module if you have one:
-            // export(project(":<your other KMP module>"))
-//            transitiveExport = false // This is default.
         }
-
-        // Maps custom Xcode configuration to NativeBuildType
-        xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
-        xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
 
         pod("GoogleSignIn") {
             extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-        pod("Firebase") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-            linkOnly = true
         }
         pod("FirebaseCore") {
             extraOpts += listOf("-compiler-option", "-fmodules")
@@ -133,20 +112,16 @@ android {
 }
 
 dependencies {
-    ksp(libs.koin.ksp.compiler)
-    ksp(libs.room.compiler)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.common.ktx)
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
 }
 
 buildConfig {
     packageName("com.apptolast.lifetimejournal")
 
     useKotlinOutput() // forces the outputType to 'kotlin', generating an `object`
-//    useKotlinOutput {
-//        topLevelConstants = true
-//    }    // forces the outputType to 'kotlin', generating top-level declarations
     useKotlinOutput { internalVisibility = false } // makes `BuildConfig` class `public` (defaults to `internal`)
 
     val properties = Properties()
