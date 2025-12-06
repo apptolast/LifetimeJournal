@@ -31,9 +31,7 @@ kotlinxDatetime = "0.7.1"
 kotzilla = "1.4.1"
 ktlintJlleitschuh = "13.0.0"
 ksp = "2.2.21-2.0.4"
-ktor = "3.3.3"
 kotlinxSerialization = "1.9.0"
-logback = "1.5.21"
 sqlite = "2.6.2"
 
 [libraries]
@@ -69,7 +67,6 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-common = { group = "com.google.firebase", name = "firebase-common" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 
-logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinVersion" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
@@ -84,11 +81,6 @@ kotzilla-plugin = { group = "io.kotzilla", name = "kotzilla-plugin", version.ref
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk", version.ref = "kotzilla" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-
-ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
-ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
@@ -106,7 +98,6 @@ kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = 
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 ktlint-jlleitschuh = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintJlleitschuh" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'Some description for a Kotlin/Native module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target    = '16.0'
+    spec.ios.deployment_target    = '18.0'
     spec.dependency 'FirebaseAuth'
     spec.dependency 'FirebaseCore'
     spec.dependency 'FirebaseFirestore'

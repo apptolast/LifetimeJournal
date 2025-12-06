@@ -2,7 +2,6 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import java.util.Properties
 
 plugins {
@@ -70,7 +69,7 @@ kotlin {
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
         version = "1.0"
-        ios.deploymentTarget = "16.0"
+        ios.deploymentTarget = "18.0"
         podfile = project.file("../iosApp/Podfile")
 
         // Optional properties
@@ -78,34 +77,24 @@ kotlin {
 //        name = "shared"
 
         framework {
-            // Required properties
-            // Framework name configuration. Use this property instead of deprecated 'frameworkName'
             baseName = "shared"
-
-            // Optional properties
-            // Specify the framework linking type. It's dynamic by default.
             isStatic = true
-            // Dependency export
-            // Uncomment and specify another project module if you have one:
-            // export(project(":<your other KMP module>"))
-//            transitiveExport = false // This is default.
         }
-
-        // Maps custom Xcode configuration to NativeBuildType
-        xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
-        xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
 
         pod("GoogleSignIn") {
             extraOpts += listOf("-compiler-option", "-fmodules")
         }
         pod("FirebaseCore") {
             extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
         }
         pod("FirebaseAuth") {
             extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
         }
         pod("FirebaseFirestore") {
             extraOpts += listOf("-compiler-option", "-fmodules")
+            linkOnly = true
         }
     }
 }

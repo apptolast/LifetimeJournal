@@ -1,7 +1,6 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -35,23 +34,21 @@ kotlin {
         }
     }
 
-    sourceSets {
-        cocoapods {
-            name = "composeApp"
-            summary = "Compose App module"
-            homepage = "Link to Compose App module homepage"
-            version = "1.0"
-            ios.deploymentTarget = "16.0"
-            podfile = project.file("../iosApp/Podfile")
+    cocoapods {
+        name = "composeApp"
+        summary = "Compose App module"
+        homepage = "Link to Compose App module homepage"
+        version = "1.0"
+        ios.deploymentTarget = "18.0"
+        podfile = project.file("../iosApp/Podfile")
 
-            framework {
-                baseName = "ComposeApp"
-                isStatic = true
-            }
-
-            xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
-            xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
+        framework {
+            baseName = "ComposeApp"
+            isStatic = true
         }
+    }
+
+    sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
