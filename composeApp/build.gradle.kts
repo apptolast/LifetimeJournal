@@ -94,7 +94,6 @@ kotlin {
         homepage = "Link to Compose App module homepage"
         version = "1.0"
         ios.deploymentTarget = "18.0"
-//        podfile = project.file("../iosApp/Podfile")
 
         framework {
             baseName = "ComposeApp"

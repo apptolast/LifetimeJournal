@@ -122,9 +122,6 @@ buildConfig {
     packageName("com.apptolast.lifetimejournal")
 
     useKotlinOutput() // forces the outputType to 'kotlin', generating an `object`
-//    useKotlinOutput {
-//        topLevelConstants = true
-//    }    // forces the outputType to 'kotlin', generating top-level declarations
     useKotlinOutput { internalVisibility = false } // makes `BuildConfig` class `public` (defaults to `internal`)
 
     val properties = Properties()
