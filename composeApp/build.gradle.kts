@@ -23,30 +23,16 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
-
-    cocoapods {
-        name = "composeApp"
-        summary = "Compose App module"
-        homepage = "Link to Compose App module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "18.0"
-        podfile = project.file("../iosApp/Podfile")
-
-        framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+//    listOf(
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
         androidMain.dependencies {
@@ -98,7 +84,22 @@ kotlin {
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
 
-            implementation(projects.shared)
+            api(projects.shared)
+        }
+    }
+
+    cocoapods {
+        name = "ComposeApp"
+        summary = "Compose App module"
+        homepage = "Link to Compose App module homepage"
+        version = "1.0"
+        ios.deploymentTarget = "18.0"
+//        podfile = project.file("../iosApp/Podfile")
+
+        framework {
+            baseName = "ComposeApp"
+            isStatic = true
+            export(projects.shared)
         }
     }
 }
@@ -142,7 +143,10 @@ android {
 
 dependencies {
     implementation(libs.firebase.common)
-    ksp(libs.koin.ksp.compiler)
+    add("kspAndroid", libs.koin.ksp.compiler)
+    add("kspIosX64", libs.koin.ksp.compiler)
+    add("kspIosArm64", libs.koin.ksp.compiler)
+    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
     debugImplementation(compose.uiTooling)
 }
 

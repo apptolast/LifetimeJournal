@@ -28,16 +28,16 @@ kotlin {
             }
         }
     }
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "shared"
-            isStatic = true
-        }
-    }
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+//    listOf(
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "shared"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
         androidMain.dependencies {
@@ -70,7 +70,7 @@ kotlin {
         homepage = "Link to a Kotlin/Native module homepage"
         version = "1.0"
         ios.deploymentTarget = "18.0"
-        podfile = project.file("../iosApp/Podfile")
+//        podfile = project.file("../iosApp/Podfile")
 
         // Optional properties
         // Configure the Pod name here instead of changing the Gradle project name

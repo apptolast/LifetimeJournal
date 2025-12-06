@@ -1204,7 +1204,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.37):
     - BoringSSL-GRPC/Interface (= 0.0.37)
   - BoringSSL-GRPC/Interface (0.0.37)
-  - composeApp (1.0)
+  - ComposeApp (1.0)
   - FirebaseAppCheckInterop (12.6.0)
   - FirebaseAuth (12.6.0):
     - FirebaseAppCheckInterop (~> 12.6.0)
@@ -1385,7 +1385,7 @@ PODS:
     - GoogleSignIn
 
 DEPENDENCIES:
-  - composeApp (from `../composeApp`)
+  - ComposeApp (from `../composeApp`)
   - FirebaseAuth
   - FirebaseCore
   - FirebaseFirestore
@@ -1419,7 +1419,7 @@ SPEC REPOS:
     - RecaptchaInterop
 
 EXTERNAL SOURCES:
-  composeApp:
+  ComposeApp:
     :path: "../composeApp"
   shared:
     :path: "../shared"
@@ -1429,7 +1429,7 @@ SPEC CHECKSUMS:
   AppAuth: 1c1a8afa7e12f2ec3a294d9882dfa5ab7d3cb063
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
-  composeApp: b869e9b794f52c3fc44d8c06785954934903d362
+  ComposeApp: 1671f731f658ee05bcea3a204a8d06a47f3626de
   FirebaseAppCheckInterop: e2178171b4145013c7c1a3cc464d1d446d3a1896
   FirebaseAuth: 613c463cb43545a7fd2cd99ade09b78ac472c544
   FirebaseAuthInterop: db06756ef028006d034b6004dc0c37c24f7828d4
@@ -1451,6 +1451,6 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   shared: 89fac79af655449222d798fa61a0a4d7be376ab1
 
-PODFILE CHECKSUM: 09abaea9889aeea7500ee684e5695e8c0cc7d871
+PODFILE CHECKSUM: e16866b69921d94538d0fb8df2cc6b17e550454f
 
 COCOAPODS: 1.16.2
