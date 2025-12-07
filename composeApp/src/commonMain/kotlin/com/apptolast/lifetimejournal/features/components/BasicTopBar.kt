@@ -23,8 +23,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun BasicTopBar(
     title: String,
     centerTitle: Boolean = true,
-    containerColor: Color = Color.Unspecified,
-    contentColor: Color = Color.Unspecified,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {

@@ -1,24 +1,32 @@
 package com.apptolast.lifetimejournal.features.journals.presentation
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,7 +36,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -41,14 +48,13 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import coil3.compose.LocalPlatformContext
 import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
+import com.apptolast.lifetimejournal.core.navigation.SettingDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.User
-import com.apptolast.lifetimejournal.features.components.BottomNavigationBar
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -77,125 +83,246 @@ fun JournalsScreen(
     navigateTo: (Destination) -> Unit = {},
 ) {
     Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navigateTo = navigateTo)
-        },
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navigateTo(CreateJournalDestination) },
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary, // Use contentColor for icon/text color
+                contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Add, // Use a standard icon
-                    contentDescription = null, // Add content description
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(38.dp),
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp),
                 )
             }
         },
     ) { paddingValues ->
         JournalsContent(
-            user = user,
             journals = journals,
             modifier = Modifier.padding(paddingValues),
             onJournalClick = { journal ->
                 navigateTo(EntriesDestination(journal.id))
             },
+            onSettingsClick = { navigateTo(SettingDestination) },
         )
     }
 }
 
 @Composable
 fun JournalsContent(
-    user: User?,
     journals: List<Journal>,
     modifier: Modifier = Modifier,
     onJournalClick: (Journal) -> Unit = {},
+    onSettingsClick: () -> Unit = {},
 ) {
-    Column(modifier = modifier.fillMaxSize().padding(18.dp)) {
-        Header(user = user)
-
-        // Books list, possible horizontal scroll to change between them @krastev
-        BookInfo(
-            journals = journals,
-            modifier = Modifier.weight(1f),
-            onJournalClick = onJournalClick,
-        )
-    }
-}
-
-@Composable
-fun Header(user: User?, modifier: Modifier = Modifier) {
-    val context = LocalPlatformContext.current
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-        ) {
-            Text(
-                text = "Bienvenido/a",
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Text(
-                text = user?.name ?: "",
-                style = MaterialTheme.typography.headlineSmall,
-            )
-        }
+        // Header
+        JournalsHeader(onSettingsClick = onSettingsClick)
 
-        AsyncImage(
-            model = user?.photoUrl,
-            contentDescription = null,
-            modifier = Modifier.padding(horizontal = 16.dp).clip(CircleShape).size(60.dp),
-            contentScale = ContentScale.Crop,
-        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Journals List or Empty State
+        if (journals.isEmpty()) {
+            EmptyState(modifier = Modifier.weight(1f))
+        } else {
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(journals) { journal ->
+                    JournalCard(
+                        journal = journal,
+                        onClick = { onJournalClick(journal) },
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    EmptyState()
+                }
+            }
+        }
     }
 }
 
 @Composable
-fun BookInfo(journals: List<Journal>, modifier: Modifier = Modifier, onJournalClick: (Journal) -> Unit = {}) {
-    LazyRow(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        contentPadding = PaddingValues(8.dp),
+private fun JournalsHeader(
+    modifier: Modifier = Modifier,
+    onSettingsClick: () -> Unit = {},
+) {
+    Box(
         modifier = modifier.fillMaxWidth(),
     ) {
-        items(journals) { journal ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+        Text(
+            text = "My Diaries",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.align(Alignment.Center),
+        )
+        IconButton(
+            onClick = onSettingsClick,
+            modifier = Modifier.align(Alignment.CenterEnd),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Settings",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun JournalCard(
+    journal: Journal,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                model = journal.cover,
+                contentDescription = null,
                 modifier = Modifier
-                    .width(250.dp)
-                    .clickable { onJournalClick(journal) },
+                    .size(56.dp)
+                    .clip(MaterialTheme.shapes.medium),
+                contentScale = ContentScale.Crop,
+            )
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 12.dp),
             ) {
-                AsyncImage(
-                    model = journal.cover,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .size(width = 200.dp, height = 280.dp)
-                        .clip(shape = RoundedCornerShape(MaterialTheme.shapes.medium.topEnd)),
-                    contentScale = ContentScale.Crop,
-                )
                 Text(
                     text = journal.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = journal.description,
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center,
+                    text = if (journal.entries.isNotEmpty()) {
+                        "${journal.entries.size} entries"
+                    } else {
+                        journal.description
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
-                    minLines = 5,
-                    maxLines = 5,
                 )
             }
+
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline,
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyState(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+            .border(
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
+                shape = MaterialTheme.shapes.large,
+            )
+            .background(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                shape = MaterialTheme.shapes.large,
+            )
+            .padding(32.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.MenuBook,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(48.dp),
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Your family's story begins here",
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Tap the '+' button below to create your first diary and start capturing precious moments.",
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview
+@Composable
+private fun JournalsScreenPreview() {
+    LifetimeJournalTheme {
+        val color = MaterialTheme.colorScheme.primary.toArgb()
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(color)
+        }
+
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            JournalsScreen(
+                state = JournalsState(isLoading = false),
+                user = null,
+                journals = listOf(journalMock, journalMock2, journalMock3),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview
+@Composable
+private fun JournalsScreenEmptyPreview() {
+    LifetimeJournalTheme {
+        val color = MaterialTheme.colorScheme.primary.toArgb()
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(color)
+        }
+
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            JournalsScreen(
+                state = JournalsState(isLoading = false),
+                user = null,
+                journals = emptyList(),
+            )
         }
     }
 }
@@ -205,27 +332,40 @@ fun BookInfo(journals: List<Journal>, modifier: Modifier = Modifier, onJournalCl
 @Composable
 private fun JournalsContentPreview() {
     LifetimeJournalTheme {
-        Column(modifier = Modifier.background(color = Color.White).padding(10.dp)) {
-            val color = MaterialTheme.colorScheme.primary.toArgb()
-            val previewHandler = AsyncImagePreviewHandler {
-                ColorImage(color)
-            }
+        val color = MaterialTheme.colorScheme.primary.toArgb()
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(color)
+        }
 
-            CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-                JournalsScreen(
-                    state = JournalsState().copy(isLoading = false),
-                    user = null,
-                    journals = listOf(journalMock, journalMock),
-                )
-            }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            JournalsContent(
+                journals = listOf(journalMock, journalMock2, journalMock3),
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+            )
         }
     }
 }
 
 val journalMock = Journal(
     id = "1",
-    title = "The Alchemist",
-    description = "A novel by Brazilian author Paulo Coelho is a classic of modern literature.",
-    cover = "https://fastly.picsum.photos/id/237/200/280.jpg?hmac=w-Mx-kWY0n3hE8oWamWigvnDWnsyAUzM6haQAlzNqZE",
+    title = "Family Adventures",
+    description = "Last updated: Yesterday",
+    cover = "https://fastly.picsum.photos/id/237/200/280.jpg",
+    entries = mutableListOf(),
+)
+
+private val journalMock2 = Journal(
+    id = "2",
+    title = "Mommy & Me",
+    description = "34 entries",
+    cover = "https://fastly.picsum.photos/id/238/200/280.jpg",
+    entries = mutableListOf(),
+)
+
+private val journalMock3 = Journal(
+    id = "3",
+    title = "Baby's First Year",
+    description = "Last updated: 2 weeks ago",
+    cover = "https://fastly.picsum.photos/id/239/200/280.jpg",
     entries = mutableListOf(),
 )

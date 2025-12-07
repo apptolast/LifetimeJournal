@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
@@ -64,7 +62,7 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
             },
             maxLines = 1,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = MaterialTheme.shapes.small,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -79,7 +77,7 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
                 )
             },
             modifier = Modifier.fillMaxWidth().height(150.dp),
-            shape = RoundedCornerShape(8.dp),
+            shape = MaterialTheme.shapes.small,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -107,6 +105,6 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
 @Composable
 fun AddEntryBottomSheetContentPreview() {
     LifetimeJournalTheme {
-        AddEntryBottomSheetContent(modifier = Modifier.background(color = Color.White))
+        AddEntryBottomSheetContent(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface))
     }
 }

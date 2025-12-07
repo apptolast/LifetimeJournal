@@ -43,7 +43,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -234,13 +233,17 @@ private fun Day(date: LocalDate, isSelected: Boolean, onClick: (LocalDate) -> Un
             Text(
                 text = date.dayOfWeek.name.substring(0..2),
                 fontSize = 12.sp,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Light,
             )
             Text(
                 text = "${date.dayOfMonth}",
                 fontSize = 14.sp,
-                color = if (isSelected) Color.White else Color.LightGray,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+                },
                 fontWeight = FontWeight.Bold,
             )
         }
@@ -249,7 +252,7 @@ private fun Day(date: LocalDate, isSelected: Boolean, onClick: (LocalDate) -> Un
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(5.dp)
-                    .background(Color.Yellow)
+                    .background(MaterialTheme.colorScheme.tertiary)
                     .align(Alignment.BottomCenter),
             )
         }
@@ -316,7 +319,7 @@ fun EntriesContent(entries: List<JournalEntry>, modifier: Modifier = Modifier) {
                     if (index < entries.lastIndex) {
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = Color.LightGray,
+                            color = MaterialTheme.colorScheme.outlineVariant,
                             modifier = Modifier.padding(12.dp),
                         )
                     }

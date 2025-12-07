@@ -12,11 +12,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavOptions
 import com.apptolast.lifetimejournal.core.navigation.Destination
+import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.features.settings.data.SettingState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -66,13 +66,10 @@ fun SettingContent(modifier: Modifier = Modifier, signOut: () -> Unit = {}) {
 @Preview
 @Composable
 private fun SettingContentPreview(modifier: Modifier = Modifier) {
-    MaterialTheme {
+    LifetimeJournalTheme {
         SettingScreen(
-            state =
-            SettingState().copy(
-                isLoading = false,
-            ),
-            modifier = modifier.background(color = Color.White),
+            state = SettingState(isLoading = false),
+            modifier = modifier.background(color = MaterialTheme.colorScheme.background),
         )
     }
 }

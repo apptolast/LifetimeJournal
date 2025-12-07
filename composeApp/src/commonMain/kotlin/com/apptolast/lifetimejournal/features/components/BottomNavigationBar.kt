@@ -21,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
@@ -68,13 +67,13 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination)
     var itemSelected by remember { mutableStateOf<BottomNavItem>(BottomNavItem.Home) }
     Column(modifier = modifier.fillMaxWidth().wrapContentHeight()) {
         HorizontalDivider(
-            color = Color.LightGray.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.outlineVariant,
             thickness = 1.dp,
         )
 
         NavigationBar(
             modifier = modifier,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surface,
         ) {
             items.forEach { item ->
                 NavigationBarItem(
@@ -87,20 +86,16 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination)
                     },
                     label = { Text(text = stringResource(item.label)) },
                     selected = itemSelected == item,
-                    colors = NavigationBarItemDefaults.colors().copy(
-                        selectedIndicatorColor = Color.Transparent,
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         selectedTextColor = MaterialTheme.colorScheme.primary,
-                        unselectedIconColor = MaterialTheme.colorScheme.tertiary,
-                        unselectedTextColor = MaterialTheme.colorScheme.tertiary,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                     onClick = {
                         itemSelected = item
                         navigateTo(item.route)
-//                    navController.navigate(item.route) {
-//                        popUpTo(navController.graph.startDestinationId)
-//                        launchSingleTop = true
-//                    }
                     },
                 )
             }

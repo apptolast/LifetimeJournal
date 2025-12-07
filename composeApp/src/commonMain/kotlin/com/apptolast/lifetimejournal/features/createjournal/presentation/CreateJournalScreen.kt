@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -117,12 +115,12 @@ fun CreateJournalContent(
             verticalArrangement = Arrangement.Center,
         ) {
             AsyncImage(
-                model = "", // TODO setup up random images
+                model = "",
                 contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .size(width = 200.dp, height = 280.dp)
-                    .clip(shape = RoundedCornerShape(MaterialTheme.shapes.medium.topEnd)),
+                    .clip(shape = MaterialTheme.shapes.medium),
                 contentScale = ContentScale.Crop,
             )
 
@@ -179,9 +177,9 @@ fun CreateJournalContent(
 @Composable
 private fun CreateJournalContentPreview(modifier: Modifier = Modifier) {
     LifetimeJournalTheme {
-        Column(modifier = Modifier.background(color = Color.White).padding(10.dp)) {
+        Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(10.dp)) {
             CreateJournalScreen(
-                state = CreateJournalState().copy(
+                state = CreateJournalState(
                     title = "Title",
                     description = "Description",
                     isLoading = false,
