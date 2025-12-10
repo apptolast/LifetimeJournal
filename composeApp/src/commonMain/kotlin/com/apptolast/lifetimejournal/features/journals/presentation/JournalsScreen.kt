@@ -246,6 +246,7 @@ private fun EmptyState(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp)
+            .padding(bottom = 60.dp)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
                 shape = MaterialTheme.shapes.large,

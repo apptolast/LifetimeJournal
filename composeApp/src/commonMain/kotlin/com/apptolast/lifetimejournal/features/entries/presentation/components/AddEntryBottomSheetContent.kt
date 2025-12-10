@@ -28,14 +28,22 @@ import com.apptolast.lifetimejournal.resources.entries_add_entry_create_entry_bu
 import com.apptolast.lifetimejournal.resources.entries_add_entry_description_text_field
 import com.apptolast.lifetimejournal.resources.entries_add_entry_fab_button
 import com.apptolast.lifetimejournal.resources.entries_add_entry_title_text_field
+import com.apptolast.lifetimejournal.resources.entries_edit_entry_save_button
+import com.apptolast.lifetimejournal.resources.entries_edit_entry_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (String, String) -> Unit = { _, _ -> }) {
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+fun AddEntryBottomSheetContent(
+    modifier: Modifier = Modifier,
+    initialTitle: String = "",
+    initialDescription: String = "",
+    isEditMode: Boolean = false,
+    onCreateEntry: (String, String) -> Unit = { _, _ -> },
+) {
+    var title by remember { mutableStateOf(initialTitle) }
+    var description by remember { mutableStateOf(initialDescription) }
 
     Column(
         modifier = modifier.fillMaxWidth().padding(16.dp),
@@ -43,7 +51,7 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
         verticalArrangement = Arrangement.Top,
     ) {
         Text(
-            text = stringResource(Res.string.entries_add_entry_fab_button),
+            text = if (isEditMode) stringResource(Res.string.entries_edit_entry_title) else stringResource(Res.string.entries_add_entry_fab_button),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
@@ -92,7 +100,7 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
             ),
         ) {
             Text(
-                text = stringResource(Res.string.entries_add_entry_create_entry_button),
+                text = if (isEditMode) stringResource(Res.string.entries_edit_entry_save_button) else stringResource(Res.string.entries_add_entry_create_entry_button),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(vertical = 8.dp),
             )

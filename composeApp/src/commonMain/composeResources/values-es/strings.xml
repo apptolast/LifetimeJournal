@@ -17,4 +17,6 @@
     <string name="entries_add_entry_title_text_field">Título</string>
     <string name="entries_add_entry_description_text_field">Descripción</string>
     <string name="entries_add_entry_create_entry_button">Crear Entrada</string>
+    <string name="entries_edit_entry_title">Editar Entrada</string>
+    <string name="entries_edit_entry_save_button">Guardar Entrada</string>
 </resources>

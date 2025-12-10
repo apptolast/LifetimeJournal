@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -27,11 +28,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +55,6 @@ import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
-import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.entries.data.EntriesState
 import com.apptolast.lifetimejournal.features.entries.presentation.components.AddEntryBottomSheetContent
 import kotlinx.coroutines.launch
@@ -89,13 +92,14 @@ fun EntriesScreen(
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var entryToEdit by remember { mutableStateOf<JournalEntry?>(null) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            BasicTopBar(
+            EntriesTopBar(
                 title = state.journal?.title ?: "",
-                centerTitle = true,
+                description = state.journal?.description ?: "",
                 onBack = onBack,
             )
         },
@@ -119,20 +123,35 @@ fun EntriesScreen(
             entries = state.journal?.entries ?: emptyList(),
             modifier = Modifier.padding(paddingValues),
             onDeleteEntry = { entry -> onEvent(UiEvent.DeleteEntry(entry)) },
-            onEditEntry = { entry -> onEvent(UiEvent.UpdateEntry(entry)) },
+            onEditEntry = { entry ->
+                entryToEdit = entry
+                showBottomSheet = true
+            },
         )
 
         if (showBottomSheet) {
             ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
+                onDismissRequest = {
+                    showBottomSheet = false
+                    entryToEdit = null
+                },
                 sheetState = sheetState,
             ) {
                 AddEntryBottomSheetContent(
+                    initialTitle = entryToEdit?.title ?: "",
+                    initialDescription = entryToEdit?.description ?: "",
+                    isEditMode = entryToEdit != null,
                     onCreateEntry = { title, description ->
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
                                 showBottomSheet = false
-                                onEvent(UiEvent.AddEntry(title, description, state.selectedDate))
+                                val editingEntry = entryToEdit
+                                if (editingEntry != null) {
+                                    onEvent(UiEvent.UpdateEntry(editingEntry.copy(title = title, description = description)))
+                                } else {
+                                    onEvent(UiEvent.AddEntry(title, description, state.selectedDate))
+                                }
+                                entryToEdit = null
                             }
                         }
                     },
@@ -279,12 +298,65 @@ private fun EntryCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EntriesTopBar(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
+) {
+    TopAppBar(
+        title = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (description.isNotBlank()) {
+                    Text(
+                        text = description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        },
+        navigationIcon = {
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null,
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+        ),
+        modifier = modifier,
+    )
+}
+
 @Composable
 private fun EntriesEmptyState(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp)
+            .padding(bottom = 60.dp)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
                 shape = MaterialTheme.shapes.large,
@@ -318,7 +390,7 @@ private fun EntriesEmptyState(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Tap the '+' button to add your first entry to this diary.",
+                text = "Tap the '＋' button to add your first entry to this diary.",
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
