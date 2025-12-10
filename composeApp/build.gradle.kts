@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -23,9 +22,9 @@ kotlin {
         }
     }
 
-        iosX64()
-        iosArm64()
-        iosSimulatorArm64()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 //    listOf(
 //    ).forEach { iosTarget ->
 //        iosTarget.binaries.framework {
@@ -80,6 +79,9 @@ kotlin {
 
             // Calendar
             implementation("com.kizitonwose.calendar:compose-multiplatform:2.6.2")
+
+            // DateTime
+            implementation(libs.kotlinx.datetime)
 
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)

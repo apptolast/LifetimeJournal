@@ -120,7 +120,7 @@ fun JournalsContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         // Header
         JournalsHeader(onSettingsClick = onSettingsClick)
@@ -140,10 +140,6 @@ fun JournalsContent(
                         journal = journal,
                         onClick = { onJournalClick(journal) },
                     )
-                }
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    EmptyState()
                 }
             }
         }
@@ -218,16 +214,21 @@ private fun JournalCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = if (journal.entries.isNotEmpty()) {
-                        "${journal.entries.size} entries"
-                    } else {
-                        journal.description
-                    },
+                    text = journal.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
+                if (journal.entries.isNotEmpty()) {
+                    Text(
+                        text = "${journal.entries.size} entries",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
 
             Icon(
@@ -357,7 +358,7 @@ val journalMock = Journal(
 private val journalMock2 = Journal(
     id = "2",
     title = "Mommy & Me",
-    description = "34 entries",
+    description = "Besties",
     cover = "https://fastly.picsum.photos/id/238/200/280.jpg",
     entries = mutableListOf(),
 )
@@ -365,7 +366,7 @@ private val journalMock2 = Journal(
 private val journalMock3 = Journal(
     id = "3",
     title = "Baby's First Year",
-    description = "Last updated: 2 weeks ago",
+    description = "Best decision ever",
     cover = "https://fastly.picsum.photos/id/239/200/280.jpg",
     entries = mutableListOf(),
 )
