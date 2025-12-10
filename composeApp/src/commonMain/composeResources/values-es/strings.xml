@@ -12,11 +12,23 @@
     <string name="create_journal_description">Descripción</string>
     <string name="create_journal_button">Crear diario</string>
 
-    <!-- Create Journal -->
+    <!-- Entries Journal -->
     <string name="entries_add_entry_button">Añadir Entrada</string>
     <string name="entries_add_entry_title_text_field">Título</string>
     <string name="entries_add_entry_description_text_field">Descripción</string>
     <string name="entries_add_entry_create_entry_button">Crear Entrada</string>
     <string name="entries_edit_entry_title">Editar Entrada</string>
     <string name="entries_edit_entry_save_button">Guardar Entrada</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Perfil y Ajustes</string>
+    <string name="settings_section_account">Cuenta</string>
+    <string name="settings_change_name">Cambiar Nombre</string>
+    <string name="settings_change_password">Cambiar Contraseña</string>
+    <string name="settings_manage_subscription">Gestionar Suscripción</string>
+    <string name="settings_section_support">Soporte</string>
+    <string name="settings_privacy_policy">Política de Privacidad</string>
+    <string name="settings_support_developer">Apoya al Desarrollador</string>
+    <string name="settings_logout">Cerrar Sesión</string>
+    <string name="settings_delete_account">Eliminar Cuenta</string>
 </resources>

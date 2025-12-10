@@ -10,6 +10,7 @@ import com.apptolast.lifetimejournal.features.createjournal.presentation.CreateJ
 import com.apptolast.lifetimejournal.features.entries.presentation.EntriesScreenRoot
 import com.apptolast.lifetimejournal.features.journals.presentation.JournalsScreenRoot
 import com.apptolast.lifetimejournal.features.login.presentation.LoginScreenRoot
+import com.apptolast.lifetimejournal.features.privacypolicy.presentation.PrivacyPolicyScreenRoot
 import com.apptolast.lifetimejournal.features.settings.presentation.SettingScreenRoot
 
 @Composable
@@ -45,6 +46,9 @@ fun Navigation() {
                     }
                 },
                 onBack = navController::popBackStack,
+                onPrivacyPolicy = {
+                    navController.navigate(PrivacyPolicyDestination)
+                },
             )
         }
 
@@ -62,6 +66,12 @@ fun Navigation() {
                 navigateTo = { destination ->
                     navController.navigate(destination)
                 },
+                onBack = { navController.popBackStack() },
+            )
+        }
+
+        composable<PrivacyPolicyDestination> {
+            PrivacyPolicyScreenRoot(
                 onBack = { navController.popBackStack() },
             )
         }
