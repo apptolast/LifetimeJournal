@@ -13,7 +13,7 @@
     <string name="create_journal_button">Crear diario</string>
 
     <!-- Entries Journal -->
-    <string name="entries_add_entry_button">Añadir Entrada</string>
+    <string name="entries_add_entry_button">Nueva Entrada</string>
     <string name="entries_add_entry_title_text_field">Título</string>
     <string name="entries_add_entry_description_text_field">Descripción</string>
     <string name="entries_add_entry_create_entry_button">Crear Entrada</string>

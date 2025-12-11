@@ -14,9 +14,6 @@ object SettingDestination : Destination
 object JournalDestination : Destination
 
 @Serializable
-object CreateJournalDestination : Destination
-
-@Serializable
 data class EntriesDestination(val journalId: String?) : Destination
 
 @Serializable

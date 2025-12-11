@@ -24,15 +24,22 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,7 +55,6 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
 import com.apptolast.lifetimejournal.core.navigation.SettingDestination
@@ -56,6 +62,8 @@ import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.User
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
+import com.apptolast.lifetimejournal.features.journals.presentation.components.AddJournalBottomSheetContent
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -72,21 +80,28 @@ fun JournalsScreenRoot(
         user = user,
         journals = journals,
         navigateTo = navigateTo,
+        onCreateJournal = viewModel::createJournal,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JournalsScreen(
     state: JournalsState,
     user: User?,
     journals: List<Journal>,
     navigateTo: (Destination) -> Unit = {},
+    onCreateJournal: (String, String) -> Unit = { _, _ -> },
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateTo(CreateJournalDestination) },
+                onClick = { showBottomSheet = true },
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -107,6 +122,24 @@ fun JournalsScreen(
             },
             onSettingsClick = { navigateTo(SettingDestination) },
         )
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = sheetState,
+            ) {
+                AddJournalBottomSheetContent(
+                    onCreateJournal = { title, description ->
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet = false
+                                onCreateJournal(title, description)
+                            }
+                        }
+                    },
+                )
+            }
+        }
     }
 }
 

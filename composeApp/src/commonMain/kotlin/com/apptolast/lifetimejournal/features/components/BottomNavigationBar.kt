@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.JournalDestination
 import com.apptolast.lifetimejournal.core.navigation.SettingDestination
@@ -43,8 +42,8 @@ sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val la
         label = Res.string.bottom_nav_home_label,
     )
 
-    object CreateBook : BottomNavItem(
-        route = CreateJournalDestination,
+    object Books : BottomNavItem(
+        route = JournalDestination,
         icon = Icons.Default.CollectionsBookmark,
         label = Res.string.bottom_nav_books_label,
     )
@@ -58,7 +57,7 @@ sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val la
 
 val items = listOf(
     BottomNavItem.Home,
-    BottomNavItem.CreateBook,
+    BottomNavItem.Books,
     BottomNavItem.Settings,
 )
 
