@@ -281,15 +281,18 @@ private fun ProfileHeader(
             val imageModifier = Modifier
                 .size(100.dp)
                 .shadow(4.dp, CircleShape) // Elevación de 4dp
-                .background(color = MaterialTheme.colorScheme.surfaceContainerHighest, shape = CircleShape)
-                .border(4.dp, Color.White, CircleShape) // Borde blanco de 2dp
                 .clip(CircleShape)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    shape = CircleShape,
+                )
+                .border(4.dp, Color.White, CircleShape) // Borde blanco de 2dp
 
             if (user?.photoUrl?.isNotBlank() == true) {
                 AsyncImage(
                     model = user.photoUrl,
                     contentDescription = null,
-                    modifier = imageModifier,
+                    modifier = imageModifier.padding(4.dp),
                     contentScale = ContentScale.Crop,
                 )
             } else {

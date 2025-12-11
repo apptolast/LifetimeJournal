@@ -48,6 +48,9 @@ kotlin {
 
             // Firebase
             implementation(project.dependencies.platform(libs.firebase.bom))
+
+            // Ktor engine for Android
+            implementation(libs.ktor.client.okhttp)
         }
 
         commonMain.dependencies {
@@ -77,6 +80,9 @@ kotlin {
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
 
+            // Ktor (required for Coil network)
+            implementation(libs.ktor.client.core)
+
             // Calendar
             implementation("com.kizitonwose.calendar:compose-multiplatform:2.6.2")
 
@@ -87,6 +93,11 @@ kotlin {
             implementation(libs.kotzilla.sdk)
 
             api(projects.shared)
+        }
+
+        iosMain.dependencies {
+            // Ktor engine for iOS
+            implementation(libs.ktor.client.darwin)
         }
     }
 
