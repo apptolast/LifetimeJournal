@@ -1,5 +1,6 @@
 package com.apptolast.lifetimejournal.features.storybooks.presentation.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,12 +22,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -94,6 +95,13 @@ fun StoryBookDetailScreen(
                 centerTitle = false,
                 onBack = onBack,
                 actions = {
+                    IconButton(onClick = { /* TODO: Implement share */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Share",
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
                     IconButton(onClick = { onEvent(StoryBookDetailEvent.DeleteStoryBook) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -103,6 +111,35 @@ fun StoryBookDetailScreen(
                     }
                 },
             )
+        },
+        bottomBar = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(16.dp),
+            ) {
+                Button(
+                    onClick = { /* TODO: Implement PDF download */ },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Download,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                    Text(
+                        text = "  Download PDF",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    )
+                }
+            }
         },
         modifier = modifier,
     ) { paddingValues ->
@@ -119,114 +156,15 @@ fun StoryBookDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(paddingValues),
             ) {
-                // Cover Image
-                if (storyBook.coverUrl.isNotBlank()) {
-                    AsyncImage(
-                        model = storyBook.coverUrl,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-//                else {
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(200.dp)
-//                            .background(MaterialTheme.colorScheme.primaryContainer),
-//                        contentAlignment = Alignment.Center,
-//                    ) {
-//                        Text(
-//                            text = "📖",
-//                            style = MaterialTheme.typography.displayLarge,
-//                        )
-//                    }
-//                }
-
+                // AI Modification Section (fixed at top)
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                 ) {
-                    // Title
-                    Text(
-                        text = storyBook.title,
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    // Description
-                    Text(
-                        text = storyBook.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Date Range
-                    Text(
-                        text = "${formatDate(storyBook.startDate)} – ${formatDate(storyBook.endDate)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // Generated Story Text
-                    Text(
-                        text = storyBook.generatedText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.5,
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // Download PDF Button
-                    Button(
-                        onClick = { /* TODO: Implement PDF download */ },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Download,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                        )
-                        Text(
-                            text = "  Download PDF",
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(vertical = 8.dp),
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Share Button
-                    SmallFloatingActionButton(
-                        onClick = { /* TODO: Implement share */ },
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.primary,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = "Share",
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // AI Modification Section
                     Text(
                         text = "Request AI Modifications",
                         style = MaterialTheme.typography.titleMedium,
@@ -251,7 +189,6 @@ fun StoryBookDetailScreen(
                                     fontStyle = FontStyle.Italic,
                                 )
                             },
-                            singleLine = true,
                             shape = MaterialTheme.shapes.medium,
                             enabled = !state.isModifying,
                         )
@@ -285,8 +222,68 @@ fun StoryBookDetailScreen(
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
+                }
 
-                    Spacer(modifier = Modifier.height(32.dp))
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+                // Scrollable content
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    // Cover Image
+                    if (storyBook.coverUrl.isNotBlank()) {
+                        AsyncImage(
+                            model = storyBook.coverUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                    ) {
+                        // Title
+                        Text(
+                            text = storyBook.title,
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        // Description
+                        Text(
+                            text = storyBook.description,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Date Range
+                        Text(
+                            text = "${formatDate(storyBook.startDate)} – ${formatDate(storyBook.endDate)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        // Generated Story Text
+                        Text(
+                            text = storyBook.generatedText,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.5,
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }
@@ -320,6 +317,16 @@ fun StoryBookDetailScreenPreview() {
                     createdAt = Clock.System.todayIn(currentSystemDefault()),
                 ),
             ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun StoryBooksListScreenPreview() {
+    LifetimeJournalTheme {
+        StoryBookDetailScreen(
+            state = StoryBookDetailState(),
         )
     }
 }

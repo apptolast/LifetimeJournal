@@ -1,5 +1,6 @@
 package com.apptolast.lifetimejournal.features.storybooks.presentation.create
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,15 +39,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.StoryBookDetailDestination
+import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.storybooks.data.CreateStoryBookState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun CreateStoryBookScreenRoot(
@@ -88,7 +92,7 @@ fun CreateStoryBookScreen(
             CreateStoryBookEvent.SelectDateRange(
                 startMillis = dateRangePickerState.selectedStartDateMillis,
                 endMillis = dateRangePickerState.selectedEndDateMillis,
-            )
+            ),
         )
     }
 
@@ -100,6 +104,51 @@ fun CreateStoryBookScreen(
                 centerTitle = false,
                 onBack = onBack,
             )
+        },
+        bottomBar = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(16.dp),
+            ) {
+                Button(
+                    onClick = { onEvent(CreateStoryBookEvent.GenerateBook) },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = state.selectedJournal != null &&
+                        state.startDateMillis != null &&
+                        state.endDateMillis != null &&
+                        !state.isGenerating,
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                ) {
+                    if (state.isGenerating) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            strokeWidth = 2.dp,
+                        )
+                    } else {
+                        Text(
+                            text = "Generate Book",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                        )
+                    }
+                }
+
+                if (state.error != null) {
+                    Text(
+                        text = state.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
+            }
         },
         modifier = modifier,
     ) { paddingValues ->
@@ -127,7 +176,7 @@ fun CreateStoryBookScreen(
 
             DateRangePicker(
                 state = dateRangePickerState,
-                modifier = Modifier.height(400.dp),
+                modifier = Modifier.height(340.dp).clip(shape = MaterialTheme.shapes.extraLarge),
                 title = null,
                 headline = null,
                 showModeToggle = false,
@@ -146,6 +195,7 @@ fun CreateStoryBookScreen(
 
             // Step 3: Describe the Story Style
             StepHeader(number = 3, title = "Describe the Story Style")
+
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
@@ -170,46 +220,6 @@ fun CreateStoryBookScreen(
                 modifier = Modifier.padding(top = 8.dp),
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Generate Button
-            Button(
-                onClick = { onEvent(CreateStoryBookEvent.GenerateBook) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = state.selectedJournal != null &&
-                    state.startDateMillis != null &&
-                    state.endDateMillis != null &&
-                    !state.isGenerating,
-                shape = MaterialTheme.shapes.medium,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-            ) {
-                if (state.isGenerating) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp,
-                    )
-                } else {
-                    Text(
-                        text = "Generate Book",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(vertical = 8.dp),
-                    )
-                }
-            }
-
-            if (state.error != null) {
-                Text(
-                    text = state.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -227,13 +237,13 @@ private fun StepHeader(
     ) {
         Text(
             text = "①②③④⑤⑥⑦⑧⑨⑩"[number - 1].toString(),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             text = " $title",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -299,5 +309,15 @@ private fun JournalDropdown(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun StoryBooksListScreenPreview() {
+    LifetimeJournalTheme {
+        CreateStoryBookScreen(
+            state = CreateStoryBookState(),
+        )
     }
 }
