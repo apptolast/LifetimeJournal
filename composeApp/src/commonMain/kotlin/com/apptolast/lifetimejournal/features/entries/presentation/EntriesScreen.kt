@@ -23,6 +23,7 @@ import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,6 +58,7 @@ import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
 import com.apptolast.lifetimejournal.features.entries.data.EntriesState
 import com.apptolast.lifetimejournal.features.entries.presentation.components.AddEntryBottomSheetContent
+import com.apptolast.lifetimejournal.features.entries.presentation.components.EditJournalBottomSheetContent
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -72,6 +74,14 @@ fun EntriesScreenRoot(
 
     LaunchedEffect(true) {
         viewModel.init(journalId)
+    }
+
+    LaunchedEffect(true) {
+        viewModel.navigationEvent.collect { event ->
+            when (event) {
+                NavigationEvent.NavigateBack -> onBack()
+            }
+        }
     }
 
     EntriesScreen(
@@ -91,7 +101,9 @@ fun EntriesScreen(
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var showEntryBottomSheet by remember { mutableStateOf(false) }
+    var showJournalEditBottomSheet by remember { mutableStateOf(false) }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
     var entryToEdit by remember { mutableStateOf<JournalEntry?>(null) }
 
     Scaffold(
@@ -101,11 +113,13 @@ fun EntriesScreen(
                 title = state.journal?.title ?: "",
                 description = state.journal?.description ?: "",
                 onBack = onBack,
+                onEditJournal = { showJournalEditBottomSheet = true },
+                onDeleteJournal = { showDeleteConfirmation = true },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showBottomSheet = true },
+                onClick = { showEntryBottomSheet = true },
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -125,14 +139,14 @@ fun EntriesScreen(
             onDeleteEntry = { entry -> onEvent(UiEvent.DeleteEntry(entry)) },
             onEditEntry = { entry ->
                 entryToEdit = entry
-                showBottomSheet = true
+                showEntryBottomSheet = true
             },
         )
 
-        if (showBottomSheet) {
+        if (showEntryBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = {
-                    showBottomSheet = false
+                    showEntryBottomSheet = false
                     entryToEdit = null
                 },
                 sheetState = sheetState,
@@ -144,7 +158,7 @@ fun EntriesScreen(
                     onCreateEntry = { title, description ->
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
-                                showBottomSheet = false
+                                showEntryBottomSheet = false
                                 val editingEntry = entryToEdit
                                 if (editingEntry != null) {
                                     onEvent(UiEvent.UpdateEntry(editingEntry.copy(title = title, description = description)))
@@ -157,6 +171,56 @@ fun EntriesScreen(
                     },
                 )
             }
+        }
+
+        if (showJournalEditBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showJournalEditBottomSheet = false },
+                sheetState = sheetState,
+            ) {
+                EditJournalBottomSheetContent(
+                    initialTitle = state.journal?.title ?: "",
+                    initialDescription = state.journal?.description ?: "",
+                    onSave = { title, description ->
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showJournalEditBottomSheet = false
+                                onEvent(UiEvent.UpdateJournal(title, description))
+                            }
+                        }
+                    },
+                )
+            }
+        }
+
+        if (showDeleteConfirmation) {
+            AlertDialog(
+                onDismissRequest = { showDeleteConfirmation = false },
+                title = {
+                    Text(text = "Delete Diary")
+                },
+                text = {
+                    Text(text = "Are you sure you want to delete this diary? This action cannot be undone and all entries will be lost.")
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showDeleteConfirmation = false
+                            onEvent(UiEvent.DeleteJournal)
+                        },
+                    ) {
+                        Text(
+                            text = "Delete",
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteConfirmation = false }) {
+                        Text(text = "Cancel")
+                    }
+                },
+            )
         }
     }
 }
@@ -305,6 +369,8 @@ private fun EntriesTopBar(
     description: String,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
+    onEditJournal: () -> Unit = {},
+    onDeleteJournal: () -> Unit = {},
 ) {
     TopAppBar(
         title = {
@@ -339,6 +405,22 @@ private fun EntriesTopBar(
                         contentDescription = null,
                     )
                 }
+            }
+        },
+        actions = {
+            IconButton(onClick = onEditJournal) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit diary",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+            IconButton(onClick = onDeleteJournal) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete diary",
+                    tint = MaterialTheme.colorScheme.error,
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

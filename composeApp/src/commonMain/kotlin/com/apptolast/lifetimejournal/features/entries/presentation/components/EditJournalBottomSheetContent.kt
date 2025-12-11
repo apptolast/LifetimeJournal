@@ -1,22 +1,18 @@
 package com.apptolast.lifetimejournal.features.entries.presentation.components
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,43 +23,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.resources.Res
-import com.apptolast.lifetimejournal.resources.entries_add_entry_create_entry_button
-import com.apptolast.lifetimejournal.resources.entries_add_entry_description_text_field
-import com.apptolast.lifetimejournal.resources.entries_add_entry_fab_button
-import com.apptolast.lifetimejournal.resources.entries_add_entry_title_text_field
-import com.apptolast.lifetimejournal.resources.entries_edit_entry_save_button
-import com.apptolast.lifetimejournal.resources.entries_edit_entry_title
+import com.apptolast.lifetimejournal.resources.create_journal_description
+import com.apptolast.lifetimejournal.resources.create_journal_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEntryBottomSheetContent(
+fun EditJournalBottomSheetContent(
+    initialTitle: String,
+    initialDescription: String,
     modifier: Modifier = Modifier,
-    initialTitle: String = "",
-    initialDescription: String = "",
-    isEditMode: Boolean = false,
-    onCreateEntry: (String, String) -> Unit = { _, _ -> },
+    onSave: (String, String) -> Unit = { _, _ -> },
 ) {
     var title by remember { mutableStateOf(initialTitle) }
     var description by remember { mutableStateOf(initialDescription) }
 
-    val lineCount by remember(description) {
-        derivedStateOf { description.count { it == '\n' } + 1 }
-    }
-    val isExpanded = lineCount > 5
-    val descriptionHeight = if (isExpanded) 300.dp else 150.dp
-
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .animateContentSize()
-            .padding(16.dp),
+        modifier = modifier.fillMaxWidth().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         Text(
-            text = if (isEditMode) stringResource(Res.string.entries_edit_entry_title) else stringResource(Res.string.entries_add_entry_fab_button),
+            text = "Edit Diary",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
@@ -76,7 +57,7 @@ fun AddEntryBottomSheetContent(
             onValueChange = { title = it },
             label = {
                 Text(
-                    text = stringResource(Res.string.entries_add_entry_title_text_field),
+                    text = stringResource(Res.string.create_journal_title),
                     style = MaterialTheme.typography.bodyLarge,
                 )
             },
@@ -92,21 +73,18 @@ fun AddEntryBottomSheetContent(
             onValueChange = { description = it },
             label = {
                 Text(
-                    text = stringResource(Res.string.entries_add_entry_description_text_field),
+                    text = stringResource(Res.string.create_journal_description),
                     style = MaterialTheme.typography.bodyLarge,
                 )
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 150.dp, max = 350.dp)
-                .height(descriptionHeight),
+            modifier = Modifier.fillMaxWidth().height(120.dp),
             shape = MaterialTheme.shapes.small,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { onCreateEntry(title, description) },
+            onClick = { onSave(title, description) },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(
@@ -115,7 +93,7 @@ fun AddEntryBottomSheetContent(
             ),
         ) {
             Text(
-                text = if (isEditMode) stringResource(Res.string.entries_edit_entry_save_button) else stringResource(Res.string.entries_add_entry_create_entry_button),
+                text = "Save",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(vertical = 8.dp),
             )
@@ -123,11 +101,14 @@ fun AddEntryBottomSheetContent(
     }
 }
 
-// Add preview
 @Preview
 @Composable
-fun AddEntryBottomSheetContentPreview() {
+fun EditJournalBottomSheetContentPreview() {
     LifetimeJournalTheme {
-        AddEntryBottomSheetContent(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface))
+        EditJournalBottomSheetContent(
+            initialTitle = "My Journal",
+            initialDescription = "Description of my journal",
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.surface),
+        )
     }
 }

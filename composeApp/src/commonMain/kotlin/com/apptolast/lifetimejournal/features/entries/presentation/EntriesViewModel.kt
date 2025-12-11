@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
 import com.apptolast.lifetimejournal.data.repositories.JournalRepository
 import com.apptolast.lifetimejournal.features.entries.data.EntriesState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -25,6 +27,9 @@ class EntriesViewModel :
 
     private val _state = MutableStateFlow(EntriesState())
     val state = _state.asStateFlow()
+
+    private val _navigationEvent = Channel<NavigationEvent>()
+    val navigationEvent = _navigationEvent.receiveAsFlow()
 
     fun init(journalId: String?) = viewModelScope.launch {
         if (journalId == null) {
@@ -88,6 +93,14 @@ class EntriesViewModel :
 
             is UiEvent.DeleteEntry -> {
                 deleteEntry(event.entry)
+            }
+
+            is UiEvent.UpdateJournal -> {
+                updateJournal(event.title, event.description)
+            }
+
+            is UiEvent.DeleteJournal -> {
+                deleteJournal()
             }
 
             is UiEvent.ClearError -> {
@@ -182,6 +195,64 @@ class EntriesViewModel :
             }
         }
     }
+
+    private suspend fun updateJournal(title: String, description: String) {
+        val currentJournal = _state.value.journal ?: return
+
+        if (title.isBlank()) {
+            _state.update { it.copy(error = "Title cannot be empty") }
+            return
+        }
+
+        _state.update { it.copy(isLoading = true) }
+
+        try {
+            val updatedJournal = currentJournal.copy(
+                title = title.trim(),
+                description = description.trim(),
+            )
+            journalRepository.updateJournal(updatedJournal)
+
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = null,
+                )
+            }
+        } catch (e: Exception) {
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = "Error updating journal: ${e.message}",
+                )
+            }
+        }
+    }
+
+    private suspend fun deleteJournal() {
+        val currentJournal = _state.value.journal ?: return
+
+        _state.update { it.copy(isLoading = true) }
+
+        try {
+            journalRepository.deleteJournal(currentJournal)
+            _navigationEvent.send(NavigationEvent.NavigateBack)
+        } catch (e: Exception) {
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    error = "Error deleting journal: ${e.message}",
+                )
+            }
+        }
+    }
+}
+
+// /////////////////////////////////////////////////////////////////////////
+// Navigation Events
+// /////////////////////////////////////////////////////////////////////////
+sealed interface NavigationEvent {
+    data object NavigateBack : NavigationEvent
 }
 
 // /////////////////////////////////////////////////////////////////////////
@@ -193,5 +264,7 @@ sealed interface UiEvent {
     data class DeleteEntry(val entry: JournalEntry) : UiEvent
     data class SelectDate(val date: LocalDate) : UiEvent
     data class CalendarTitle(val value: String) : UiEvent
+    data class UpdateJournal(val title: String, val description: String) : UiEvent
+    data object DeleteJournal : UiEvent
     data object ClearError : UiEvent
 }
