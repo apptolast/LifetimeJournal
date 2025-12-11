@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -35,8 +34,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,6 +53,7 @@ import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
+import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.entries.data.EntriesState
 import com.apptolast.lifetimejournal.features.entries.presentation.components.AddEntryBottomSheetContent
 import com.apptolast.lifetimejournal.features.entries.presentation.components.EditJournalBottomSheetContent
@@ -109,12 +107,26 @@ fun EntriesScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            EntriesTopBar(
+            BasicTopBar(
                 title = state.journal?.title ?: "",
-                description = state.journal?.description ?: "",
+                subtitle = state.journal?.description?.takeIf { it.isNotBlank() },
+                centerTitle = false,
                 onBack = onBack,
-                onEditJournal = { showJournalEditBottomSheet = true },
-                onDeleteJournal = { showDeleteConfirmation = true },
+                actions = {
+                    IconButton(onClick = { showJournalEditBottomSheet = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit diary",
+                        )
+                    }
+                    IconButton(onClick = { showDeleteConfirmation = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete diary",
+                            tint = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                },
             )
         },
         floatingActionButton = {
@@ -362,83 +374,12 @@ private fun EntryCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun EntriesTopBar(
-    title: String,
-    description: String,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-    onEditJournal: () -> Unit = {},
-    onDeleteJournal: () -> Unit = {},
-) {
-    TopAppBar(
-        title = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                if (description.isNotBlank()) {
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            }
-        },
-        navigationIcon = {
-            if (onBack != null) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null,
-                    )
-                }
-            }
-        },
-        actions = {
-            IconButton(onClick = onEditJournal) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit diary",
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-            IconButton(onClick = onDeleteJournal) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete diary",
-                    tint = MaterialTheme.colorScheme.error,
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-        ),
-        modifier = modifier,
-    )
-}
-
 @Composable
 private fun EntriesEmptyState(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .padding(bottom = 60.dp)
+            .padding(bottom = 80.dp)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
                 shape = MaterialTheme.shapes.large,

@@ -17,7 +17,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Lock
@@ -27,16 +26,12 @@ import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,7 +42,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,6 +51,7 @@ import coil3.compose.AsyncImage
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.User
+import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.settings.data.SettingState
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.settings_change_name
@@ -77,7 +72,7 @@ fun SettingScreenRoot(
     viewModel: SettingViewModel = viewModel { SettingViewModel() },
     navigateTo: (Destination, NavOptions?) -> Unit = { _, _ -> },
     navigateToLogin: () -> Unit = {},
-    onBack: () -> Unit = {},
+    onBack: (() -> Unit)? = null,
     onPrivacyPolicy: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -101,7 +96,7 @@ fun SettingScreenRoot(
 fun SettingScreen(
     state: SettingState,
     modifier: Modifier = Modifier,
-    onBack: () -> Unit = {},
+    onBack: (() -> Unit)? = null,
     signOut: () -> Unit = {},
     deleteAccount: () -> Unit = {},
     onChangeName: () -> Unit = {},
@@ -112,7 +107,7 @@ fun SettingScreen(
 ) {
     Scaffold(
         topBar = {
-            SettingsTopBar(
+            BasicTopBar(
                 title = stringResource(Res.string.settings_title),
                 onBack = onBack,
             )
@@ -133,39 +128,6 @@ fun SettingScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SettingsTopBar(
-    title: String,
-    modifier: Modifier = Modifier,
-    onBack: () -> Unit = {},
-) {
-    TopAppBar(
-        title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-        ),
-        modifier = modifier,
-    )
-}
-
 @Composable
 fun SettingContent(
     user: User?,
@@ -181,11 +143,10 @@ fun SettingContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(state = rememberScrollState())
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
 
         // Profile section
         ProfileHeader(user = user)
@@ -230,14 +191,14 @@ fun SettingContent(
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(36.dp))
 
         // Logout button
         Button(
             onClick = signOut,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -246,7 +207,7 @@ fun SettingContent(
         ) {
             Text(
                 text = stringResource(Res.string.settings_logout),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(vertical = 8.dp),
             )
         }
@@ -317,7 +278,7 @@ private fun ProfileHeader(
 
         Text(
             text = user?.name ?: "",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
 
@@ -325,7 +286,7 @@ private fun ProfileHeader(
 
         Text(
             text = user?.email ?: "",
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
@@ -349,7 +310,7 @@ private fun SettingsSection(
 
         Column(
             modifier = Modifier
-                .clip(MaterialTheme.shapes.extraLarge)
+                .clip(shape = MaterialTheme.shapes.extraLarge)
                 .fillMaxWidth()
                 .background(
                     color = MaterialTheme.colorScheme.surface,
@@ -386,7 +347,7 @@ private fun SettingsItem(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f),
             maxLines = 1,

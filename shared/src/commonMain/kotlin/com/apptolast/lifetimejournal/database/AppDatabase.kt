@@ -8,14 +8,16 @@ import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.apptolast.lifetimejournal.database.dao.JournalDao
 import com.apptolast.lifetimejournal.database.dao.JournalEntryDao
+import com.apptolast.lifetimejournal.database.dao.StoryBookDao
 import com.apptolast.lifetimejournal.database.entities.JournalEntity
 import com.apptolast.lifetimejournal.database.entities.JournalEntryEntity
+import com.apptolast.lifetimejournal.database.entities.StoryBookEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
 @Database(
-    entities = [JournalEntity::class, JournalEntryEntity::class],
-    version = 1,
+    entities = [JournalEntity::class, JournalEntryEntity::class, StoryBookEntity::class],
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -23,6 +25,7 @@ import kotlinx.coroutines.IO
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getJournalDao(): JournalDao
     abstract fun getJournalEntryDao(): JournalEntryDao
+    abstract fun getStoryBookDao(): StoryBookDao
 }
 
 // The Room compiler generates the `actual` implementations.
@@ -36,7 +39,7 @@ fun getRoomDatabase(
 ): AppDatabase {
     return builder
         .addMigrations()
-        .fallbackToDestructiveMigrationOnDowngrade(true)
+        .fallbackToDestructiveMigration(true)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
@@ -44,3 +47,4 @@ fun getRoomDatabase(
 
 fun getJournalDao(appDatabase: AppDatabase): JournalDao = appDatabase.getJournalDao()
 fun getJournalEntryDao(appDatabase: AppDatabase): JournalEntryDao = appDatabase.getJournalEntryDao()
+fun getStoryBookDao(appDatabase: AppDatabase): StoryBookDao = appDatabase.getStoryBookDao()

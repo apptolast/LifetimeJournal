@@ -21,13 +21,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -57,10 +55,10 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.EntriesDestination
-import com.apptolast.lifetimejournal.core.navigation.SettingDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.User
+import com.apptolast.lifetimejournal.features.components.BasicTopBar
 import com.apptolast.lifetimejournal.features.journals.data.JournalsState
 import com.apptolast.lifetimejournal.features.journals.presentation.components.AddJournalBottomSheetContent
 import kotlinx.coroutines.launch
@@ -98,7 +96,9 @@ fun JournalsScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            BasicTopBar(title = "My Diaries")
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { showBottomSheet = true },
@@ -113,6 +113,7 @@ fun JournalsScreen(
                 )
             }
         },
+        containerColor = MaterialTheme.colorScheme.background,
     ) { paddingValues ->
         JournalsContent(
             journals = journals,
@@ -120,7 +121,6 @@ fun JournalsScreen(
             onJournalClick = { journal ->
                 navigateTo(EntriesDestination(journal.id))
             },
-            onSettingsClick = { navigateTo(SettingDestination) },
         )
 
         if (showBottomSheet) {
@@ -148,17 +148,12 @@ fun JournalsContent(
     journals: List<Journal>,
     modifier: Modifier = Modifier,
     onJournalClick: (Journal) -> Unit = {},
-    onSettingsClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
     ) {
-        // Header
-        JournalsHeader(onSettingsClick = onSettingsClick)
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         // Journals List or Empty State
         if (journals.isEmpty()) {
@@ -175,32 +170,6 @@ fun JournalsContent(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun JournalsHeader(
-    modifier: Modifier = Modifier,
-    onSettingsClick: () -> Unit = {},
-) {
-    Box(
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = "My Diaries",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.align(Alignment.Center),
-        )
-        IconButton(
-            onClick = onSettingsClick,
-            modifier = Modifier.align(Alignment.CenterEnd),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }
@@ -278,8 +247,7 @@ private fun EmptyState(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .padding(bottom = 60.dp)
+            .padding(bottom = 80.dp)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)),
                 shape = MaterialTheme.shapes.large,

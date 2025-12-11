@@ -18,3 +18,12 @@ data class EntriesDestination(val journalId: String?) : Destination
 
 @Serializable
 object PrivacyPolicyDestination : Destination
+
+@Serializable
+object StoryBooksListDestination : Destination
+
+@Serializable
+object CreateStoryBookDestination : Destination
+
+@Serializable
+data class StoryBookDetailDestination(val storyBookId: String) : Destination

@@ -1,13 +1,17 @@
 package com.apptolast.lifetimejournal.di
 
+import com.apptolast.lifetimejournal.data.repositories.AIService
 import com.apptolast.lifetimejournal.data.repositories.AuthRepository
 import com.apptolast.lifetimejournal.data.repositories.AuthRepositoryImpl
 import com.apptolast.lifetimejournal.data.repositories.FirebaseService
 import com.apptolast.lifetimejournal.data.repositories.FirestoreRepositoryImpl
 import com.apptolast.lifetimejournal.data.repositories.JournalRepository
+import com.apptolast.lifetimejournal.data.repositories.PlaceholderAIService
+import com.apptolast.lifetimejournal.data.repositories.StoryBookRepository
 import com.apptolast.lifetimejournal.database.getJournalDao
 import com.apptolast.lifetimejournal.database.getJournalEntryDao
 import com.apptolast.lifetimejournal.database.getRoomDatabase
+import com.apptolast.lifetimejournal.database.getStoryBookDao
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
@@ -22,6 +26,8 @@ val sharedModule = module {
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
     singleOf(::FirestoreRepositoryImpl) { bind<FirebaseService>() }
     singleOf(::JournalRepository)
+    singleOf(::PlaceholderAIService) { bind<AIService>() }
+    singleOf(::StoryBookRepository)
 }
 
 expect val platformModule: Module
@@ -33,4 +39,5 @@ val databaseModule = module {
     singleOf(::getRoomDatabase)
     singleOf(::getJournalDao)
     singleOf(::getJournalEntryDao)
+    singleOf(::getStoryBookDao)
 }
