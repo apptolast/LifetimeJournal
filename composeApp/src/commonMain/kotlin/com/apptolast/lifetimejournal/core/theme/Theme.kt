@@ -1,73 +1,97 @@
 package com.apptolast.lifetimejournal.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 
-val DarkColorScheme = darkColorScheme(
-    primary = GreenPrimaryDark,
-    secondary = GreenSecondaryDark,
-    tertiary = GreenTertiaryDark,
-    onPrimary = OnGreenDark,
-    primaryContainer = GreenContainerDark,
-    onPrimaryContainer = OnGreenContainerDark,
-    onSecondary = OnGreenSecondaryDark,
-    secondaryContainer = GreenSecondaryContainerDark,
-    onSecondaryContainer = OnGreenSecondaryContainerDark,
-    onTertiary = OnGreenTertiaryDark,
-    onTertiaryContainer = OnGreenTertiaryContainerDark,
-    tertiaryContainer = GreenTertiaryContainerDark,
-    background = BackgroundDark,
-    onBackground = OnBackgroundDark,
-    surface = SurfaceDark,
-    onSurface = OnSurfaceDark,
-    surfaceVariant = SurfaceVariantDark,
-    onSurfaceVariant = OnSurfaceVariantDark,
-    error = ErrorDark,
-    onError = OnErrorDark,
-    errorContainer = ErrorContainerDark,
-    onErrorContainer = OnErrorContainerDark,
-    outline = OutlineDark,
+private val LightColorScheme = lightColorScheme(
+    primary = RosePrimary,
+    onPrimary = RoseOnPrimary,
+    primaryContainer = RosePrimaryContainer,
+    onPrimaryContainer = RoseOnPrimaryContainer,
+    secondary = RoseSecondary,
+    onSecondary = RoseOnSecondary,
+    secondaryContainer = RoseSecondaryContainer,
+    onSecondaryContainer = RoseOnSecondaryContainer,
+    tertiary = RoseTertiary,
+    onTertiary = RoseOnTertiary,
+    tertiaryContainer = RoseTertiaryContainer,
+    onTertiaryContainer = RoseOnTertiaryContainer,
+    error = RoseError,
+    onError = RoseOnError,
+    errorContainer = RoseErrorContainer,
+    onErrorContainer = RoseOnErrorContainer,
+    background = RoseBackground,
+    onBackground = RoseOnBackground,
+    surface = RoseSurface,
+    onSurface = RoseOnSurface,
+    surfaceVariant = RoseSurfaceVariant,
+    onSurfaceVariant = RoseOnSurfaceVariant,
+    outline = RoseOutline,
+    outlineVariant = RoseOutlineVariant,
+    surfaceContainerLowest = RoseSurfaceContainerLowest,
+    surfaceContainerLow = RoseSurfaceContainerLow,
+    surfaceContainer = RoseSurfaceContainer,
+    surfaceContainerHigh = RoseSurfaceContainerHigh,
+    surfaceContainerHighest = RoseSurfaceContainerHighest,
 )
 
-val LightColorScheme = lightColorScheme(
-    primary = GreenPrimaryLight,
-    secondary = GreenSecondaryLight,
-    tertiary = GreenTertiaryLight,
-    onPrimary = OnGreenLight,
-    primaryContainer = GreenContainerLight,
-    onPrimaryContainer = OnGreenContainerLight,
-    onSecondary = OnGreenSecondaryLight,
-    secondaryContainer = GreenSecondaryContainerLight,
-    onSecondaryContainer = OnGreenSecondaryContainerLight,
-    onTertiary = OnGreenTertiaryLight,
-    onTertiaryContainer = OnGreenTertiaryContainerLight,
-    tertiaryContainer = GreenTertiaryContainerLight,
-    background = BackgroundLight,
-    onBackground = OnBackgroundLight,
-    surface = SurfaceLight,
-    onSurface = OnSurfaceLight,
-    surfaceVariant = SurfaceVariantLight,
-    onSurfaceVariant = OnSurfaceVariantLight,
-    error = ErrorLight,
-    onError = OnErrorLight,
-    errorContainer = ErrorContainerLight,
-    onErrorContainer = OnErrorContainerLight,
-    outline = OutlineLight,
+private val DarkColorScheme = darkColorScheme(
+    primary = RosePrimaryDark,
+    onPrimary = RoseOnPrimaryDark,
+    primaryContainer = RosePrimaryContainerDark,
+    onPrimaryContainer = RoseOnPrimaryContainerDark,
+    secondary = RoseSecondaryDark,
+    onSecondary = RoseOnSecondaryDark,
+    secondaryContainer = RoseSecondaryContainerDark,
+    onSecondaryContainer = RoseOnSecondaryContainerDark,
+    tertiary = RoseTertiaryDark,
+    onTertiary = RoseOnTertiaryDark,
+    tertiaryContainer = RoseTertiaryContainerDark,
+    onTertiaryContainer = RoseOnTertiaryContainerDark,
+    error = RoseErrorDark,
+    onError = RoseOnErrorDark,
+    errorContainer = RoseErrorContainerDark,
+    onErrorContainer = RoseOnErrorContainerDark,
+    background = RoseBackgroundDark,
+    onBackground = RoseOnBackgroundDark,
+    surface = RoseSurfaceDark,
+    onSurface = RoseOnSurfaceDark,
+    surfaceVariant = RoseSurfaceVariantDark,
+    onSurfaceVariant = RoseOnSurfaceVariantDark,
+    outline = RoseOutlineDark,
+    outlineVariant = RoseOutlineVariantDark,
+    surfaceContainerLowest = RoseSurfaceContainerLowestDark,
+    surfaceContainerLow = RoseSurfaceContainerLowDark,
+    surfaceContainer = RoseSurfaceContainerDark,
+    surfaceContainerHigh = RoseSurfaceContainerHighDark,
+    surfaceContainerHighest = RoseSurfaceContainerHighestDark,
+)
+
+private val AppShapes = Shapes(
+    extraSmall = RoundedCornerShape(4.dp),
+    small = RoundedCornerShape(8.dp),
+    medium = RoundedCornerShape(12.dp),
+    large = RoundedCornerShape(16.dp),
+    extraLarge = RoundedCornerShape(24.dp),
 )
 
 @Composable
-fun LifetimeJournalTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colorScheme = when {
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+fun LifetimeJournalTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+) {
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
         typography = PoppinsTypography(),
+        shapes = AppShapes,
         content = content,
     )
 }

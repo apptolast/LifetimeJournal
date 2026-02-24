@@ -2,6 +2,7 @@ package com.apptolast.lifetimejournal.database.entities
 
 import com.apptolast.lifetimejournal.data.datamodel.Journal
 import com.apptolast.lifetimejournal.data.datamodel.JournalEntry
+import com.apptolast.lifetimejournal.data.datamodel.StoryBook
 import com.apptolast.lifetimejournal.data.repositories.FirebaseJournal
 import com.apptolast.lifetimejournal.data.repositories.FirebaseJournalEntry
 import kotlinx.datetime.LocalDate
@@ -48,4 +49,37 @@ fun FirebaseJournalEntry.toJournalEntry(): JournalEntry {
 
 fun JournalEntry.toFirebaseJournalEntry(): FirebaseJournalEntry {
     return FirebaseJournalEntry(id, journalId, title, description, date.toString())
+}
+
+// StoryBook Mappers
+fun StoryBookEntity.toStoryBook(): StoryBook {
+    return StoryBook(
+        id = id,
+        journalId = journalId,
+        journalTitle = journalTitle,
+        title = title,
+        description = description,
+        coverUrl = coverUrl,
+        startDate = startDate,
+        endDate = endDate,
+        storyStyle = storyStyle,
+        generatedText = generatedText,
+        createdAt = createdAt
+    )
+}
+
+fun StoryBook.toStoryBookEntity(): StoryBookEntity {
+    return StoryBookEntity(
+        id = id,
+        journalId = journalId,
+        journalTitle = journalTitle,
+        title = title,
+        description = description,
+        coverUrl = coverUrl,
+        startDate = startDate,
+        endDate = endDate,
+        storyStyle = storyStyle,
+        generatedText = generatedText,
+        createdAt = createdAt
+    )
 }

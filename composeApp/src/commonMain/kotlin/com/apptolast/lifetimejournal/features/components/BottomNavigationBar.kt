@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.CollectionsBookmark
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -16,18 +16,13 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.apptolast.lifetimejournal.core.navigation.CreateJournalDestination
 import com.apptolast.lifetimejournal.core.navigation.Destination
 import com.apptolast.lifetimejournal.core.navigation.JournalDestination
 import com.apptolast.lifetimejournal.core.navigation.SettingDestination
+import com.apptolast.lifetimejournal.core.navigation.StoryBooksListDestination
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
 import com.apptolast.lifetimejournal.resources.Res
 import com.apptolast.lifetimejournal.resources.bottom_nav_books_label
@@ -38,19 +33,19 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val label: StringResource) {
-    object Home : BottomNavItem(
+    object Diaries : BottomNavItem(
         route = JournalDestination,
-        icon = Icons.Default.Home,
+        icon = Icons.Default.Book,
         label = Res.string.bottom_nav_home_label,
     )
 
-    object CreateBook : BottomNavItem(
-        route = CreateJournalDestination,
-        icon = Icons.Default.CollectionsBookmark,
+    object StoryBooks : BottomNavItem(
+        route = StoryBooksListDestination,
+        icon = Icons.AutoMirrored.Filled.MenuBook,
         label = Res.string.bottom_nav_books_label,
     )
 
-    object Settings : BottomNavItem(
+    object Profile : BottomNavItem(
         route = SettingDestination,
         icon = Icons.Default.AccountCircle,
         label = Res.string.bottom_nav_profile_label,
@@ -58,23 +53,25 @@ sealed class BottomNavItem(val route: Destination, val icon: ImageVector, val la
 }
 
 val items = listOf(
-    BottomNavItem.Home,
-    BottomNavItem.CreateBook,
-    BottomNavItem.Settings,
+    BottomNavItem.Diaries,
+    BottomNavItem.StoryBooks,
+    BottomNavItem.Profile,
 )
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination) -> Unit = {}) {
-    var itemSelected by remember { mutableStateOf<BottomNavItem>(BottomNavItem.Home) }
+fun BottomNavigationBar(
+    currentRoute: Destination,
+    modifier: Modifier = Modifier,
+    navigateTo: (Destination) -> Unit = {},
+) {
     Column(modifier = modifier.fillMaxWidth().wrapContentHeight()) {
         HorizontalDivider(
-            color = Color.LightGray.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.outlineVariant,
             thickness = 1.dp,
         )
 
         NavigationBar(
-            modifier = modifier,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surface,
         ) {
             items.forEach { item ->
                 NavigationBarItem(
@@ -82,25 +79,20 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination)
                         Icon(
                             imageVector = item.icon,
                             contentDescription = stringResource(item.label),
-                            modifier = Modifier.size(30.dp),
+                            modifier = Modifier.size(28.dp),
                         )
                     },
                     label = { Text(text = stringResource(item.label)) },
-                    selected = itemSelected == item,
-                    colors = NavigationBarItemDefaults.colors().copy(
-                        selectedIndicatorColor = Color.Transparent,
+                    selected = currentRoute == item.route,
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
                         selectedIconColor = MaterialTheme.colorScheme.primary,
                         selectedTextColor = MaterialTheme.colorScheme.primary,
-                        unselectedIconColor = MaterialTheme.colorScheme.tertiary,
-                        unselectedTextColor = MaterialTheme.colorScheme.tertiary,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                     onClick = {
-                        itemSelected = item
                         navigateTo(item.route)
-//                    navController.navigate(item.route) {
-//                        popUpTo(navController.graph.startDestinationId)
-//                        launchSingleTop = true
-//                    }
                     },
                 )
             }
@@ -112,6 +104,6 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navigateTo: (Destination)
 @Composable
 private fun BottomNavigationBarPreview() {
     LifetimeJournalTheme {
-        BottomNavigationBar()
+        BottomNavigationBar(currentRoute = JournalDestination)
     }
 }

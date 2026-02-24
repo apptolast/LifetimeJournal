@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -23,9 +22,9 @@ kotlin {
         }
     }
 
-        iosX64()
-        iosArm64()
-        iosSimulatorArm64()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 //    listOf(
 //    ).forEach { iosTarget ->
 //        iosTarget.binaries.framework {
@@ -36,7 +35,7 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
 
@@ -49,6 +48,9 @@ kotlin {
 
             // Firebase
             implementation(project.dependencies.platform(libs.firebase.bom))
+
+            // Ktor engine for Android
+            implementation(libs.ktor.client.okhttp)
         }
 
         commonMain.dependencies {
@@ -78,13 +80,24 @@ kotlin {
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
 
+            // Ktor (required for Coil network)
+            implementation(libs.ktor.client.core)
+
             // Calendar
             implementation("com.kizitonwose.calendar:compose-multiplatform:2.6.2")
+
+            // DateTime
+            implementation(libs.kotlinx.datetime)
 
             // The Kotzilla SDK library dependency
             implementation(libs.kotzilla.sdk)
 
             api(projects.shared)
+        }
+
+        iosMain.dependencies {
+            // Ktor engine for iOS
+            implementation(libs.ktor.client.darwin)
         }
     }
 

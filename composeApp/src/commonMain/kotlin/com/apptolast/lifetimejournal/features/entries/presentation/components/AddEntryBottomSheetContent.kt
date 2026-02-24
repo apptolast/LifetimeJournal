@@ -1,13 +1,14 @@
 package com.apptolast.lifetimejournal.features.entries.presentation.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,13 +16,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.apptolast.lifetimejournal.core.theme.LifetimeJournalTheme
@@ -30,22 +31,39 @@ import com.apptolast.lifetimejournal.resources.entries_add_entry_create_entry_bu
 import com.apptolast.lifetimejournal.resources.entries_add_entry_description_text_field
 import com.apptolast.lifetimejournal.resources.entries_add_entry_fab_button
 import com.apptolast.lifetimejournal.resources.entries_add_entry_title_text_field
+import com.apptolast.lifetimejournal.resources.entries_edit_entry_save_button
+import com.apptolast.lifetimejournal.resources.entries_edit_entry_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (String, String) -> Unit = { _, _ -> }) {
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+fun AddEntryBottomSheetContent(
+    modifier: Modifier = Modifier,
+    initialTitle: String = "",
+    initialDescription: String = "",
+    isEditMode: Boolean = false,
+    onCreateEntry: (String, String) -> Unit = { _, _ -> },
+) {
+    var title by remember { mutableStateOf(initialTitle) }
+    var description by remember { mutableStateOf(initialDescription) }
+
+    val lineCount by remember(description) {
+        derivedStateOf { description.count { it == '\n' } + 1 }
+    }
+    val isExpanded = lineCount > 5
+    val descriptionHeight = if (isExpanded) 300.dp else 150.dp
 
     Column(
-        modifier = modifier.fillMaxWidth().padding(16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .animateContentSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         Text(
-            text = stringResource(Res.string.entries_add_entry_fab_button),
+            text = if (isEditMode) stringResource(Res.string.entries_edit_entry_title) else stringResource(Res.string.entries_add_entry_fab_button),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
@@ -64,7 +82,7 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
             },
             maxLines = 1,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = MaterialTheme.shapes.small,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -78,8 +96,11 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
                     style = MaterialTheme.typography.bodyLarge,
                 )
             },
-            modifier = Modifier.fillMaxWidth().height(150.dp),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 150.dp, max = 350.dp)
+                .height(descriptionHeight),
+            shape = MaterialTheme.shapes.small,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -94,7 +115,7 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
             ),
         ) {
             Text(
-                text = stringResource(Res.string.entries_add_entry_create_entry_button),
+                text = if (isEditMode) stringResource(Res.string.entries_edit_entry_save_button) else stringResource(Res.string.entries_add_entry_create_entry_button),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(vertical = 8.dp),
             )
@@ -107,6 +128,6 @@ fun AddEntryBottomSheetContent(modifier: Modifier = Modifier, onCreateEntry: (St
 @Composable
 fun AddEntryBottomSheetContentPreview() {
     LifetimeJournalTheme {
-        AddEntryBottomSheetContent(modifier = Modifier.background(color = Color.White))
+        AddEntryBottomSheetContent(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface))
     }
 }

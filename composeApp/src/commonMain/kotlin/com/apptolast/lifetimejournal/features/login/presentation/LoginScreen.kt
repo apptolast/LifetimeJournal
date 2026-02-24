@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -91,7 +89,7 @@ fun LoginContent(authState: Boolean, modifier: Modifier = Modifier, onClickGoogl
 fun SignInWithGoogleButton(
     text: String = stringResource(Res.string.login_google_button),
     loadingText: String = stringResource(Res.string.login_loading_text),
-    icon: Painter = painterResource(Res.drawable.google_icon), // Replace with your actual Google logo resource
+    icon: Painter = painterResource(Res.drawable.google_icon),
     isLoading: Boolean = false,
     onClick: () -> Unit,
 ) {
@@ -100,8 +98,8 @@ fun SignInWithGoogleButton(
             enabled = !isLoading,
             onClick = onClick,
         ),
-        shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(width = 1.dp, color = Color.LightGray),
+        shape = MaterialTheme.shapes.medium,
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
         color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
@@ -119,7 +117,10 @@ fun SignInWithGoogleButton(
                 modifier = Modifier.size(24.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = if (isLoading) loadingText else text)
+            Text(
+                text = if (isLoading) loadingText else text,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
 }

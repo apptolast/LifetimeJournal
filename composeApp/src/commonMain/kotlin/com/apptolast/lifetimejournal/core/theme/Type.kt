@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,7 +52,7 @@ fun PoppinsTypography() = Typography().run {
 @Composable
 private fun TypographyPreview() {
     LifetimeJournalTheme {
-        Column(modifier = Modifier.background(color = Color.White).padding(4.dp)) {
+        Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background).padding(4.dp)) {
             Text(text = "displayLarge", style = MaterialTheme.typography.displayLarge)
             Text(text = "displayLarge", style = MaterialTheme.typography.displayLarge)
             Text(text = "displayMedium", style = MaterialTheme.typography.displayMedium)

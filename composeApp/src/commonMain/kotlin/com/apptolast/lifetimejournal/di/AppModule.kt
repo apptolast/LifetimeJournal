@@ -1,7 +1,6 @@
 package com.apptolast.lifetimejournal.di
 
 import com.apptolast.lifetimejournal.BuildConfig
-import com.apptolast.lifetimejournal.features.createjournal.presentation.CreateJournalViewModel
 import com.apptolast.lifetimejournal.features.entries.presentation.EntriesViewModel
 import com.apptolast.lifetimejournal.features.journals.presentation.JournalsViewModel
 import com.apptolast.lifetimejournal.features.login.presentation.LoginViewModel
@@ -20,7 +19,6 @@ val viewModelsModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::JournalsViewModel)
     viewModelOf(::EntriesViewModel)
-    viewModelOf(::CreateJournalViewModel)
 }
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {

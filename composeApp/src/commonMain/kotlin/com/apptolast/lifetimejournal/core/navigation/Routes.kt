@@ -14,7 +14,16 @@ object SettingDestination : Destination
 object JournalDestination : Destination
 
 @Serializable
-object CreateJournalDestination : Destination
+data class EntriesDestination(val journalId: String?) : Destination
 
 @Serializable
-data class EntriesDestination(val journalId: String?) : Destination
+object PrivacyPolicyDestination : Destination
+
+@Serializable
+object StoryBooksListDestination : Destination
+
+@Serializable
+object CreateStoryBookDestination : Destination
+
+@Serializable
+data class StoryBookDetailDestination(val storyBookId: String) : Destination

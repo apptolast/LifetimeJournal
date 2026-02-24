@@ -13,6 +13,7 @@ const val DATABASE_NAME = "lifetime_journal.db"
 // Tables
 const val TABLE_JOURNAL = "journal"
 const val TABLE_JOURNAL_ENTRY = "journal_entry"
+const val TABLE_STORY_BOOK = "story_book"
 
 // Columns
 const val COLUMN_ID = "id"

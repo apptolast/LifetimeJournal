@@ -15,8 +15,22 @@
     <string name="create_journal_button">Create Journal</string>
 
     <!-- Entries Journal -->
-    <string name="entries_add_entry_fab_button">Add Entry</string>
+    <string name="entries_add_entry_fab_button">New Entry</string>
     <string name="entries_add_entry_title_text_field">Title</string>
     <string name="entries_add_entry_description_text_field">Description</string>
     <string name="entries_add_entry_create_entry_button">Create Entry</string>
+    <string name="entries_edit_entry_title">Edit Entry</string>
+    <string name="entries_edit_entry_save_button">Save Entry</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Profile \u0026 Settings</string>
+    <string name="settings_section_account">Account</string>
+    <string name="settings_change_name">Change Name</string>
+    <string name="settings_change_password">Change Password</string>
+    <string name="settings_manage_subscription">Manage Subscription</string>
+    <string name="settings_section_support">Support</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_support_developer">Support the Developer</string>
+    <string name="settings_logout">Logout</string>
+    <string name="settings_delete_account">Delete Account</string>
 </resources>
